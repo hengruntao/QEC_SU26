@@ -5,7 +5,7 @@ module cnu #( parameter int DEGREE=6)(
     input logic rst_n,
     input logic [3:0] nu_in[DEGREE],
     input logic syndrome_bit,
-
+    input logic [3:0] t,
     output cnu_msg_t mu_out[DEGREE],
     input logic valid_in,
     output logic ready_out,
@@ -16,6 +16,8 @@ logic sign_bits[DEGREE];
 logic [2:0] mag_bits[DEGREE];
 logic parity_xor;
 logic [2:0] min1_val, min2_val;
+
+logic [2:0] min1_val_scaled, min2_val_scaled;
 
 genvar g;
 
@@ -48,12 +50,16 @@ always_comb begin
     end
 end
 
+assign min1_val_scaled=min1_val-(min1_val>>t);
+assign min2_val_scaled=min2_val-(min2_val>>t);
+
+
 generate
     for(g=0;g<DEGREE;g++) begin : attach_block
         assign mu_out[g].sign=parity_xor^sign_bits[g];
         assign mu_out[g].c=(mag_bits[g]==min1_val);
-        assign mu_out[g].min1={1'b0,min1_val};
-        assign mu_out[g].min2={1'b0,min2_val};
+        assign mu_out[g].min1={1'b0,min1_val_scaled};
+        assign mu_out[g].min2={1'b0,min2_val_scaled};
     end
 endgenerate
 
