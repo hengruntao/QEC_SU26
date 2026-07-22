@@ -3,15 +3,19 @@ import numpy as np
 # Difference between cnu_fl64: third input variable changed from "alpha" to "t"
 def cnu_hardware_int4(vnu_messages, sigma_i, t): 
     """
-    Cnu: processes one check node (one row of H).
+    CNU: processes one check node (one row of H)
+    input as "v", output as "miu"
     
     Inputs:
         vnu_messages : list/array of int, range [-7, +7] for int4.2.8
                         Incoming messages v_{j→i} from neighboring variable nodes.
         sigma_i      : int (0 or 1) 1 means parity check detects an odd number of errors
-                        Syndrome/detector bit for this check node.
+                        Syndrome/detector bit for this check node. (message from QPU)
         t            : int (>= 1), BP iteration index.
                         Determines α = 1 - 2^(-t).
+    IMPORTANT concept:
+        sigma_i is the ONLY ground truth (message from the stabilizer in QPU)
+        vnu_messages are ONLY guesses!!
 
     Returns:
         dict with keys:
@@ -27,11 +31,20 @@ def cnu_hardware_int4(vnu_messages, sigma_i, t):
     # Convention: sign bit 0 = positive (or zero), 1 = negative
     
     # vnu < 0 compares each element with 0; if smaller, True; if larger, False; astype transforms True to 1, False to 0
-    sign_bits = (vnu_message < 0).astype(int)   # vnu < 0 means MSB is 1
+    sign_bits = (vnu_message < 0).astype(int)   # vnu < 0 means MSB is 1 -> IS error; MSB is 0 -> NO error
     magnitudes = np.abs(vnu_message)
-    
+    #   e.g.:
+    #   vnu_message  = [ 3, -5,  2, -7,  1, -4]
+    #   sign_bits    = [ 0,  1,  0,  1,  0,  1]
+    #   magnitudes   = [ 3,  5,  2,  7,  1,  4]
+
+
     # ---- Step 2: Compute full parity ----
     # full_parity = s_0 ⊕ s_1 ⊕ ... ⊕ s_{d_c-1} ⊕ σ_i
+
+    # 2 sources of info:
+    #   1. sigma_i, syndrom bit from QPU (info from stabilizer)
+    #   2. sign_bits, guesses from other VNU nodes
     full_parity = sigma_i
     for s in sign_bits:
         full_parity = full_parity ^ s   # parity = 0 -> even number of "1" (even number of "-")
@@ -49,7 +62,7 @@ def cnu_hardware_int4(vnu_messages, sigma_i, t):
         if (temp_val < min1):
             min2 = min1
             min1 = temp_val
-            argmin_idx = i
+            # argmin_idx = i
         elif (temp_val < min2):
             min2 = temp_val
 
@@ -63,13 +76,14 @@ def cnu_hardware_int4(vnu_messages, sigma_i, t):
     selectors_per_edge = []
     for j in range (num_vnu_message):
         signs_per_edge.append(int(full_parity ^ sign_bits[j]))
-        if (j == argmin_idx):
+        # if (j == argmin_idx):
+        if (magnitudes[j] == min1):
             selectors_per_edge.append(1)
         else:
             selectors_per_edge.append(0)
         
     # ---- Step 5: Alpha scaling and return ----
-    # α is the scaling factor for VNU hardware, it's not the original component of Equ (1) in FPGA paper
+    # α is the scaling factor for CNU hardware, it's not the original component of Equ (1) in FPGA paper
     min1_scaled = int (min1 - (min1 >> t))
     min2_scaled = int (min2 - (min2 >> t))
 
