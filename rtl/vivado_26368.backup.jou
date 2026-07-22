@@ -2,13 +2,14 @@
 # Vivado v2022.2 (64-bit)
 # SW Build 3671981 on Fri Oct 14 05:00:03 MDT 2022
 # IP Build 3669848 on Fri Oct 14 08:30:02 MDT 2022
-# Start of session at: Wed Jul 22 01:35:08 2026
-# Process ID: 27464
+# Start of session at: Tue Jul 21 23:33:42 2026
+# Process ID: 26368
 # Current directory: C:/Users/rimpl/vivado/QEC_SU26/rtl
-# Command line: vivado.exe -gui_launcher_event rodinguilauncherevent17876 C:\Users\rimpl\vivado\QEC_SU26\rtl\IBM_OSS_decoder.xpr
+# Command line: vivado.exe -gui_launcher_event rodinguilauncherevent22280 C:\Users\rimpl\vivado\QEC_SU26\rtl\IBM_OSS_decoder.xpr
 # Log file: C:/Users/rimpl/vivado/QEC_SU26/rtl/vivado.log
 # Journal file: C:/Users/rimpl/vivado/QEC_SU26/rtl\vivado.jou
 # Running On: Aman_Saji, OS: Windows, CPU Frequency: 2918 MHz, CPU Physical cores: 10, Host memory: 16961 MB
 #-----------------------------------------------------------
 start_gui
 open_project C:/Users/rimpl/vivado/QEC_SU26/rtl/IBM_OSS_decoder.xpr
+update_compile_order -fileset sources_1

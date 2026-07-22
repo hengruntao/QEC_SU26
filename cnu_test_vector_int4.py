@@ -1,4 +1,4 @@
-from cnu_int4 import cnu_hardware_int4
+from cnu_int4_rust_ref import cnu_hardware_int4
 
 """
 CNU Test Vector Generator — int4.2.8 format
