@@ -65,4 +65,4 @@ def vnu_hardware(cnu_messages, lambda_j):
 
 
 # margin = 5.0 + 2.0 + (-4.0) + 0.5 = 3.5
-# 期望: margin = 3.5
+# Expectation: margin = 3.5
