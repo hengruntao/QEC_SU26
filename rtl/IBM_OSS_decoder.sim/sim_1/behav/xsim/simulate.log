@@ -1,0 +1,10 @@
+Time resolution is 1 ps
+
+========================================
+  CNU Testbench Results
+  PASSED: 348 / 348
+  FAILED: 0 / 348
+========================================
+  ALL TESTS PASSED
+
+$finish called at time : 3490 ns : File "C:/Users/rimpl/vivado/QEC_SU26/rtl/IBM_OSS_decoder.srcs/sim_1/imports/Downloads/cnu_tb.sv" Line 140
