@@ -8,19 +8,19 @@ def cnu_hardware_int4(vnu_messages, sigma_i, t):
     
     Inputs:
         vnu_messages : list/array of int, range [-7, +7] for int4.2.8
-                        Incoming messages v_{j→i} from neighboring variable nodes.
+                        Incoming messages v_{j->i} from neighboring variable nodes.
         sigma_i      : int (0 or 1) 1 means parity check detects an odd number of errors
                         Syndrome/detector bit for this check node. (message from QPU)
         t            : int (>= 1), BP iteration index.
-                        Determines α = 1 - 2^(-t).
+                        Determines alpha = 1 - 2^(-t).
     IMPORTANT concept:
         sigma_i is the ONLY ground truth (message from the stabilizer in QPU)
         vnu_messages are ONLY guesses!!
 
     Returns:
         dict with keys:
-            'min1_scaled'  : int, α × min1 (shared across all edges)
-            'min2_scaled'  : int, α × min2 (shared across all edges)
+            'min1_scaled'  : int, alpha * min1 (shared across all edges)
+            'min2_scaled'  : int, alpha * min2 (shared across all edges)
             'signs'        : list of int (0 or 1), per-edge output sign bits
             'selectors'    : list of int (0 or 1), per-edge selector bits
     """
