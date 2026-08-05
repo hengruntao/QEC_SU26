@@ -96,8 +96,9 @@ def cnu_hardware_int4(vnu_messages, sigma_i, t):
     }
 
 # Testing
-result = cnu_hardware_int4([3, -5, 2, -7, 1, -4], sigma_i=1, t=1)
-print(result)
+if __name__ == "__main__":
+    result = cnu_hardware_int4([3, -5, 2, -7, 1, -4], sigma_i=1, t=1)
+    print(result)
 # Expectation:
 # min1_scaled = 1,  min2_scaled = 1
 # signs     = [0, 1, 0, 1, 0, 1]

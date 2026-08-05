@@ -1,7 +1,7 @@
 import numpy as np
 import math
-from cnu_python import cnu_int4
-from vnu_python import vnu_int4
+from cnu_python.cnu_int4 import cnu_hardware_int4
+from vnu_python.vnu_int4 import vnu_hardware_int4
 
 # ---- define check matrix ----
 H = np.array([
@@ -67,7 +67,7 @@ for t in range (1, 61):
     # 2. ---- CNU processing ----
     cnu_results = []
     for ii in range (num_check_node):
-        cnu_ii_results = cnu_int4(cnu_inputs[ii], syndrom[ii], t)
+        cnu_ii_results = cnu_hardware_int4(cnu_inputs[ii], syndrom[ii], t)
         cnu_results.append(cnu_ii_results)
 
     # ---- CNU output to VNU input ----
@@ -98,7 +98,7 @@ for t in range (1, 61):
     # ---- VNU phase ----
     vnu_results = []
     for kk in range(num_variable_node):
-        result = vnu_int4(vnu_inputs[kk], error_prior[kk])
+        result = vnu_hardware_int4(vnu_inputs[kk], error_prior[kk])
         vnu_results.append(result)
 
     # ---- update vnu_message ----
@@ -106,7 +106,7 @@ for t in range (1, 61):
         vnu_message[jj] = vnu_results[jj]["vnu_messages"]
 
     # ---- Convergence check ----
-    # extract hard decisions from VNU, and computes estimated error vector e_hat
+    # extract hard decisions from VNU, and computes estimated error vector e_hat (array of HDs)
     e_hat = []
     for jj in range(num_variable_node):
         e_hat.append(vnu_results[jj]['hard_decision'])
@@ -119,10 +119,11 @@ for t in range (1, 61):
     if converged:
         break
 
+print(f"check matrix:   {H}")
 print(f"e_hat:          {e_hat}")
 print(f"H·ê mod 2:      {syndrome_check}")
 print(f"syndrome:       {syndrom}")
-print(f"t:          {t}")
+print(f"t:              {t}")
 print(f"converged:      {converged}")
 
 # Expectation:

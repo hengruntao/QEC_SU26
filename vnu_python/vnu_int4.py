@@ -1,4 +1,4 @@
-def vnu_hardware(cnu_messages, lambda_j):
+def vnu_hardware_int4(cnu_messages, lambda_j):
     """
     VNU: processes one variable node (one column of H).
     
@@ -106,6 +106,6 @@ cnu_msgs_1 = [
 # marginal = 3 + (-2) + (-1) = 0
 # vnu_message = [0-(-2), 0-(-1)] = [2, 1]
 # hard_decision = 1  (<= 0)
-
-result = vnu_hardware(cnu_msgs_1, lambda_j=3)
-print(result)
+if __name__ == "__main__":
+    result = vnu_hardware(cnu_msgs_1, lambda_j=3)
+    print(result)
