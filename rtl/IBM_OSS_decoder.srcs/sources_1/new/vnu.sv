@@ -14,7 +14,8 @@ module vnu #(
     input  logic         new_leg,
     input  logic [3:0]   lambda_0,
     input  logic [9:0]   mu_in [DEG],
-    output logic [3:0]   nu_out [DEG],
+    output logic [4:0]   nu_out [DEG],
+    output logic [4:0]   marginal,
     output logic         e_hat
 );
 
@@ -91,30 +92,42 @@ module vnu #(
         else                         M_j_next = sigma_sum[MJ_W-1:0];
     end
 
-    assign e_hat = M_j_next[MJ_W-1];
+    assign e_hat = ~($signed(M_j_next) > 0);
+
+    logic signed [4:0] mj_sat;
+    logic        [3:0] mj_abs;
+
+    always_comb begin
+        if      ($signed(M_j_next) >   6'sd15) mj_sat =  5'sd15;
+        else if ($signed(M_j_next) <  -6'sd15) mj_sat = -5'sd15;
+        else                                   mj_sat = M_j_next[4:0];
+    end
+
+    assign mj_abs   = (mj_sat < 0) ? (-mj_sat) : mj_sat[3:0];
+    assign marginal = {mj_sat[4], mj_abs};
 
     logic signed [MJ_W+1:0] nu_raw  [DEG];
-    logic signed [3:0]      nu_sat  [DEG];
-    logic        [2:0]      nu_abs  [DEG];
+    logic signed [4:0]      nu_sat  [DEG];
+    logic        [3:0]      nu_abs  [DEG];
 
     generate
         for (genvar g = 0; g < DEG; g++) begin : g_nu
             assign nu_raw[g] = $signed({{2{M_j_next[MJ_W-1]}}, M_j_next})
-                             - $signed({{2{mu_s[g][MJ_W-1]}},   mu_s[g]});
+                            - $signed({{2{mu_s[g][MJ_W-1]}},   mu_s[g]});
 
             always_comb begin
-                if      (nu_raw[g] >   4'sd7) nu_sat[g] =  4'sd7;
-                else if (nu_raw[g] <  -4'sd7) nu_sat[g] = -4'sd7;
-                else                          nu_sat[g] =  nu_raw[g][3:0];
+                if      (nu_raw[g] >   6'sd15) nu_sat[g] =  5'sd15;
+                else if (nu_raw[g] <  -6'sd15) nu_sat[g] = -5'sd15;
+                else                           nu_sat[g] =  nu_raw[g][4:0];
             end
 
-            assign nu_abs[g] = (nu_sat[g] < 0) ? (-nu_sat[g]) : nu_sat[g][2:0];
+            assign nu_abs[g] = (nu_sat[g] < 0) ? (-nu_sat[g]) : nu_sat[g][3:0];
 
             always_comb begin
                 if (init)
-                    nu_out[g] = {1'b0, lambda_0[2:0]};
+                    nu_out[g] = {1'b0, lambda_0};
                 else
-                    nu_out[g] = {nu_sat[g][3], nu_abs[g]};
+                    nu_out[g] = {nu_sat[g][4], nu_abs[g]};
             end
         end
     endgenerate
