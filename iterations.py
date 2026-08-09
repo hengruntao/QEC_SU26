@@ -2,12 +2,10 @@ import numpy as np
 import math
 from cnu_python.cnu_int4 import cnu_hardware_int4
 from vnu_python.vnu_int4 import vnu_hardware_int4
+from check_matrix_generator import get_H_x, get_H_z
 
 # ---- define check matrix ----
-H = np.array([
-    [1, 1, 0],
-    [0, 1, 1]
-])
+H = get_H_x()
 
 num_check_node, num_variable_node = H.shape
 
@@ -30,10 +28,16 @@ for i in range (num_variable_node):
     variable_node_neighbor.append(connected_check_node)
 
 # ---- initializing vnu_message for first iteration ----
-error = [0, 1, 0]
-syndrom = H @ error
     # p is physical error rate
-p = 0.1
+p = 0.003
+
+np.random.seed(4)
+    # np.random.rand(num_variabl_node) generated an array of length 144, each element is some float within [0,1)
+    # < p compares each float with physical error rate; if smaller return True, if larger return False. possibility of True = p
+    # astype(int) transferrs boolean True/False to 1/0 --> generate error
+error = (np.random.rand(num_variable_node) < p).astype(int)
+syndrome = (H @ error) % 2
+
     # initial vnu_message = lambda_0
 error_prior = [np.log((1-p)/p)] * num_variable_node
 
@@ -67,7 +71,7 @@ for t in range (1, 61):
     # 2. ---- CNU processing ----
     cnu_results = []
     for ii in range (num_check_node):
-        cnu_ii_results = cnu_hardware_int4(cnu_inputs[ii], syndrom[ii], t)
+        cnu_ii_results = cnu_hardware_int4(cnu_inputs[ii], syndrome[ii], t)
         cnu_results.append(cnu_ii_results)
 
     # ---- CNU output to VNU input ----
@@ -113,18 +117,24 @@ for t in range (1, 61):
 
     # ---- check if H·ê mod 2 == σ ----
     syndrome_check = (H @ np.array(e_hat)) % 2
-    converged = np.array_equal(syndrome_check, syndrom)
+    converged = np.array_equal(syndrome_check, syndrome)
 
         # if converged, then break out from the loop; otherwise continue untill max_iter = 60
     if converged:
         break
 
-print(f"check matrix:   {H}")
-print(f"e_hat:          {e_hat}")
-print(f"H·ê mod 2:      {syndrome_check}")
-print(f"syndrome:       {syndrom}")
-print(f"t:              {t}")
-print(f"converged:      {converged}")
+print(f"check matrix:               {H}")
+print(f"actual_error:               {error}")
+print(f"actual_error_sum:           {sum(error)}")
+print(f"e_hat (estimated_error):    {e_hat}")
+print(f"e_hat_sum:                  {e_hat}")
+print(f"H·ê mod 2:                  {syndrome_check}")
+print(f"syndrome:                   {syndrome}")
+print(f"syndrome_sum:               {sum(syndrome)}")
+print(f"t (# of iterations):        {t}")
+print(f"converged:                  {converged}")
+
+
 
 # Expectation:
 # e_hat:     [0, 1, 0]
