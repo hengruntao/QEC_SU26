@@ -1,6 +1,10 @@
 # https://github.com/qLDPCOrg/qLDPC/tree/main/src/qldpc/codes L634
 # https://github.com/qLDPCOrg/qLDPC/blob/main/examples/bivariate_bicycle_codes.ipynb
 
+# IMPORTANT: 
+# need "pip install qldpc" before running the code!!
+# see instructions from: https://github.com/qLDPCOrg/qLDPC
+
 import numpy as np
 from sympy.abc import x, y
 from qldpc import codes

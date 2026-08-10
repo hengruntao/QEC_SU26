@@ -1,10 +1,15 @@
+import sys
+import os
+sys.path.append(os.path.join(os.path.dirname(__file__), '..', '..'))
+
 import numpy as np
 import math
-from cnu_python.cnu_int4 import cnu_hardware_int4
-from vnu_python.vnu_int4 import vnu_hardware_int4
+from test_vector.cnu_python.cnu_int4 import cnu_hardware_int4
+from test_vector.vnu_python.vnu_int4 import vnu_hardware_int4
 from check_matrix_generator import get_H_x, get_H_z
 
 # ---- define check matrix ----
+    # see check_matrix_generator.py for .get_H_x() & .get_H_z()
 H = get_H_x()
 
 num_check_node, num_variable_node = H.shape
@@ -31,19 +36,22 @@ for i in range (num_variable_node):
     # p is physical error rate
 p = 0.003
 
-np.random.seed(4)
+    # use seed here for replication purpose
+np.random.seed(1)
+
     # np.random.rand(num_variabl_node) generated an array of length 144, each element is some float within [0,1)
     # < p compares each float with physical error rate; if smaller return True, if larger return False. possibility of True = p
     # astype(int) transferrs boolean True/False to 1/0 --> generate error
 error = (np.random.rand(num_variable_node) < p).astype(int)
+
 syndrome = (H @ error) % 2
 
     # initial vnu_message = lambda_0
 error_prior = [np.log((1-p)/p)] * num_variable_node
 
-vnu_message = []
     # vnu_message stores the message from vnu_i to all of its neighbors
     # vnu_message is a 2D array
+vnu_message = []
 
 for i in range(num_variable_node):
     degree_of_vnu_i = len(variable_node_neighbor[i])
@@ -118,6 +126,9 @@ for t in range (1, 61):
     # ---- check if H·ê mod 2 == σ ----
     syndrome_check = (H @ np.array(e_hat)) % 2
     converged = np.array_equal(syndrome_check, syndrome)
+        # IMPORTANT:
+        # This "converged" ONLY means syndrome consistency.
+        # NOT logical equivalence (Aê = Ae)
 
         # if converged, then break out from the loop; otherwise continue untill max_iter = 60
     if converged:
@@ -133,11 +144,3 @@ print(f"syndrome:                   {syndrome}")
 print(f"syndrome_sum:               {sum(syndrome)}")
 print(f"t (# of iterations):        {t}")
 print(f"converged:                  {converged}")
-
-
-
-# Expectation:
-# e_hat:     [0, 1, 0]
-# H·ê mod 2: [1, 1]
-# syndrome:  [1, 1]
-# converged: True
