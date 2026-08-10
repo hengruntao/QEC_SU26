@@ -6,7 +6,7 @@ import numpy as np
 import math
 from test_vector.cnu_python.cnu_int4 import cnu_hardware_int4
 from test_vector.vnu_python.vnu_int4 import vnu_hardware_int4
-from check_matrix_generator import get_H_x, get_H_z
+from matrix_generator import get_H_x, get_H_z, get_A_x, get_A_z
 
 # ---- define check matrix ----
     # see check_matrix_generator.py for .get_H_x() & .get_H_z()
@@ -37,7 +37,7 @@ for i in range (num_variable_node):
 p = 0.003
 
     # use seed here for replication purpose
-np.random.seed(1)
+np.random.seed(3)
 
     # np.random.rand(num_variabl_node) generated an array of length 144, each element is some float within [0,1)
     # < p compares each float with physical error rate; if smaller return True, if larger return False. possibility of True = p
@@ -122,9 +122,10 @@ for t in range (1, 61):
     e_hat = []
     for jj in range(num_variable_node):
         e_hat.append(vnu_results[jj]['hard_decision'])
-
+    e_hat = np.array(e_hat)
+    
     # ---- check if H·ê mod 2 == σ ----
-    syndrome_check = (H @ np.array(e_hat)) % 2
+    syndrome_check = (H @ e_hat) % 2
     converged = np.array_equal(syndrome_check, syndrome)
         # IMPORTANT:
         # This "converged" ONLY means syndrome consistency.
@@ -134,13 +135,24 @@ for t in range (1, 61):
     if converged:
         break
 
-print(f"check matrix:               {H}")
-print(f"actual_error:               {error}")
-print(f"actual_error_sum:           {sum(error)}")
-print(f"e_hat (estimated_error):    {e_hat}")
-print(f"e_hat_sum:                  {e_hat}")
-print(f"H·ê mod 2:                  {syndrome_check}")
-print(f"syndrome:                   {syndrome}")
-print(f"syndrome_sum:               {sum(syndrome)}")
-print(f"t (# of iterations):        {t}")
-print(f"converged:                  {converged}")
+# iteration ends, now check for logical equivalence (Aê = Ae)
+A_x = get_A_x()
+new_e = e_hat ^ error
+logical_action = (A_x @ new_e) % 2
+logical_success = False
+if (np.all(logical_action == 0)):
+    logical_success = True
+
+decode_success = (logical_success and converged)
+
+print(f"check matrix:                           {H}")
+print(f"actual_error:                           {error}")
+print(f"actual_error_sum:                       {sum(error)}")
+print(f"e_hat (estimated_error):                {e_hat}")
+print(f"e_hat_sum:                              {sum(e_hat)}")
+print(f"H·ê mod 2:                              {syndrome_check}")
+print(f"syndrome:                               {syndrome}")
+print(f"syndrome_sum:                           {sum(syndrome)}")
+print(f"t (# of iterations):                    {t}")
+print(f"decode successful (logic consistent):   {decode_success}")
+print(f"converged (syndrome consistent):        {converged}")
