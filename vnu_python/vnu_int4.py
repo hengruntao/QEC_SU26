@@ -13,13 +13,11 @@ def vnu_hardware_int4(cnu_messages, lambda_j):
                       Error prior Λ_j = log((1-p_j)/p_j)
     
     IMPORTANRT:
-        IT IS the CALLER's responsibility to pass in-scale lambda_j (as described in Rust reference code)
-        For now, just passing lambda_j as a fixed known prior. 
-
+        IT IS the CALLER's responsibility to pass in-scale lambda_j
 
     Returns:
         dict with keys:
-            'vnu_messages'   : list of float, ν_{j→i} for each edge
+            'vnu_messages'   : list of int4, ν_{j→i} for each edge
             # NOT necessary: 'marginal'        : int, M_j
             'hard_decision' : int (0 or 1), ê_j
 
@@ -87,8 +85,6 @@ def vnu_hardware_int4(cnu_messages, lambda_j):
     # ---- Step 5: clamp marginal_j ----
     marginal_j = bound_value(marginal_j)
 
-
-    # "marginal" is NOT necessary output, kept here for debugging
     return {
         'vnu_messages': vnu_messages,
         'marginal': marginal_j,
@@ -107,5 +103,5 @@ cnu_msgs_1 = [
 # vnu_message = [0-(-2), 0-(-1)] = [2, 1]
 # hard_decision = 1  (<= 0)
 if __name__ == "__main__":
-    result = vnu_hardware(cnu_msgs_1, lambda_j=3)
+    result = vnu_hardware_int4(cnu_msgs_1, lambda_j=3)
     print(result)

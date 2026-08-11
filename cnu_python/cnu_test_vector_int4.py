@@ -115,8 +115,8 @@ def build_corner_cases():
     ))
     # 2f. All maximum
     cases.append((
-        "mag: all_max_7",
-        [7, 7, 7, 7, 7, 7], 0, 1    # min1=min2=7, all selectors=1
+        "mag: all_max_15",
+        [15, 15, 15, 15, 15, 15], 0, 1    # min1=min2=15, all selectors=1
     ))
     # 2g. One zero among large values
     cases.append((
@@ -131,15 +131,15 @@ def build_corner_cases():
 
     # --------------------------------------------------------
     #  Category 3: Alpha scaling (integer shift-subtract)
-    #  Exhaustive over all magnitude values 0-7, for t=1,2,3
+    #  Exhaustive over all magnitude values 0-15, for t=1,2,3
     # --------------------------------------------------------
 
-    # Use inputs where min1 = target value, min2 = 7 (max)
+    # Use inputs where min1 = target value, min2 = 15 (max)
     # so we test the scaling on a specific min1 value.
     for t in [1, 2, 3]:
-        for min_val in range(8):  # 0 through 7
+        for min_val in range(16):  # 0 through 15
             # Place min_val at edge 0, fill rest with 7
-            msgs = [min_val, 7, 7, 7, 7, 7]
+            msgs = [min_val, 15, 15, 15, 15, 15]
             cases.append((
                 f"alpha: t={t}, min1={min_val}",
                 msgs, 0, t
@@ -155,12 +155,12 @@ def build_corner_cases():
 def build_random_cases(n=300, seed=42):
     """
     Generate n random test cases.
-    Each: 6 signed integers in [-7, +7], syndrome in {0,1}, t in {1,2,3}.
+    Each: 6 signed integers in [-15, +15], syndrome in {0,1}, t in {1,2,3}.
     """
     rng = random.Random(seed)
     cases = []
     for i in range(n):
-        msgs = [rng.randint(-7, 7) for _ in range(6)]
+        msgs = [rng.randint(-15, 15) for _ in range(6)]
         syn = rng.randint(0, 1)
         t = rng.randint(1, 3)
         cases.append((f"random_{i:03d}", msgs, syn, t))

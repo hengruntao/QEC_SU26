@@ -7,7 +7,7 @@ def cnu_hardware_int4(vnu_messages, sigma_i, t):
     input as "v", output as "miu"
     
     Inputs:
-        vnu_messages : list/array of int, range [-7, +7] for int4.2.8
+        vnu_messages : list/array of int, range [-15, +15] for int4.2.8
                         Incoming messages v_{j->i} from neighboring variable nodes.
         sigma_i      : int (0 or 1) 1 means parity check detects an odd number of errors
                         Syndrome/detector bit for this check node. (message from QPU)
@@ -54,8 +54,8 @@ def cnu_hardware_int4(vnu_messages, sigma_i, t):
     # min2: 2nd minimum of all magnitude
     # argmin_idx: index of the first min1 -> if min1 repeats, only the first one is recorded
 
-    min1 = float('inf')
-    min2 = float('inf') #initialized to +infinity
+    min1 = 15 #initialized to max_val of int4
+    min2 = 15
     argmin_idx = 0
     for i in range (num_vnu_message):
         temp_val = magnitudes[i]

@@ -37,7 +37,7 @@ for i in range (num_variable_node):
 p = 0.003
 
     # use seed here for replication purpose
-np.random.seed(3)
+np.random.seed(21)
 
     # np.random.rand(num_variabl_node) generated an array of length 144, each element is some float within [0,1)
     # < p compares each float with physical error rate; if smaller return True, if larger return False. possibility of True = p
@@ -47,7 +47,10 @@ error = (np.random.rand(num_variable_node) < p).astype(int)
 syndrome = (H @ error) % 2
 
     # initial vnu_message = lambda_0
-error_prior = [np.log((1-p)/p)] * num_variable_node
+    # Int4.2.8 => max_value = 15; scaling factor = 2
+lambda_float = np.log((1-p)/p)
+lambda_int = min(round(lambda_float * 2), 15)
+error_prior = [lambda_int] * num_variable_node
 
     # vnu_message stores the message from vnu_i to all of its neighbors
     # vnu_message is a 2D array
