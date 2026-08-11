@@ -10,7 +10,8 @@ def vnu_hardware_int4(cnu_messages, lambda_j):
                         'min1_scaled' : int
                         'min2_scaled' : int
         lambda_j    : int
-                      Error prior Λ_j = log((1-p_j)/p_j)
+                      Error prior Λ_j(0) = log((1-p_j)/p_j)
+                      Λ_j(t) = (1-γ_j)*Λ_j(0) + γ_j*M_j(t−1)
     
     IMPORTANRT:
         IT IS the CALLER's responsibility to pass in-scale lambda_j
@@ -18,8 +19,8 @@ def vnu_hardware_int4(cnu_messages, lambda_j):
     Returns:
         dict with keys:
             'vnu_messages'   : list of int4, ν_{j→i} for each edge
-            # NOT necessary: 'marginal'        : int, M_j
-            'hard_decision' : int (0 or 1), ê_j
+            'marginal'       : int, M_j
+            'hard_decision'  : int (0 or 1), ê_j
 
     """
     num_cnu_message = len(cnu_messages)

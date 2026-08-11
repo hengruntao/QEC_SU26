@@ -8,6 +8,47 @@ from test_vector.cnu_python.cnu_int4 import cnu_hardware_int4
 from test_vector.vnu_python.vnu_int4 import vnu_hardware_int4
 from matrix_generator import get_H_x, get_H_z, get_A_x, get_A_z
 
+
+# ---- DMem-BP memory strength setup ----
+# Λ_j(t) = (1−γ_j)*Λ_j(0) + γ_j*M_j(t−1)
+# β=(1−γ) ∈ [0, 2]
+# µ_int·γ → ⌊µ_int*γ_int/M⌉
+# γ_int := ⌊γ·M⌉
+# µ_int·γ → ⌊µ_int*(M−β_int)/M⌉
+# β_int := ⌊β·M⌉
+mem_strength_scale_factor = 8       # the 8 in Int4.2.8
+num_shift = 3       # /8 = right shift by 3
+gamma_0 = 0.125     # memory strength; value from FPGA paper, fig7
+beta_int = 7        # β_int = ⌊β·M⌉ = round(0.875 * 8)
+                    # β = β_int / M ... 0.875 = 7/8
+gamma_int = 1       # γ_int = ⌊γ·M⌉ = round(0.125 * 8)
+                    # γ = γ_int / M ... 0.125 = 1/8
+
+# From FPGA paper (optimization of multiplication)
+# We further reduce the logic requirements by simplifying the multiplication:
+# Instead of implementing a full multiplier for µ_int β_int,
+# we expand each bit of the bitwise representation of µ_int to β_int, shift right by m places,
+# then null all effective factional bits before summing resulting values for the total result.
+
+def memory_strength_mult(v, coeff):
+    # define sign, so later can use the abs value
+    if v < 0:
+        sign = -1
+    else:
+        sign = 1
+
+    abs_v = abs(v)
+    sum_val = 0
+    k = 0 # k is the bit position, initialize to 0
+    while abs_v:    # while abs_v != 0 <=> still 1s in abs_v, so still need to do calculation
+        if abs_v & 1:   # if the kth bit is 1
+            value = 1 << k   # decimal value of the kth bit (2^k)
+            value = value * coeff       # value * coeff ... (beta_int OR gamma_int)
+            sum_val += value >> num_shift  # value / 8
+        abs_v = abs_v >> 1  # get rid of the LSB, and get ready for the next iteration
+        k+=1
+    return sign * sum_val
+
 # ---- define check matrix ----
     # see check_matrix_generator.py for .get_H_x() & .get_H_z()
 H = get_H_x()
@@ -34,7 +75,7 @@ for i in range (num_variable_node):
 
 # ---- initializing vnu_message for first iteration ----
     # p is physical error rate
-p = 0.003
+p = 0.1
 
     # use seed here for replication purpose
 np.random.seed(21)
@@ -48,9 +89,9 @@ syndrome = (H @ error) % 2
 
     # initial vnu_message = lambda_0
     # Int4.2.8 => max_value = 15; scaling factor = 2
-lambda_float = np.log((1-p)/p)
-lambda_int = min(round(lambda_float * 2), 15)
-error_prior = [lambda_int] * num_variable_node
+lambda_0_float = np.log((1-p)/p)
+lambda_0_int = min(round(lambda_0_float * 2), 15)     # Λ_j(0)
+error_prior = [lambda_0_int] * num_variable_node    # Λ_j(t), will be updated every iteration. initialized to Λ_j(0)
 
     # vnu_message stores the message from vnu_i to all of its neighbors
     # vnu_message is a 2D array
@@ -138,6 +179,10 @@ for t in range (1, 61):
     if converged:
         break
 
+    # ---- For DMem-BP: error_prior update  Λ_j(t) = (1-γ)·Λ_j(0) + γ·M_j(t-1) ----
+    for jj in range(num_variable_node):
+        error_prior[jj] = memory_strength_mult(lambda_0_int, beta_int) + memory_strength_mult(vnu_results[jj]["marginal"], gamma_int)
+
 # iteration ends, now check for logical equivalence (Aê = Ae)
 A_x = get_A_x()
 new_e = e_hat ^ error
@@ -149,6 +194,7 @@ if (np.all(logical_action == 0)):
 decode_success = (logical_success and converged)
 
 print(f"check matrix:                           {H}")
+print(f"physical error rate:                    {p}")
 print(f"actual_error:                           {error}")
 print(f"actual_error_sum:                       {sum(error)}")
 print(f"e_hat (estimated_error):                {e_hat}")
