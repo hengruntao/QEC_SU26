@@ -5,12 +5,4 @@ Using 2 slave threads.
 Starting static elaboration
 Pass Through NonSizing Optimizer
 Completed static elaboration
-Starting simulation data flow analysis
-WARNING: [XSIM 43-4099] "C:/Users/rimpl/vivado/QEC_SU26/rtl/IBM_OSS_decoder.srcs/sources_1/new/vnu.sv" Line 4. Module vnu_default doesn't have a timescale but at least one module in design has a timescale.
-WARNING: [XSIM 43-4099] "C:/Users/rimpl/vivado/QEC_SU26/rtl/IBM_OSS_decoder.srcs/sources_1/new/vnu.sv" Line 4. Module vnu_default doesn't have a timescale but at least one module in design has a timescale.
-Completed simulation data flow analysis
-Time Resolution for simulation is 1ps
-Compiling module xil_defaultlib.vnu_default
-Compiling module xil_defaultlib.vnu_tb
-Compiling module xil_defaultlib.glbl
-Built simulation snapshot vnu_tb_behav
+INFO: [XSIM 43-4323] No Change in HDL. Linking previously generated obj files to create kernel
