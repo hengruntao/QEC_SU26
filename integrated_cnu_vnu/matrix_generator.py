@@ -58,3 +58,8 @@ def get_A_x():
 def get_A_z():
     A_z = A_full[12:24, 144:288]
     return A_z
+    
+# Asserting checks to A to check if its the right output form 
+assert A_full.shape == (24, 288)  # verify qLDPC's return convention
+assert A_x.shape == (12, 144)
+assert A_z.shape == (12, 144)
