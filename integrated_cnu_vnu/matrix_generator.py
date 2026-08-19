@@ -37,29 +37,36 @@ def get_H_z():
 
     # https://github.com/qLDPCOrg/qLDPC/blob/main/src/qldpc/codes/common.py L1150
 
-# assert checks to see if check matrices coming in from qldpc are in the right shape
-# H_x checks
-assert H_x.shape == (72, 144)
-assert np.all(H_x.sum(axis=1) == 6)   # row weight 6
-assert np.all(H_x.sum(axis=0) == 3)   # column weight 3
-
-# H_z checks
-assert H_x.shape == (72, 144)
-assert np.all(H_x.sum(axis=1) == 6)   # row weight 6
-assert np.all(H_x.sum(axis=0) == 3)   # column weight 3
-
-assert np.all((H_x @ H_z.T) % 2 == 0) # CSS orthogonality
-
 A_full = np.array(code.get_logical_ops())
+
 def get_A_x():
-    A_x = A_full[:12,:144]
+    A_x = A_full[:12, :144]
     return A_x
 
 def get_A_z():
     A_z = A_full[12:24, 144:288]
     return A_z
-    
-# Asserting checks to A to check if its the right output form 
-assert A_full.shape == (24, 288)  # verify qLDPC's return convention
-assert A_x.shape == (12, 144)
-assert A_z.shape == (12, 144)
+
+def validate():
+    H_x = get_H_x()
+    H_z = get_H_z()
+    A_x = get_A_x()
+    A_z = get_A_z()
+
+    assert H_x.shape == (72, 144)
+    assert np.all(H_x.sum(axis=1) == 6)
+    assert np.all(H_x.sum(axis=0) == 3)
+
+    assert H_z.shape == (72, 144)
+    assert np.all(H_z.sum(axis=1) == 6)
+    assert np.all(H_z.sum(axis=0) == 3)
+
+    assert np.all((H_x @ H_z.T) % 2 == 0)
+
+    assert A_full.shape == (24, 288)
+    assert A_x.shape == (12, 144)
+    assert A_z.shape == (12, 144)
+    print("All assertions passed.")
+
+if __name__ == "__main__":
+    validate()
