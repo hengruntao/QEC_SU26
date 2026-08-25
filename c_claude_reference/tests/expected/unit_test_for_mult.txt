@@ -1,0 +1,6 @@
+True
+True
+True
+True
+True
+Memory strength scaling does NOT affect pure BP: True

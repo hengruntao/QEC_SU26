@@ -1,0 +1,1 @@
+{'min1_scaled': 1, 'min2_scaled': 1, 'signs': [0, 1, 0, 1, 0, 1], 'selectors': [0, 0, 0, 0, 1, 0]}

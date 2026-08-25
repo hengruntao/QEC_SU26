@@ -1,0 +1,1 @@
+{'vnu_messages': [2, 1], 'marginal': 0, 'hard_decision': 1}
