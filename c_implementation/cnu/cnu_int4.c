@@ -1,12 +1,12 @@
 #include <stdio.h>
 #include "cnu_int4.h"
 
-int alpha_shift(int magintude, int t){
+static int alpha_shift(int magintude, int t){
     if (t >= 31) return magintude;  // set to 31 because int has 32 bits. And shifting beyong that number is undefined behavior
     return magintude - (magintude >> t);
 }
 
-int cnu_hardware_int4(int* vnu_messages, int degree, int sigma_i, int t, cnu_result* cnu_result_ptr){
+int cnu_hardware_int4(int* vnu_messages, int degree, int sigma_i, int t, cnu_result_type* cnu_result_ptr){
     int sign_bits[CNU_MAX_DEG];
     int magnitudes[CNU_MAX_DEG];
     int full_parity = sigma_i;
