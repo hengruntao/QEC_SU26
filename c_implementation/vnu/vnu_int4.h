@@ -23,6 +23,7 @@
             'hard_decision'  : int (0 or 1), ê_j
 
 */
+
 #ifndef VNU_INT4_H
 #define VNU_INT4_H
 #define VNU_MAX_DEG 6
