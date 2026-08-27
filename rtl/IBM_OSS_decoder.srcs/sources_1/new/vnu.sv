@@ -1,6 +1,4 @@
 // vnu.sv
-// Variable Node Unit, weight 3, for the X decoder of the [[144,12,12]] gross code.
-
 module vnu #(
     parameter int          DEG       = 3,
     parameter int          MAG_W     = 4,
@@ -12,6 +10,7 @@ module vnu #(
     input  logic         rst_n,
     input  logic         init,
     input  logic         new_leg,
+    input  logic         en,
     input  logic [3:0]   lambda_0,
     input  logic [9:0]   mu_in [DEG],
     output logic [4:0]   nu_out [DEG],
@@ -42,13 +41,13 @@ module vnu #(
     logic [7:0] lfsr;
     always_ff @(posedge clk or negedge rst_n) begin
         if (!rst_n) lfsr <= LFSR_SEED;
-        else        lfsr <= {lfsr[6:0], lfsr[7] ^ lfsr[5] ^ lfsr[4] ^ lfsr[3]};
+        else if (en)lfsr <= {lfsr[6:0], lfsr[7] ^ lfsr[5] ^ lfsr[4] ^ lfsr[3]};
     end
 
     logic [3:0] beta_int;
     always_ff @(posedge clk or negedge rst_n) begin
-        if      (!rst_n)   beta_int <= 4'd8;
-        else if (new_leg)  beta_int <= 4'd3 + {1'b0, lfsr[2:0]};
+        if      (!rst_n)   beta_int <= 4'd7;
+        else if (en & new_leg)  beta_int <= 4'd3 + {1'b0, lfsr[2:0]};
     end
 
     logic signed [4:0] gamma_int;
@@ -58,8 +57,9 @@ module vnu #(
     logic signed [MJ_W-1:0] M_j_next;
 
     always_ff @(posedge clk or negedge rst_n) begin
-        if (!rst_n) M_j <= '0;
-        else        M_j <= M_j_next;
+        if (!rst_n)   M_j <= '0;
+        else if (init)M_j<= $signed({{(MJ_W-MAG_W){1'b0}}, lambda_0});
+        else if (en)  M_j <= M_j_next;
     end
 
     logic signed [MJ_W+4:0] beta_lambda;
