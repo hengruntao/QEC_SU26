@@ -3,7 +3,7 @@ import cnu_pkg::*;
 module cnu #( parameter int DEGREE=6)(
     input logic clk,
     input logic rst_n,
-    input logic [3:0] nu_in[DEGREE],
+    input logic [4:0] nu_in[DEGREE],
     input logic syndrome_bit,
     input logic [3:0] t,
     output cnu_msg_t mu_out[DEGREE],
@@ -13,19 +13,19 @@ module cnu #( parameter int DEGREE=6)(
 );
 
 logic sign_bits[DEGREE];
-logic [2:0] mag_bits[DEGREE];
+logic [3:0] mag_bits[DEGREE];
 logic parity_xor;
-logic [2:0] min1_val, min2_val;
+logic [3:0] min1_val, min2_val;
 
-logic [2:0] min1_val_scaled, min2_val_scaled;
+logic [3:0] min1_val_scaled, min2_val_scaled;
 
 genvar g;
 
 generate
     for(g=0;g<DEGREE;g++) 
         begin:split_sign_mag
-            assign sign_bits[g]=nu_in[g][3];
-            assign mag_bits[g]=nu_in[g][2:0];
+            assign sign_bits[g]=nu_in[g][4];
+            assign mag_bits[g]=nu_in[g][3:0];
         end
 endgenerate
 
@@ -37,8 +37,8 @@ always_comb begin
 end
 
 always_comb begin
-    min1_val=3'b111;
-    min2_val=3'b111;
+    min1_val=4'b1111;
+    min2_val=4'b1111;
     for( int i=0; i<DEGREE; i++) begin
         if(mag_bits[i]<min1_val) begin
             min2_val=min1_val;
@@ -58,8 +58,8 @@ generate
     for(g=0;g<DEGREE;g++) begin : attach_block
         assign mu_out[g].sign=parity_xor^sign_bits[g];
         assign mu_out[g].c=(mag_bits[g]==min1_val);
-        assign mu_out[g].min1={1'b0,min1_val_scaled};
-        assign mu_out[g].min2={1'b0,min2_val_scaled};
+        assign mu_out[g].min1={min1_val_scaled};
+        assign mu_out[g].min2={min2_val_scaled};
     end
 endgenerate
 
