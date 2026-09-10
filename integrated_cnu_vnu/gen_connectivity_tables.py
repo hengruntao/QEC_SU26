@@ -2,7 +2,7 @@
 # Run once, drop outputs into the Vivado sim directory.
 
 import numpy as np
-from matrix_generator import get_H_x
+from matrix_gener. ator import get_H_x
 
 H_x = get_H_x()
 NUM_CHECK = 72
