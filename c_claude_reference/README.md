@@ -2,8 +2,32 @@
 
 C port of the Int4.2.8 CNU/VNU models and the BP decoders that drive them.
 
-Unlike the Python side, this tree has **no external dependencies** — no qLDPC,
-no NumPy, no SymPy. All it needs is a C99 compiler and `libm`.
+The runtime side needs only a C99 compiler — no qLDPC, no NumPy, no SymPy, and
+no libm.
+
+## The split: fixed data offline, iteration logic in C
+
+The Python side leans on `qldpc` for the check matrix and `numpy` for the error
+pattern. Neither is runtime data — the gross code `[[144,12,12]]` matrix and its
+logical operators are compile-time constants, and the error patterns are test
+vectors. So they are generated **once** by `export_bb_code.py` and linked in as
+C arrays, instead of reimplementing GF(2) linear algebra and MT19937 in C.
+
+That removes about 950 lines from the C side (dense GF(2) nullspace/RREF/inverse,
+the bivariate-bicycle construction, a NumPy-compatible Mersenne Twister, and the
+NumPy array-printing emulation). What is left is the part actually worth writing
+in C: the CNU, the VNU, and the iteration loop.
+
+```
+export_bb_code.py  ──(qLDPC, numpy — run once)──>  bb_code_data.{h,c}
+                                                   bp_test_data.{h,c}
+                                                          │
+                                                          ▼
+                                          C: bp_decoder.c + cnu_int4.c + vnu_int4.c
+```
+
+Both generated pairs are **checked into git**: qLDPC is not installed
+everywhere, and the data only changes if the code parameters do.
 
 ## Layout
 
@@ -13,19 +37,23 @@ no NumPy, no SymPy. All it needs is a C99 compiler and `libm`.
 | `cnu/cnu_int4_demo.c` | the `__main__` block of `cnu_int4.py` |
 | `vnu/vnu_int4.{h,c}` | `vnu_python/vnu_int4.py` |
 | `vnu/vnu_int4_demo.c` | the test block of `vnu_int4.py` |
-| `integrated_cnu_vnu/matrix_generator.{h,c}` | `integrated_cnu_vnu/matrix_generator.py` |
-| `integrated_cnu_vnu/iterations_bp.c` | `integrated_cnu_vnu/iterations_bp.py` |
-| `integrated_cnu_vnu/iterations_dmem_bp.c` | `integrated_cnu_vnu/iterations_dmem_bp.py` |
-| `integrated_cnu_vnu/unit_test_for_mult.c` | `integrated_cnu_vnu/unit_test_for_mult.py` |
-
-Supporting modules with no Python counterpart:
-
-| C file | why it exists |
-|---|---|
-| `integrated_cnu_vnu/gf2.{h,c}` | dense GF(2) linear algebra — replaces the qLDPC calls |
-| `integrated_cnu_vnu/np_random.{h,c}` | bit-exact clone of `np.random.seed` / `np.random.rand` |
+| `integrated_cnu_vnu/bp_decoder.{h,c}` | the iteration loop of both `iterations_*.py` |
+| `integrated_cnu_vnu/iterations_bp.c` | `iterations_bp.py` (driver + reporting) |
+| `integrated_cnu_vnu/iterations_dmem_bp.c` | `iterations_dmem_bp.py` (driver + reporting) |
+| `integrated_cnu_vnu/unit_test_for_mult.c` | `unit_test_for_mult.py` |
 | `integrated_cnu_vnu/mem_strength.{h,c}` | `memory_strength_mult()`, which Python defines twice |
-| `integrated_cnu_vnu/bp_common.{h,c}` | Tanner-graph build + NumPy-compatible printing |
+
+Generated and test-only:
+
+| file | what it is |
+|---|---|
+| `integrated_cnu_vnu/export_bb_code.py` | the generator — replaces `matrix_generator.py` |
+| `integrated_cnu_vnu/bb_code_data.{h,c}` | Tanner graph, slot tables, logical operators |
+| `integrated_cnu_vnu/bp_test_data.{h,c}` | error patterns + Python reference results |
+| `integrated_cnu_vnu/test_bp.c` | regression test over every case, both decoders |
+
+Plain BP and DMem-BP differ by exactly one block, so `bp_decode()` takes a
+`use_dmem` flag rather than existing twice.
 
 ## Build and run
 
@@ -41,90 +69,92 @@ make run
 make check
 ```
 
-`make check` diffs every program's stdout against `tests/expected/`, which holds
-the **verbatim output of the Python scripts**. A clean pass means the port is
-byte-for-byte faithful, down to NumPy's line wrapping.
-
-## How the qLDPC dependency was removed
-
-`matrix_generator.py` gets its matrices from `qldpc.codes.BBCode`. The C version
-builds them directly from the bivariate-bicycle definition (gross code
-`[[144,12,12]]`, `l = 12`, `m = 6`):
-
-```
-x = S_l (x) I_m       y = I_l (x) S_m       S_n = cyclic shift, S[i,(i+1)%n] = 1
-A = x^3 + y + y^2     B = y^3 + x + x^2
-H_x = [A | B]         H_z = [B^T | A^T]
+```bash
+make generate
 ```
 
-`H_x` and `H_z` come out **bit-identical** to qLDPC's `code.matrix_x` and
-`code.matrix_z` (verified by direct comparison).
+`make generate` re-runs the exporter and needs an interpreter with qLDPC; the
+Makefile defaults to `PYTHON = /opt/anaconda3/envs/relay_bp/bin/python`.
+Everything else builds and runs with no Python at all.
 
-The logical operators are recomputed here as the quotient spaces
-`ker(H_z)/rowspace(H_x)` and `ker(H_x)/rowspace(H_z)`, then symplectically
-paired so `A_x @ A_z^T = I`.
+## What gets exported, and why each piece
 
-`A_x` and `A_z` are **not** bit-identical to `code.get_logical_ops()`, and they
-cannot be: a logical operator is only defined up to multiplication by a
-stabilizer, so every valid basis is a different, equally correct set of
-representatives. What matters is that the decode verdict is the same, and it
-provably is. For any `e` in `ker(H_x)` — which is exactly the case the decoder
-tests, since `H(ê + e) = 0` once BP has converged — `A_x @ e = 0` holds for this
-basis if and only if it holds for qLDPC's. This was checked two ways: the two
-matrices span the same row space when restricted to `ker(H_x)`, and 20 000
-random kernel vectors gave the identical verdict for both. `matrix_generator.c`
-also asserts the three validity conditions at startup and aborts if any fails:
+`bb_code_data.c` holds four tables. The first two are the Tanner graph; the
+second two are the part worth explaining.
 
+**The dense H is never exported.** Every use of `H` in the decoder is
+`H @ vec mod 2`, and the nonzero positions of row `ii` are exactly
+`check_node_neighbor[ii]`. So the syndrome is an XOR over 6 entries rather than
+a 144-term dot product, and 10368 zeros/ones collapse to 432 indices.
+
+**The two `list.index()` lookups are precomputed.** Python redoes these on every
+edge on every iteration:
+
+```python
+index  = variable_node_neighbor[jj].index(ii)    # assembling the CNU input
+vn_idx = check_node_neighbor[cn].index(jj)       # assembling the VNU input
 ```
-H_z @ A_x^T = 0      H_x @ A_z^T = 0      A_x @ A_z^T = I_k
+
+They are fixed by `H`, so they ship as `cnu_src_slot` and `vnu_src_slot` and the
+CNU↔VNU regrouping becomes a pure gather:
+
+```c
+cnu_inputs[ii][d] = vnu_message[check_node_neighbor[ii][d]][cnu_src_slot[ii][d]];
 ```
 
-## Reproducing the Python error pattern
+That regrouping — the row-view ↔ column-view transpose — is the fiddliest part
+of the integration layer, and this turns it into table lookups with no search.
 
-`np_random.c` is a bit-exact reimplementation of NumPy's legacy MT19937
-`RandomState`: Knuth's seeding, and doubles built from two 32-bit draws as
-`((a >> 5) * 2^26 + (b >> 6)) / 2^53`. That is what lets the C decoder run on
-the *same* error vector as `np.random.seed(21); np.random.rand(144)`, so the two
-implementations can be diffed rather than merely compared statistically.
+**`logical_A_x`** is the X-type logical operator basis, needed for the
+`A_x @ (ê ^ e) == 0` check. Taken straight from qLDPC's `get_logical_ops()`, so
+unlike the earlier hand-rolled version there is no question of basis equivalence.
 
-## Verification performed
+## Verification
 
-* `make check` — all five programs byte-identical to the Python output.
-* `H_x`, `H_z` bit-identical to qLDPC's.
-* `A_x` proven equivalent to qLDPC's for every `e` in `ker(H_x)` (see above).
-* A 200-run sweep (both decoders × `p` ∈ {0.05, 0.1, 0.15, 0.2} × seeds 0–24)
-  against the real Python scripts: **200/200 byte-identical**. Coverage included
-  59 converged and 141 non-converged runs, and the two converged-but-logically-
-  failed runs whose verdict actually depends on the `A_x` basis.
-* Clean under `-Wall -Wextra -pedantic`, clean under ASan + UBSan, no leaks.
+`make check` does two things:
+
+1. **`test_bp`** — runs both decoders over all 21 exported cases and compares
+   every bit of `e_hat`, the iteration count, and both success flags against
+   the Python reference results baked into `bp_test_data.c`. 42 runs, covering
+   14 converged, 28 non-converged, and 2 converged-but-logically-failed cases
+   (the last are the only runs whose verdict depends on the logical basis).
+2. **golden diffs** — `cnu_int4_demo`, `vnu_int4_demo` and `unit_test_for_mult`
+   are diffed byte-for-byte against the verbatim Python stdout in
+   `tests/expected/`.
+
+Separately confirmed by hand: `iterations_bp` and `iterations_dmem_bp` reproduce
+the real `iterations_bp.py` / `iterations_dmem_bp.py` exactly — all 144 bits of
+`e_hat`, all 72 bits of the syndrome, the iteration counts (5 and 6), the sums,
+and the verdicts.
+
+Also clean under `-Wall -Wextra -pedantic`, ASan, and UBSan.
+
+Note that `test_bp` compares *decoded values*, not printed text. That is a
+stronger check than the previous byte-for-byte stdout diff against Python, and
+it is why the decoders no longer emulate NumPy's array formatting.
 
 ## Deliberate differences from the Python
 
+* The check matrix, logical operators, and error patterns are generated ahead of
+  time rather than computed at startup (see above).
 * `memory_strength_mult()` is defined once and shared, rather than copy-pasted
   into both `iterations_dmem_bp` and `unit_test_for_mult`.
-* The Tanner-graph construction and result printing, which the two Python
-  decoder scripts repeat verbatim, live in `bp_common.c`. The BP iteration loop
-  itself is still written out in full in each decoder, so the two can be read
-  side by side with their Python originals.
+* The iteration loop lives once in `bp_decoder.c` with a `use_dmem` flag,
+  instead of being duplicated across two near-identical scripts.
 * `min1 >> t` is guarded for `t >= 31`. Python shifts arbitrarily far and yields
-  0; in C that would be undefined behaviour, and the BP loop drives `t` to 60.
-* Degrees are bounded at compile time (`CNU_MAX_DEGREE`, `VNU_MAX_DEGREE`,
-  `MAX_CHECK_DEGREE`, `MAX_VARIABLE_DEGREE`, all 16) instead of using growable
-  lists. The gross code needs 6. Exceeding a bound is a hard error, not silent
-  corruption.
+  0; in C that would be undefined behaviour, and the loop drives `t` to 60.
+* Degrees are compile-time constants from the generated header
+  (`CHECK_DEGREE` 6, `VARIABLE_DEGREE` 3), with a build-time assertion that they
+  fit `CNU_MAX_DEGREE` / `VNU_MAX_DEGREE`.
 
 ## Changing the experiment
 
-The knobs are near the top of `iterations_bp.c` / `iterations_dmem_bp.c`:
+Error rates and seeds live in `TEST_CASES` at the top of `export_bb_code.py`;
+edit and run `make generate`. Case 0 is what `iterations_bp` and
+`iterations_dmem_bp` report, so keep the case you want as the headline first.
 
-```c
-#define MAX_ITERATION       60
-#define RANDOM_SEED         21
-#define INT4_SCALE_FACTOR   2
-static const double p = 0.1;
-```
+`BP_MAX_ITERATION` is in `bp_decoder.h` — change it in `export_bb_code.py` too,
+or the golden data will disagree.
 
-To decode X-type errors instead, swap `get_H_x()` for `get_H_z()` and `get_A_x()`
-for `get_A_z()`. Note that `tests/expected/` is pinned to the values above, so
-`make check` will report a diff after any such change — that is the intended
-behaviour, not a regression.
+To decode X-type errors instead, switch `get_H_x()`/`get_A_x()` to
+`get_H_z()`/`get_A_z()` in `export_bb_code.py` and regenerate; no C changes.
