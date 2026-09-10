@@ -28,13 +28,13 @@ int memory_strength_mult (int v, int coeff) {
     int value = 0;
     int k =0;   // k is the bit position, initialize to 0 (LSB)
     while (abs_v > 0){ 
-        if (abs_v & 1){ // if the kth bit is 1
+        if(abs_v & 1){ // if the kth bit is 1
             value = 1 << k; // decimal value of the kth bit (2^k)
             value = value * coeff;  // value * coeff ... (beta_int OR gamma_int)
             sum_val += value >> num_shift;  // value / 8
+        }
         abs_v = abs_v >> 1; // get rid of the LSB, and get ready for the next iteration
         k++;
-        }
     }
 
     return sign * sum_val;
@@ -78,21 +78,11 @@ int decode(const int *error, int beta_int, int gamma_int,
     */
     int cn_neighbor[H_X_ROWS][6];
     int i, j, k;
+    int count;
     for (i = 0; i < num_check_node; i++){
-        int connected_variable_node[6] = {0};
-            for (j = 0; j < num_variable_node; j++){
-            if (h_x[i][j]){
-                if (connected_variable_node[0] == 0){
-                    connected_variable_node[0] = j;
-                } else if (connected_variable_node[1] == 0){
-                    connected_variable_node[1] = j;
-                } else {
-                    connected_variable_node[2] = j;
-            }
-            }
-        }
-        for (k = 0; k < 6; k ++){
-            cn_neighbor[i][k] = connected_variable_node[k];
+        count = 0;
+        for (j = 0; j < num_variable_node; j++){
+            if (h_x[i * H_X_COLS + j]) cn_neighbor[i][count++] = j;
         }
     }
     /*
@@ -100,28 +90,15 @@ int decode(const int *error, int beta_int, int gamma_int,
     */
     int vn_neighbor[H_X_COLS][3];
     for (i = 0; i < num_variable_node; i++){
-        int connected_check_node[3] = {0};
+        count = 0;
         for (j = 0; j < num_check_node; j++){
-            if (h_x[j][i]){
-                if (connected_check_node[0] == 0){
-                    connected_check_node[0] = j;
-                } else if (connected_check_node[1] == 0){
-                    connected_check_node[1] = j;
-                } else {
-                    connected_check_node[2] = j;
-                }
-
-            }
-        }
-        for (k = 0; k < 3; k ++){
-            vn_neighbor[i][k] = connected_check_node[k];
+            if (h_x[j * H_X_COLS + i]) vn_neighbor[i][count] = j;
         }
     }
 
     /*
     ---- initializing vnu_message for first iteration ----
     */
-    int p = 0.1;
     int syndrome[H_X_ROWS];
     xor_for_matrix_mult(h_x, H_X_ROWS, H_X_COLS, error, syndrome);
     int error_prior[num_variable_node];  // Λ_j(t), will be updated every iteration. initialized to Λ_j(0)
@@ -140,8 +117,8 @@ int decode(const int *error, int beta_int, int gamma_int,
     }
 
     // iteration begins
-    int t;
-    for (t = 1; t < max_iter; t++){
+    int t, e_hat[144], converged;
+    for (t = 1; t <= max_iter; t++){
 
         /*  
         ---- CNU phase ----
@@ -151,11 +128,12 @@ int decode(const int *error, int beta_int, int gamma_int,
         alpha = 1 - 2 ** (-t)
         1. ---- input for CNU ----
            vnu_message gives the message of a "column"
-          but now needs messages of a "row" --> need to transform from the column message to row message
+           but now needs messages of a "row" --> need to transform from the column message to row message
         */
         int cnu_inputs[72][6];
-        int idx = 0;
+        int idx;
         for (i = 0; i < num_check_node; i++){
+            idx = 0;
             for (j = 0; j < num_variable_node; j++){
                 for (k = 0; k < 3; k++){
                     if (vn_neighbor[j][k] == i){
@@ -169,7 +147,7 @@ int decode(const int *error, int beta_int, int gamma_int,
         /* 2. ---- CNU processing ---- */
         cnu_result_type cnu_results[72];
         for (i = 0; i < num_check_node; i++){
-            cnu_hardware_int4(cnu_inputs, 6, syndrome[i], t, &cnu_results[i]);
+            cnu_hardware_int4(cnu_inputs[i], 6, syndrome[i], t, &cnu_results[i]);
         }
         
         /* 3. ---- CNU output to VNU input ---- */
@@ -179,7 +157,7 @@ int decode(const int *error, int beta_int, int gamma_int,
                 int idx_of_cnu = vn_neighbor[i][j]; // which cnu is connected to vnu_i
                 int idx_of_vnu;
                 for (k = 0; k < 6; k++){
-                    if (cn_neighbor[idx][k] == i){
+                    if (cn_neighbor[idx_of_cnu][k] == i){
                         idx_of_vnu = k;
                     }
                 }
@@ -193,13 +171,12 @@ int decode(const int *error, int beta_int, int gamma_int,
         /* ---- VNU phase ---- */
         vnu_result_type vnu_results[144];
         for (i = 0; i < num_variable_node; i++){
-            vnu_hardware_int4(vnu_inputs[i], 3, lambda_0_int, &vnu_results[i]);
+            vnu_hardware_int4(vnu_inputs[i], 3, error_prior[i], &vnu_results[i]);
         }
 
         /* ---- Convergence check ---- */
         
         // extract hard decisions from VNU, and computes estimated error vector e_hat (array of HDs)
-        int e_hat[144];
         for (i = 0; i < num_variable_node; i++){
             e_hat[i] = vnu_results[i].hard_decision;
         }
@@ -207,7 +184,7 @@ int decode(const int *error, int beta_int, int gamma_int,
         // check if H·ê mod 2 == σ
         int syndrome_check[H_X_ROWS];
         xor_for_matrix_mult(h_x, H_X_ROWS, H_X_COLS, e_hat, syndrome_check);
-        int converged = 1;
+        converged = 1;
         for (i = 0; i < H_X_ROWS; i++){
             if (syndrome[i] != syndrome_check[i]) converged = 0;
         }
@@ -223,5 +200,5 @@ int decode(const int *error, int beta_int, int gamma_int,
 
     }
 
-
+    return 0;
 }
