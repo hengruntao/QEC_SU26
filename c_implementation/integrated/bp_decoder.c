@@ -11,6 +11,7 @@
 
 #include "cnu_int4.h"
 #include "vnu_int4.h"
+#include "lfsr_rng.h"
 
 /* The generated degrees must fit the CNU/VNU fixed-size result arrays.
  * A negative array size here is a compile error, so this is checked at build
@@ -26,6 +27,7 @@ static int           cnu_inputs[NUM_CHECK_NODE][CHECK_DEGREE];
 static cnu_result_t  cnu_results[NUM_CHECK_NODE];
 static cnu_message_t vnu_inputs[NUM_VARIABLE_NODE][VARIABLE_DEGREE];
 static vnu_result_t  vnu_results[NUM_VARIABLE_NODE];
+static lfsr_rng_state_t rng_state[NUM_VARIABLE_NODE];
 
 void bp_syndrome(const int *vec, int *out)
 {
@@ -62,6 +64,7 @@ void bp_decode(const int *error, int lambda_int, int use_dmem, bp_result *result
      * initial vnu_message = lambda_0 */
     for (jj = 0; jj < NUM_VARIABLE_NODE; jj++) {
         error_prior[jj] = lambda_int;
+        lfsr_rng_reset(&rng_state[jj], (uint8_t)(jj + 1));
         for (d = 0; d < VARIABLE_DEGREE; d++) {
             vnu_message[jj][d] = lambda_int;
         }
@@ -142,10 +145,13 @@ void bp_decode(const int *error, int lambda_int, int use_dmem, bp_result *result
          * This block is the entire difference from plain BP. */
         if (use_dmem) {
             for (jj = 0; jj < NUM_VARIABLE_NODE; jj++) {
+                int beta_int = (int)rng_state[jj].beta_int;
+                int gamma_int = (int)lfsr_rng_gamma_int(&rng_state[jj]);
+
                 error_prior[jj] =
-                    memory_strength_mult(lambda_int, MEM_STRENGTH_BETA_INT) +
-                    memory_strength_mult(vnu_results[jj].marginal, MEM_STRENGTH_GAMMA_INT);
-            }
+                    memory_strength_mult(lambda_int, beta_int) +
+                    memory_strength_mult(vnu_results[jj].marginal, gamma_int);
+                }
         }
     }
 
@@ -183,3 +189,9 @@ void bp_print_vector(const char *label, const int *v, int count)
     }
     printf("]\n");
 }
+
+/* for (jj = 0; jj < NUM_VARIABLE_NODE; jj++) {
+    lfsr_rng_step(&rng_state[jj], 1U, 1U);
+
+WRITE in OUTERLEG for rng
+    */
