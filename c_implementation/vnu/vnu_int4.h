@@ -28,6 +28,7 @@
 #define VNU_INT4_H
 #define VNU_MAX_DEG 6
 #include "../int4_max_val.h"
+
 /*
     This defines a single CNU_i to VNU_j message.
     And the current working VNU_j will gather the info from all its neighboring CNUs.
@@ -56,6 +57,6 @@ typedef struct {
     - vnu_result_ptr points to the struct that stores the output of VNU_j
 */
 
-int vnu_hardware_int4(cnu_message_type* cnu_message, int degree, int lambda_j, vnu_result_type* vnu_result_ptr);
+int vnu_hardware_int4(cnu_message_type* cnu_message, int degree, int lambda_0_int, int t, vnu_result_type* vnu_result_ptr);
 
 #endif
