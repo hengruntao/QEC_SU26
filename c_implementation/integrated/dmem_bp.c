@@ -74,11 +74,14 @@ int decode(const int *error, int beta_int, int gamma_int,
     */
     int syndrome[H_X_ROWS];
     xor_for_matrix_mult(h_x, H_X_ROWS, H_X_COLS, error, syndrome);
-    int error_prior[H_X_COLS];  // Λ_j(t), will be updated every iteration. initialized to Λ_j(0)
+    
+    vnu_state_type vnu_state[H_X_COLS];
     for (i = 0; i < H_X_COLS; i++) {
-        error_prior[i] = lambda_0_int;
-    }   
-
+        vnu_state[i].beta_int = beta_int;      // in one leg: β fixed
+        vnu_state[i].M_reg = lambda_0_int;     // M_j(0) = Λ_j(0)
+        vnu_state[i].lfsr = 0;                 // Switch to leap-ahead seed when doing Relay_BP
+    
+    }
     // vnu_message stores the message from vnu_i to all of its neighbors
     // vnu_message is a 2D array
     int vnu_message[H_X_COLS][VN_DEGREE];
@@ -146,7 +149,7 @@ int decode(const int *error, int beta_int, int gamma_int,
         /* ---- VNU phase ---- */
         vnu_result_type vnu_results[H_X_COLS];
         for (i = 0; i < H_X_COLS; i++){
-            vnu_hardware_int4(vnu_inputs[i], VN_DEGREE, lambda_0_int, t, &vnu_results[i]);
+            vnu_hardware_int4(vnu_inputs[i], VN_DEGREE, lambda_0_int, (t==1), 0, &vnu_state[i], &vnu_results[i]);   // for DMem_BP, there is only 1 leg. So new_leg = 0
         }
 
         /* ---- update vnu_message ---- */

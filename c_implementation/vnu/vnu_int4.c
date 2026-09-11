@@ -51,7 +51,7 @@ int memory_strength_mult (int v, int coeff) {
 /*
     cnu_messages is an array. Passed by reference
 */
-int vnu_hardware_int4(cnu_message_type* cnu_messages, int degree, int lambda_0_int, int t, vnu_result_type* vnu_result_ptr){
+int vnu_hardware_int4(cnu_message_type* cnu_messages, int degree, int lambda_0_int, int init, int new_leg, vnu_state_type* st, vnu_result_type* vnu_result_ptr){
     int miu_val[VNU_MAX_DEG];
     int marginals;
     int i;
@@ -75,14 +75,19 @@ int vnu_hardware_int4(cnu_message_type* cnu_messages, int degree, int lambda_0_i
     /* 
         ---- Step 2: Use RNG to update beta_int, and initialize marginals
         For DMem-BP: error_prior update  Λ_j(t) = (1-γ)·Λ_j(0) + γ·M_j(t-1)
+        This is done every LEG (not every iteration!!!) --> for relay-BP
     */
-    uint32_t st = 0xACE1ACE1u;      /* 这个 VNU 的 LFSR state, 非零 */
-    int beta_int = rng_beta_int(&st);
-    if (t = 1){
+    if (new_leg) st->beta_int = rng_beta_int(&st->M_reg);   // if it's a new leg, update beta_int
+    int beta_int = st->beta_int;
+    
+    if (init){ // if is the first iteration, error_prior (marginal) is lambda_0_int
         marginals = lambda_0_int;
     } else {
-        marginals = memory_strength_mult(lambda_0_int, beta_int) + vnu_result_ptr->marginal - memory_strength_mult(vnu_result_ptr->marginal, beta_int);
+        marginals = memory_strength_mult(lambda_0_int, beta_int) + st->M_reg - memory_strength_mult(st->M_reg, beta_int);
     }
+
+    marginals = bound_value(marginals); // corresponds to the sat block in fig3c
+
 
     /*
         ---- Step 3: Compute margin M_j (Equ 3) ----

@@ -51,12 +51,22 @@ typedef struct {
 } vnu_result_type;
 
 /*
+    storing values for the fig3c extra datapath
+*/
+
+typedef struct {
+    uint32_t lfsr;      /* RNG state，每个 VNU 一个，常驻 */
+    int      beta_int;  /* 当前 leg 的 1-γ；leg 0 = 7 */
+    int      M_reg;     /* Fig 3c 的 M_j register */
+} vnu_state_type;
+
+/*
     - cnu_message is the combined set of info from VNU_j's neighboring CNUs
       use struct here instead of int* as in cnu_int4.h is because info from CNUs to VNU_j is more complicated than a single array
 
     - vnu_result_ptr points to the struct that stores the output of VNU_j
 */
 
-int vnu_hardware_int4(cnu_message_type* cnu_message, int degree, int lambda_0_int, int t, vnu_result_type* vnu_result_ptr);
+int vnu_hardware_int4(cnu_message_type* cnu_message, int degree, int lambda_0_int, int init, int new_leg, vnu_state_type* st, vnu_result_type* vnu_result_ptr);
 
 #endif
