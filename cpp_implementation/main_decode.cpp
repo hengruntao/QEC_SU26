@@ -37,15 +37,14 @@ static void print_support(const char *label, const int *v, int n){
 }
 
 /* 跑一次 decode,返回 decode_success。verbose=0 时只算不打印 */
-static int run_case(const int *error, int beta_int, int gamma_int,
+static int run_case(const int *error, int beta_int,
                     int lambda_0, int verbose)
 {
     int e_hat[H_X_COLS], residual[H_X_COLS];
     int syndrome[H_X_ROWS], logical[A_X_ROWS];
     int iters = -1, converged = -1, i, logical_ok = 1;
 
-    decode(error, beta_int, gamma_int, lambda_0, MAX_ITER,
-           e_hat, &iters, &converged);
+    decode(error, beta_int, lambda_0, MAX_ITER, e_hat, &iters, &converged);
 
     for (i = 0; i < H_X_COLS; i++) residual[i] = error[i] ^ e_hat[i];
     gf2_matvec(a_x, A_X_ROWS, A_X_COLS, residual, logical);
@@ -78,7 +77,7 @@ static uint32_t rng_next(void){
 }
 
 static void sweep(const char *label, int permille, int lambda_0,
-                  int beta_int, int gamma_int, int trials)
+                  int beta_int, int trials)
 {
     int e[H_X_COLS];
     int i, j, ok = 0, w_total = 0;
@@ -90,7 +89,7 @@ static void sweep(const char *label, int permille, int lambda_0,
             w += e[j];
         }
         w_total += w;
-        ok += run_case(e, beta_int, gamma_int, lambda_0, 0);
+        ok += run_case(e, beta_int, lambda_0, 0);
     }
     printf("  %-28s success %3d/%3d   avg error weight %.1f\n",
            label, ok, trials, (double)w_total / trials);
@@ -108,19 +107,19 @@ int main(void){
     /* ---- A. 确定性低权重 case:这些必须全过 ---- */
     printf("=== A. deterministic low-weight (beta=7, gamma=1, DMem-BP) ===\n");
     printf("\n  [w=0] no error\n");
-    memset(e, 0, sizeof e);            run_case(e, 7, 1, LAMBDA_P10, 1);
+    memset(e, 0, sizeof e);            run_case(e, 7, LAMBDA_P10, 1);
     printf("\n  [w=1] VN 0\n");
-    set_error(e, p1, 1);               run_case(e, 7, 1, LAMBDA_P10, 1);
+    set_error(e, p1, 1);               run_case(e, 7, LAMBDA_P10, 1);
     printf("\n  [w=1] VN 7\n");
-    set_error(e, p2, 1);               run_case(e, 7, 1, LAMBDA_P10, 1);
+    set_error(e, p2, 1);               run_case(e, 7, LAMBDA_P10, 1);
     printf("\n  [w=1] VN 100\n");
-    set_error(e, p3, 1);               run_case(e, 7, 1, LAMBDA_P10, 1);
+    set_error(e, p3, 1);               run_case(e, 7, LAMBDA_P10, 1);
     printf("\n  [w=2] VN 0, 73\n");
-    set_error(e, p4, 2);               run_case(e, 7, 1, LAMBDA_P10, 1);
+    set_error(e, p4, 2);               run_case(e, 7, LAMBDA_P10, 1);
     printf("\n  [w=3] VN 3, 40, 118\n");
-    set_error(e, p5, 3);               run_case(e, 7, 1, LAMBDA_P10, 1);
+    set_error(e, p5, 3);               run_case(e, 7, LAMBDA_P10, 1);
     printf("\n  [w=5] VN 1..5 (clustered)\n");
-    set_error(e, p6, 5);               run_case(e, 7, 1, LAMBDA_P10, 1);
+    set_error(e, p6, 5);               run_case(e, 7, LAMBDA_P10, 1);
 
     /* ---- B. 全 144 个 weight-1 case ---- */
     printf("\n=== B. all 144 weight-1 errors ===\n");
@@ -129,7 +128,7 @@ int main(void){
         for (i = 0; i < H_X_COLS; i++){
             memset(e, 0, sizeof e);
             e[i] = 1;
-            if (run_case(e, 7, 1, LAMBDA_P10, 0)) ok++;
+            if (run_case(e, 7, LAMBDA_P10, 0)) ok++;
             else if (nbad < 16) bad[nbad++] = i;
         }
         printf("  success %d/144\n", ok);
@@ -142,10 +141,10 @@ int main(void){
 
     /* ---- C. 随机 sweep ---- */
     printf("\n=== C. random sweep (100 trials each) ===\n");
-    sweep("p=0.01  BP      (8,0)",  10, LAMBDA_P01, 8, 0, 100);
-    sweep("p=0.01  DMem-BP (7,1)",  10, LAMBDA_P01, 7, 1, 100);
-    sweep("p=0.10  BP      (8,0)", 100, LAMBDA_P10, 8, 0, 100);
-    sweep("p=0.10  DMem-BP (7,1)", 100, LAMBDA_P10, 7, 1, 100);
+    sweep("p=0.01  BP      (8,0)",  10, LAMBDA_P01, 8, 100);
+    sweep("p=0.01  DMem-BP (7,1)",  10, LAMBDA_P01, 7, 100);
+    sweep("p=0.10  BP      (8,0)", 100, LAMBDA_P10, 8, 100);
+    sweep("p=0.10  DMem-BP (7,1)", 100, LAMBDA_P10, 7, 100);
 
     return 0;
 }

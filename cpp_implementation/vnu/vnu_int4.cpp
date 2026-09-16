@@ -123,5 +123,9 @@ int vnu_hardware_int4(cnu_message_type* cnu_messages, int degree, int lambda_0_i
 
     vnu_result_ptr->marginal = bound_value(marginals);
 
+    /*
+        ---- Step 7: update M_j(t-1) to be M_j(t) of this cycle----
+    */
+    st->M_reg = vnu_result_ptr->marginal;
     return 0;
 }
