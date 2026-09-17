@@ -28,6 +28,7 @@
 #define VNU_INT4_H
 #define VNU_MAX_DEG 6
 #include "../int4_max_val.h"
+#include "RNG.h"
 #include <stdint.h>
 
 /*

@@ -1,7 +1,8 @@
 #include <stdio.h>
 #include <string.h>
 #include <stdint.h>
-#include "integrated/dmem_bp.h"
+#include "DMem_BP/dmem_bp.h"
+#include "Relay_BP/relay_decoder.h"
 
 #define MAX_ITER 60
 
@@ -35,6 +36,23 @@ static void print_support(const char *label, const int *v, int n){
     for (i = 0; i < n; i++) if (v[i]) { printf("%s%d", first ? "" : ",", i); first = 0; }
     printf("}\n");
 }
+
+// For Relay_BP
+static void check_relay_r0(const int *error){
+    int e1[H_X_COLS], it1 = -1, cv1 = -1;
+    decode(error, RELAY_BETA_LEG_0, LAMBDA_P10, RELAY_T0, e1, &it1, &cv1);
+
+    int e2[H_X_COLS], it2 = -1, ns2 = -1, lu2 = -1;
+    decode_relay(error, LAMBDA_P10, 0u, e2, &it2, &ns2, &lu2);
+
+    int same = (memcmp(e1, e2, sizeof(e1)) == 0)
+            && (it1 == it2) && (cv1 == (ns2 > 0)) && (lu2 == 1);
+    printf("R=0 degenerate: %s   it=%d/%d  cv=%d  ns=%d  legs=%d\n",
+           same ? "PASS" : "FAIL", it1, it2, cv1, ns2, lu2);
+}
+
+
+
 
 /* 跑一次 decode,返回 decode_success。verbose=0 时只算不打印 */
 static int run_case(const int *error, int beta_int,
@@ -145,6 +163,43 @@ int main(void){
     sweep("p=0.01  DMem-BP (7,1)",  10, LAMBDA_P01, 7, 100);
     sweep("p=0.10  BP      (8,0)", 100, LAMBDA_P10, 8, 100);
     sweep("p=0.10  DMem-BP (7,1)", 100, LAMBDA_P10, 7, 100);
+
+    /* ---- D. Relay-BP R=0 退化测试 ---- */
+    printf("\n=== D. Relay-BP degenerate check (RELAY_R must be 0) ===\n");
+    {
+        int i;
+
+        printf("  [w=0] no error\n     ");
+        memset(e, 0, sizeof e);   check_relay_r0(e);
+
+        printf("  [w=1] VN 0\n     ");
+        set_error(e, p1, 1);      check_relay_r0(e);
+
+        printf("  [w=3] VN 3,40,118\n     ");
+        set_error(e, p5, 3);      check_relay_r0(e);
+
+        printf("  [w=5] VN 1..5 (clustered)\n     ");
+        set_error(e, p6, 5);      check_relay_r0(e);
+
+        /* 随机 case,重点是覆盖打满 T0 不收敛的情形 */
+        int pass = 0, tot = 200;
+        rng_state = 12345u;
+        for (i = 0; i < tot; i++){
+            int j;
+            for (j = 0; j < H_X_COLS; j++)
+                e[j] = (rng_next() % 1000 < 100u) ? 1 : 0;   /* p = 0.10 */
+
+            int e1[H_X_COLS], it1 = -1, cv1 = -1;
+            decode(e, RELAY_BETA_LEG_0, LAMBDA_P10, RELAY_T0, e1, &it1, &cv1);
+
+            int e2[H_X_COLS], it2 = -1, ns2 = -1, lu2 = -1;
+            decode_relay(e, LAMBDA_P10, 0u, e2, &it2, &ns2, &lu2);
+
+            if (memcmp(e1, e2, sizeof(e1)) == 0 && it1 == it2
+                && cv1 == (ns2 > 0) && lu2 == 1) pass++;
+        }
+        printf("  random p=0.10: %d/%d bit-exact\n", pass, tot);
+    }
 
     return 0;
 }

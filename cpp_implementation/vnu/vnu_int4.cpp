@@ -1,6 +1,6 @@
 #include <stdio.h>
 #include "vnu_int4.h"
-#include "RNG.h"
+
 
 static const int num_shift = 3;
 
