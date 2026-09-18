@@ -1,11 +1,11 @@
 import sys
 import os
-sys.path.append(os.path.join(os.path.dirname(__file__), '..', '..'))
+sys.path.append(os.path.join(os.path.dirname(__file__), '..'))
 
 import numpy as np
 import math
-from test_vector.cnu_python.cnu_int4 import cnu_hardware_int4
-from test_vector.vnu_python.vnu_int4 import vnu_hardware_int4
+from cnu_python.cnu_int4 import cnu_hardware_int4
+from vnu_python.vnu_int4 import vnu_hardware_int4
 from matrix_generator import get_H_x, get_H_z, get_A_x, get_A_z
 
 
@@ -205,3 +205,20 @@ print(f"syndrome_sum:                           {sum(syndrome)}")
 print(f"t (# of iterations):                    {t}")
 print(f"decode successful (logic consistent):   {decode_success}")
 print(f"converged (syndrome consistent):        {converged}")
+# ---- Hex dump for RTL testbench ----
+output_dir = os.path.dirname(__file__)
+
+# syndrome: 72 bits → 18 hex chars
+syndrome_int = int(''.join(str(b) for b in syndrome[::-1]), 2)
+with open(os.path.join(output_dir, 'dmem_syndrome.hex'), 'w') as f:
+    f.write(f'{syndrome_int:018X}\n')
+
+# e_hat: 144 bits → 36 hex chars
+ehat_int = int(''.join(str(b) for b in e_hat[::-1]), 2)
+with open(os.path.join(output_dir, 'dmem_ehat.hex'), 'w') as f:
+    f.write(f'{ehat_int:036X}\n')
+
+# meta: iter count (7 bits) + converged (1 bit) packed into 1 byte → 2 hex chars
+meta = ((t & 0x7F) << 1) | (1 if converged else 0)
+with open(os.path.join(output_dir, 'dmem_meta.hex'), 'w') as f:
+    f.write(f'{meta:02X}\n')

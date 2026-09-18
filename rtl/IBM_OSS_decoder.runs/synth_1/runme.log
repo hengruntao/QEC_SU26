@@ -1,0 +1,1458 @@
+
+*** Running vivado
+    with args -log dmembp_top.vds -m64 -product Vivado -mode batch -messageDb vivado.pb -notrace -source dmembp_top.tcl
+
+
+
+****** Vivado v2022.2 (64-bit)
+  **** SW Build 3671981 on Fri Oct 14 05:00:03 MDT 2022
+  **** IP Build 3669848 on Fri Oct 14 08:30:02 MDT 2022
+    ** Copyright 1986-2022 Xilinx, Inc. All Rights Reserved.
+
+source dmembp_top.tcl -notrace
+Command: read_checkpoint -auto_incremental -incremental C:/Users/rimpl/vivado/QEC_SU26/rtl/IBM_OSS_decoder.srcs/utils_1/imports/synth_1/dmembp_top.dcp
+INFO: [Vivado 12-5825] Read reference checkpoint from C:/Users/rimpl/vivado/QEC_SU26/rtl/IBM_OSS_decoder.srcs/utils_1/imports/synth_1/dmembp_top.dcp for incremental synthesis
+INFO: [Vivado 12-7989] Please ensure there are no constraint changes
+Command: synth_design -top dmembp_top -part xcvu19p_CIV-fsva3824-2-e
+Starting synth_design
+Attempting to get a license for feature 'Synthesis' and/or device 'xcvu19p_CIV'
+INFO: [Common 17-349] Got license for feature 'Synthesis' and/or device 'xcvu19p_CIV'
+INFO: [Common 17-1540] The version limit for your license is '2022.12' and has expired for new software. A version limit expiration means that, although you may be able to continue to use the current version of tools or IP with this license, you will not be eligible for new releases.
+INFO: [Device 21-403] Loading part xcvu19p_CIV-fsva3824-2-e
+INFO: [Designutils 20-5440] No compile time benefit to using incremental synthesis; A full resynthesis will be run
+INFO: [Designutils 20-4379] Flow is switching to default flow due to incremental criteria not met. If you would like to alter this behaviour and have the flow terminate instead, please set the following parameter config_implementation {autoIncr.Synth.RejectBehavior Terminate}
+INFO: [Synth 8-7079] Multithreading enabled for synth_design using a maximum of 2 processes.
+INFO: [Synth 8-7078] Launching helper process for spawning children vivado processes
+INFO: [Synth 8-7075] Helper process launched with PID 14780
+INFO: [Synth 8-11241] undeclared symbol 'REGCCE', assumed default net type 'wire' [C:/Vivado/2022.2/data/verilog/src/unimacro/BRAM_SINGLE_MACRO.v:2170]
+---------------------------------------------------------------------------------
+Starting RTL Elaboration : Time (s): cpu = 00:00:03 ; elapsed = 00:00:05 . Memory (MB): peak = 2193.988 ; gain = 394.211
+---------------------------------------------------------------------------------
+INFO: [Synth 8-6157] synthesizing module 'dmembp_top' [C:/Users/rimpl/vivado/QEC_SU26/rtl/IBM_OSS_decoder.srcs/sources_1/new/dmembp_top.sv:6]
+CRITICAL WARNING: [Synth 8-4445] could not open $readmem data file 'cnu_to_vnu_idx.mem'; please make sure the file is added to project and has read permission, ignoring [C:/Users/rimpl/vivado/QEC_SU26/rtl/IBM_OSS_decoder.srcs/sources_1/new/dmembp_top.sv:64]
+CRITICAL WARNING: [Synth 8-4445] could not open $readmem data file 'cnu_to_vnu_port.mem'; please make sure the file is added to project and has read permission, ignoring [C:/Users/rimpl/vivado/QEC_SU26/rtl/IBM_OSS_decoder.srcs/sources_1/new/dmembp_top.sv:65]
+INFO: [Synth 8-6157] synthesizing module 'cnu' [C:/Users/rimpl/vivado/QEC_SU26/rtl/IBM_OSS_decoder.srcs/sources_1/new/cnu.sv:3]
+	Parameter DEGREE bound to: 32'sb00000000000000000000000000000110 
+INFO: [Synth 8-6155] done synthesizing module 'cnu' (0#1) [C:/Users/rimpl/vivado/QEC_SU26/rtl/IBM_OSS_decoder.srcs/sources_1/new/cnu.sv:3]
+INFO: [Synth 8-6157] synthesizing module 'vnu' [C:/Users/rimpl/vivado/QEC_SU26/rtl/IBM_OSS_decoder.srcs/sources_1/new/vnu.sv:2]
+	Parameter DEG bound to: 32'sb00000000000000000000000000000011 
+	Parameter MAG_W bound to: 32'sb00000000000000000000000000000100 
+	Parameter MJ_W bound to: 32'sb00000000000000000000000000001000 
+	Parameter M_LOG2 bound to: 32'sb00000000000000000000000000000011 
+	Parameter LFSR_SEED bound to: 8'b00000001 
+INFO: [Synth 8-6155] done synthesizing module 'vnu' (0#1) [C:/Users/rimpl/vivado/QEC_SU26/rtl/IBM_OSS_decoder.srcs/sources_1/new/vnu.sv:2]
+INFO: [Synth 8-6157] synthesizing module 'vnu__parameterized0' [C:/Users/rimpl/vivado/QEC_SU26/rtl/IBM_OSS_decoder.srcs/sources_1/new/vnu.sv:2]
+	Parameter DEG bound to: 32'sb00000000000000000000000000000011 
+	Parameter MAG_W bound to: 32'sb00000000000000000000000000000100 
+	Parameter MJ_W bound to: 32'sb00000000000000000000000000001000 
+	Parameter M_LOG2 bound to: 32'sb00000000000000000000000000000011 
+	Parameter LFSR_SEED bound to: 8'b00000010 
+INFO: [Synth 8-6155] done synthesizing module 'vnu__parameterized0' (0#1) [C:/Users/rimpl/vivado/QEC_SU26/rtl/IBM_OSS_decoder.srcs/sources_1/new/vnu.sv:2]
+INFO: [Synth 8-6157] synthesizing module 'vnu__parameterized1' [C:/Users/rimpl/vivado/QEC_SU26/rtl/IBM_OSS_decoder.srcs/sources_1/new/vnu.sv:2]
+	Parameter DEG bound to: 32'sb00000000000000000000000000000011 
+	Parameter MAG_W bound to: 32'sb00000000000000000000000000000100 
+	Parameter MJ_W bound to: 32'sb00000000000000000000000000001000 
+	Parameter M_LOG2 bound to: 32'sb00000000000000000000000000000011 
+	Parameter LFSR_SEED bound to: 8'b00000011 
+INFO: [Synth 8-6155] done synthesizing module 'vnu__parameterized1' (0#1) [C:/Users/rimpl/vivado/QEC_SU26/rtl/IBM_OSS_decoder.srcs/sources_1/new/vnu.sv:2]
+INFO: [Synth 8-6157] synthesizing module 'vnu__parameterized2' [C:/Users/rimpl/vivado/QEC_SU26/rtl/IBM_OSS_decoder.srcs/sources_1/new/vnu.sv:2]
+	Parameter DEG bound to: 32'sb00000000000000000000000000000011 
+	Parameter MAG_W bound to: 32'sb00000000000000000000000000000100 
+	Parameter MJ_W bound to: 32'sb00000000000000000000000000001000 
+	Parameter M_LOG2 bound to: 32'sb00000000000000000000000000000011 
+	Parameter LFSR_SEED bound to: 8'b00000100 
+INFO: [Synth 8-6155] done synthesizing module 'vnu__parameterized2' (0#1) [C:/Users/rimpl/vivado/QEC_SU26/rtl/IBM_OSS_decoder.srcs/sources_1/new/vnu.sv:2]
+INFO: [Synth 8-6157] synthesizing module 'vnu__parameterized3' [C:/Users/rimpl/vivado/QEC_SU26/rtl/IBM_OSS_decoder.srcs/sources_1/new/vnu.sv:2]
+	Parameter DEG bound to: 32'sb00000000000000000000000000000011 
+	Parameter MAG_W bound to: 32'sb00000000000000000000000000000100 
+	Parameter MJ_W bound to: 32'sb00000000000000000000000000001000 
+	Parameter M_LOG2 bound to: 32'sb00000000000000000000000000000011 
+	Parameter LFSR_SEED bound to: 8'b00000101 
+INFO: [Synth 8-6155] done synthesizing module 'vnu__parameterized3' (0#1) [C:/Users/rimpl/vivado/QEC_SU26/rtl/IBM_OSS_decoder.srcs/sources_1/new/vnu.sv:2]
+INFO: [Synth 8-6157] synthesizing module 'vnu__parameterized4' [C:/Users/rimpl/vivado/QEC_SU26/rtl/IBM_OSS_decoder.srcs/sources_1/new/vnu.sv:2]
+	Parameter DEG bound to: 32'sb00000000000000000000000000000011 
+	Parameter MAG_W bound to: 32'sb00000000000000000000000000000100 
+	Parameter MJ_W bound to: 32'sb00000000000000000000000000001000 
+	Parameter M_LOG2 bound to: 32'sb00000000000000000000000000000011 
+	Parameter LFSR_SEED bound to: 8'b00000110 
+INFO: [Synth 8-6155] done synthesizing module 'vnu__parameterized4' (0#1) [C:/Users/rimpl/vivado/QEC_SU26/rtl/IBM_OSS_decoder.srcs/sources_1/new/vnu.sv:2]
+INFO: [Synth 8-6157] synthesizing module 'vnu__parameterized5' [C:/Users/rimpl/vivado/QEC_SU26/rtl/IBM_OSS_decoder.srcs/sources_1/new/vnu.sv:2]
+	Parameter DEG bound to: 32'sb00000000000000000000000000000011 
+	Parameter MAG_W bound to: 32'sb00000000000000000000000000000100 
+	Parameter MJ_W bound to: 32'sb00000000000000000000000000001000 
+	Parameter M_LOG2 bound to: 32'sb00000000000000000000000000000011 
+	Parameter LFSR_SEED bound to: 8'b00000111 
+INFO: [Synth 8-6155] done synthesizing module 'vnu__parameterized5' (0#1) [C:/Users/rimpl/vivado/QEC_SU26/rtl/IBM_OSS_decoder.srcs/sources_1/new/vnu.sv:2]
+INFO: [Synth 8-6157] synthesizing module 'vnu__parameterized6' [C:/Users/rimpl/vivado/QEC_SU26/rtl/IBM_OSS_decoder.srcs/sources_1/new/vnu.sv:2]
+	Parameter DEG bound to: 32'sb00000000000000000000000000000011 
+	Parameter MAG_W bound to: 32'sb00000000000000000000000000000100 
+	Parameter MJ_W bound to: 32'sb00000000000000000000000000001000 
+	Parameter M_LOG2 bound to: 32'sb00000000000000000000000000000011 
+	Parameter LFSR_SEED bound to: 8'b00001000 
+INFO: [Synth 8-6155] done synthesizing module 'vnu__parameterized6' (0#1) [C:/Users/rimpl/vivado/QEC_SU26/rtl/IBM_OSS_decoder.srcs/sources_1/new/vnu.sv:2]
+INFO: [Synth 8-6157] synthesizing module 'vnu__parameterized7' [C:/Users/rimpl/vivado/QEC_SU26/rtl/IBM_OSS_decoder.srcs/sources_1/new/vnu.sv:2]
+	Parameter DEG bound to: 32'sb00000000000000000000000000000011 
+	Parameter MAG_W bound to: 32'sb00000000000000000000000000000100 
+	Parameter MJ_W bound to: 32'sb00000000000000000000000000001000 
+	Parameter M_LOG2 bound to: 32'sb00000000000000000000000000000011 
+	Parameter LFSR_SEED bound to: 8'b00001001 
+INFO: [Synth 8-6155] done synthesizing module 'vnu__parameterized7' (0#1) [C:/Users/rimpl/vivado/QEC_SU26/rtl/IBM_OSS_decoder.srcs/sources_1/new/vnu.sv:2]
+INFO: [Synth 8-6157] synthesizing module 'vnu__parameterized8' [C:/Users/rimpl/vivado/QEC_SU26/rtl/IBM_OSS_decoder.srcs/sources_1/new/vnu.sv:2]
+	Parameter DEG bound to: 32'sb00000000000000000000000000000011 
+	Parameter MAG_W bound to: 32'sb00000000000000000000000000000100 
+	Parameter MJ_W bound to: 32'sb00000000000000000000000000001000 
+	Parameter M_LOG2 bound to: 32'sb00000000000000000000000000000011 
+	Parameter LFSR_SEED bound to: 8'b00001010 
+INFO: [Synth 8-6155] done synthesizing module 'vnu__parameterized8' (0#1) [C:/Users/rimpl/vivado/QEC_SU26/rtl/IBM_OSS_decoder.srcs/sources_1/new/vnu.sv:2]
+INFO: [Synth 8-6157] synthesizing module 'vnu__parameterized9' [C:/Users/rimpl/vivado/QEC_SU26/rtl/IBM_OSS_decoder.srcs/sources_1/new/vnu.sv:2]
+	Parameter DEG bound to: 32'sb00000000000000000000000000000011 
+	Parameter MAG_W bound to: 32'sb00000000000000000000000000000100 
+	Parameter MJ_W bound to: 32'sb00000000000000000000000000001000 
+	Parameter M_LOG2 bound to: 32'sb00000000000000000000000000000011 
+	Parameter LFSR_SEED bound to: 8'b00001011 
+INFO: [Synth 8-6155] done synthesizing module 'vnu__parameterized9' (0#1) [C:/Users/rimpl/vivado/QEC_SU26/rtl/IBM_OSS_decoder.srcs/sources_1/new/vnu.sv:2]
+INFO: [Synth 8-6157] synthesizing module 'vnu__parameterized10' [C:/Users/rimpl/vivado/QEC_SU26/rtl/IBM_OSS_decoder.srcs/sources_1/new/vnu.sv:2]
+	Parameter DEG bound to: 32'sb00000000000000000000000000000011 
+	Parameter MAG_W bound to: 32'sb00000000000000000000000000000100 
+	Parameter MJ_W bound to: 32'sb00000000000000000000000000001000 
+	Parameter M_LOG2 bound to: 32'sb00000000000000000000000000000011 
+	Parameter LFSR_SEED bound to: 8'b00001100 
+INFO: [Synth 8-6155] done synthesizing module 'vnu__parameterized10' (0#1) [C:/Users/rimpl/vivado/QEC_SU26/rtl/IBM_OSS_decoder.srcs/sources_1/new/vnu.sv:2]
+INFO: [Synth 8-6157] synthesizing module 'vnu__parameterized11' [C:/Users/rimpl/vivado/QEC_SU26/rtl/IBM_OSS_decoder.srcs/sources_1/new/vnu.sv:2]
+	Parameter DEG bound to: 32'sb00000000000000000000000000000011 
+	Parameter MAG_W bound to: 32'sb00000000000000000000000000000100 
+	Parameter MJ_W bound to: 32'sb00000000000000000000000000001000 
+	Parameter M_LOG2 bound to: 32'sb00000000000000000000000000000011 
+	Parameter LFSR_SEED bound to: 8'b00001101 
+INFO: [Synth 8-6155] done synthesizing module 'vnu__parameterized11' (0#1) [C:/Users/rimpl/vivado/QEC_SU26/rtl/IBM_OSS_decoder.srcs/sources_1/new/vnu.sv:2]
+INFO: [Synth 8-6157] synthesizing module 'vnu__parameterized12' [C:/Users/rimpl/vivado/QEC_SU26/rtl/IBM_OSS_decoder.srcs/sources_1/new/vnu.sv:2]
+	Parameter DEG bound to: 32'sb00000000000000000000000000000011 
+	Parameter MAG_W bound to: 32'sb00000000000000000000000000000100 
+	Parameter MJ_W bound to: 32'sb00000000000000000000000000001000 
+	Parameter M_LOG2 bound to: 32'sb00000000000000000000000000000011 
+	Parameter LFSR_SEED bound to: 8'b00001110 
+INFO: [Synth 8-6155] done synthesizing module 'vnu__parameterized12' (0#1) [C:/Users/rimpl/vivado/QEC_SU26/rtl/IBM_OSS_decoder.srcs/sources_1/new/vnu.sv:2]
+INFO: [Synth 8-6157] synthesizing module 'vnu__parameterized13' [C:/Users/rimpl/vivado/QEC_SU26/rtl/IBM_OSS_decoder.srcs/sources_1/new/vnu.sv:2]
+	Parameter DEG bound to: 32'sb00000000000000000000000000000011 
+	Parameter MAG_W bound to: 32'sb00000000000000000000000000000100 
+	Parameter MJ_W bound to: 32'sb00000000000000000000000000001000 
+	Parameter M_LOG2 bound to: 32'sb00000000000000000000000000000011 
+	Parameter LFSR_SEED bound to: 8'b00001111 
+INFO: [Synth 8-6155] done synthesizing module 'vnu__parameterized13' (0#1) [C:/Users/rimpl/vivado/QEC_SU26/rtl/IBM_OSS_decoder.srcs/sources_1/new/vnu.sv:2]
+INFO: [Synth 8-6157] synthesizing module 'vnu__parameterized14' [C:/Users/rimpl/vivado/QEC_SU26/rtl/IBM_OSS_decoder.srcs/sources_1/new/vnu.sv:2]
+	Parameter DEG bound to: 32'sb00000000000000000000000000000011 
+	Parameter MAG_W bound to: 32'sb00000000000000000000000000000100 
+	Parameter MJ_W bound to: 32'sb00000000000000000000000000001000 
+	Parameter M_LOG2 bound to: 32'sb00000000000000000000000000000011 
+	Parameter LFSR_SEED bound to: 8'b00010000 
+INFO: [Synth 8-6155] done synthesizing module 'vnu__parameterized14' (0#1) [C:/Users/rimpl/vivado/QEC_SU26/rtl/IBM_OSS_decoder.srcs/sources_1/new/vnu.sv:2]
+INFO: [Synth 8-6157] synthesizing module 'vnu__parameterized15' [C:/Users/rimpl/vivado/QEC_SU26/rtl/IBM_OSS_decoder.srcs/sources_1/new/vnu.sv:2]
+	Parameter DEG bound to: 32'sb00000000000000000000000000000011 
+	Parameter MAG_W bound to: 32'sb00000000000000000000000000000100 
+	Parameter MJ_W bound to: 32'sb00000000000000000000000000001000 
+	Parameter M_LOG2 bound to: 32'sb00000000000000000000000000000011 
+	Parameter LFSR_SEED bound to: 8'b00010001 
+INFO: [Synth 8-6155] done synthesizing module 'vnu__parameterized15' (0#1) [C:/Users/rimpl/vivado/QEC_SU26/rtl/IBM_OSS_decoder.srcs/sources_1/new/vnu.sv:2]
+INFO: [Synth 8-6157] synthesizing module 'vnu__parameterized16' [C:/Users/rimpl/vivado/QEC_SU26/rtl/IBM_OSS_decoder.srcs/sources_1/new/vnu.sv:2]
+	Parameter DEG bound to: 32'sb00000000000000000000000000000011 
+	Parameter MAG_W bound to: 32'sb00000000000000000000000000000100 
+	Parameter MJ_W bound to: 32'sb00000000000000000000000000001000 
+	Parameter M_LOG2 bound to: 32'sb00000000000000000000000000000011 
+	Parameter LFSR_SEED bound to: 8'b00010010 
+INFO: [Synth 8-6155] done synthesizing module 'vnu__parameterized16' (0#1) [C:/Users/rimpl/vivado/QEC_SU26/rtl/IBM_OSS_decoder.srcs/sources_1/new/vnu.sv:2]
+INFO: [Synth 8-6157] synthesizing module 'vnu__parameterized17' [C:/Users/rimpl/vivado/QEC_SU26/rtl/IBM_OSS_decoder.srcs/sources_1/new/vnu.sv:2]
+	Parameter DEG bound to: 32'sb00000000000000000000000000000011 
+	Parameter MAG_W bound to: 32'sb00000000000000000000000000000100 
+	Parameter MJ_W bound to: 32'sb00000000000000000000000000001000 
+	Parameter M_LOG2 bound to: 32'sb00000000000000000000000000000011 
+	Parameter LFSR_SEED bound to: 8'b00010011 
+INFO: [Synth 8-6155] done synthesizing module 'vnu__parameterized17' (0#1) [C:/Users/rimpl/vivado/QEC_SU26/rtl/IBM_OSS_decoder.srcs/sources_1/new/vnu.sv:2]
+INFO: [Synth 8-6157] synthesizing module 'vnu__parameterized18' [C:/Users/rimpl/vivado/QEC_SU26/rtl/IBM_OSS_decoder.srcs/sources_1/new/vnu.sv:2]
+	Parameter DEG bound to: 32'sb00000000000000000000000000000011 
+	Parameter MAG_W bound to: 32'sb00000000000000000000000000000100 
+	Parameter MJ_W bound to: 32'sb00000000000000000000000000001000 
+	Parameter M_LOG2 bound to: 32'sb00000000000000000000000000000011 
+	Parameter LFSR_SEED bound to: 8'b00010100 
+INFO: [Synth 8-6155] done synthesizing module 'vnu__parameterized18' (0#1) [C:/Users/rimpl/vivado/QEC_SU26/rtl/IBM_OSS_decoder.srcs/sources_1/new/vnu.sv:2]
+INFO: [Synth 8-6157] synthesizing module 'vnu__parameterized19' [C:/Users/rimpl/vivado/QEC_SU26/rtl/IBM_OSS_decoder.srcs/sources_1/new/vnu.sv:2]
+	Parameter DEG bound to: 32'sb00000000000000000000000000000011 
+	Parameter MAG_W bound to: 32'sb00000000000000000000000000000100 
+	Parameter MJ_W bound to: 32'sb00000000000000000000000000001000 
+	Parameter M_LOG2 bound to: 32'sb00000000000000000000000000000011 
+	Parameter LFSR_SEED bound to: 8'b00010101 
+INFO: [Synth 8-6155] done synthesizing module 'vnu__parameterized19' (0#1) [C:/Users/rimpl/vivado/QEC_SU26/rtl/IBM_OSS_decoder.srcs/sources_1/new/vnu.sv:2]
+INFO: [Synth 8-6157] synthesizing module 'vnu__parameterized20' [C:/Users/rimpl/vivado/QEC_SU26/rtl/IBM_OSS_decoder.srcs/sources_1/new/vnu.sv:2]
+	Parameter DEG bound to: 32'sb00000000000000000000000000000011 
+	Parameter MAG_W bound to: 32'sb00000000000000000000000000000100 
+	Parameter MJ_W bound to: 32'sb00000000000000000000000000001000 
+	Parameter M_LOG2 bound to: 32'sb00000000000000000000000000000011 
+	Parameter LFSR_SEED bound to: 8'b00010110 
+INFO: [Synth 8-6155] done synthesizing module 'vnu__parameterized20' (0#1) [C:/Users/rimpl/vivado/QEC_SU26/rtl/IBM_OSS_decoder.srcs/sources_1/new/vnu.sv:2]
+INFO: [Synth 8-6157] synthesizing module 'vnu__parameterized21' [C:/Users/rimpl/vivado/QEC_SU26/rtl/IBM_OSS_decoder.srcs/sources_1/new/vnu.sv:2]
+	Parameter DEG bound to: 32'sb00000000000000000000000000000011 
+	Parameter MAG_W bound to: 32'sb00000000000000000000000000000100 
+	Parameter MJ_W bound to: 32'sb00000000000000000000000000001000 
+	Parameter M_LOG2 bound to: 32'sb00000000000000000000000000000011 
+	Parameter LFSR_SEED bound to: 8'b00010111 
+INFO: [Synth 8-6155] done synthesizing module 'vnu__parameterized21' (0#1) [C:/Users/rimpl/vivado/QEC_SU26/rtl/IBM_OSS_decoder.srcs/sources_1/new/vnu.sv:2]
+INFO: [Synth 8-6157] synthesizing module 'vnu__parameterized22' [C:/Users/rimpl/vivado/QEC_SU26/rtl/IBM_OSS_decoder.srcs/sources_1/new/vnu.sv:2]
+	Parameter DEG bound to: 32'sb00000000000000000000000000000011 
+	Parameter MAG_W bound to: 32'sb00000000000000000000000000000100 
+	Parameter MJ_W bound to: 32'sb00000000000000000000000000001000 
+	Parameter M_LOG2 bound to: 32'sb00000000000000000000000000000011 
+	Parameter LFSR_SEED bound to: 8'b00011000 
+INFO: [Synth 8-6155] done synthesizing module 'vnu__parameterized22' (0#1) [C:/Users/rimpl/vivado/QEC_SU26/rtl/IBM_OSS_decoder.srcs/sources_1/new/vnu.sv:2]
+INFO: [Synth 8-6157] synthesizing module 'vnu__parameterized23' [C:/Users/rimpl/vivado/QEC_SU26/rtl/IBM_OSS_decoder.srcs/sources_1/new/vnu.sv:2]
+	Parameter DEG bound to: 32'sb00000000000000000000000000000011 
+	Parameter MAG_W bound to: 32'sb00000000000000000000000000000100 
+	Parameter MJ_W bound to: 32'sb00000000000000000000000000001000 
+	Parameter M_LOG2 bound to: 32'sb00000000000000000000000000000011 
+	Parameter LFSR_SEED bound to: 8'b00011001 
+INFO: [Synth 8-6155] done synthesizing module 'vnu__parameterized23' (0#1) [C:/Users/rimpl/vivado/QEC_SU26/rtl/IBM_OSS_decoder.srcs/sources_1/new/vnu.sv:2]
+INFO: [Synth 8-6157] synthesizing module 'vnu__parameterized24' [C:/Users/rimpl/vivado/QEC_SU26/rtl/IBM_OSS_decoder.srcs/sources_1/new/vnu.sv:2]
+	Parameter DEG bound to: 32'sb00000000000000000000000000000011 
+	Parameter MAG_W bound to: 32'sb00000000000000000000000000000100 
+	Parameter MJ_W bound to: 32'sb00000000000000000000000000001000 
+	Parameter M_LOG2 bound to: 32'sb00000000000000000000000000000011 
+	Parameter LFSR_SEED bound to: 8'b00011010 
+INFO: [Synth 8-6155] done synthesizing module 'vnu__parameterized24' (0#1) [C:/Users/rimpl/vivado/QEC_SU26/rtl/IBM_OSS_decoder.srcs/sources_1/new/vnu.sv:2]
+INFO: [Synth 8-6157] synthesizing module 'vnu__parameterized25' [C:/Users/rimpl/vivado/QEC_SU26/rtl/IBM_OSS_decoder.srcs/sources_1/new/vnu.sv:2]
+	Parameter DEG bound to: 32'sb00000000000000000000000000000011 
+	Parameter MAG_W bound to: 32'sb00000000000000000000000000000100 
+	Parameter MJ_W bound to: 32'sb00000000000000000000000000001000 
+	Parameter M_LOG2 bound to: 32'sb00000000000000000000000000000011 
+	Parameter LFSR_SEED bound to: 8'b00011011 
+INFO: [Synth 8-6155] done synthesizing module 'vnu__parameterized25' (0#1) [C:/Users/rimpl/vivado/QEC_SU26/rtl/IBM_OSS_decoder.srcs/sources_1/new/vnu.sv:2]
+INFO: [Synth 8-6157] synthesizing module 'vnu__parameterized26' [C:/Users/rimpl/vivado/QEC_SU26/rtl/IBM_OSS_decoder.srcs/sources_1/new/vnu.sv:2]
+	Parameter DEG bound to: 32'sb00000000000000000000000000000011 
+	Parameter MAG_W bound to: 32'sb00000000000000000000000000000100 
+	Parameter MJ_W bound to: 32'sb00000000000000000000000000001000 
+	Parameter M_LOG2 bound to: 32'sb00000000000000000000000000000011 
+	Parameter LFSR_SEED bound to: 8'b00011100 
+INFO: [Synth 8-6155] done synthesizing module 'vnu__parameterized26' (0#1) [C:/Users/rimpl/vivado/QEC_SU26/rtl/IBM_OSS_decoder.srcs/sources_1/new/vnu.sv:2]
+INFO: [Synth 8-6157] synthesizing module 'vnu__parameterized27' [C:/Users/rimpl/vivado/QEC_SU26/rtl/IBM_OSS_decoder.srcs/sources_1/new/vnu.sv:2]
+	Parameter DEG bound to: 32'sb00000000000000000000000000000011 
+	Parameter MAG_W bound to: 32'sb00000000000000000000000000000100 
+	Parameter MJ_W bound to: 32'sb00000000000000000000000000001000 
+	Parameter M_LOG2 bound to: 32'sb00000000000000000000000000000011 
+	Parameter LFSR_SEED bound to: 8'b00011101 
+INFO: [Synth 8-6155] done synthesizing module 'vnu__parameterized27' (0#1) [C:/Users/rimpl/vivado/QEC_SU26/rtl/IBM_OSS_decoder.srcs/sources_1/new/vnu.sv:2]
+INFO: [Synth 8-6157] synthesizing module 'vnu__parameterized28' [C:/Users/rimpl/vivado/QEC_SU26/rtl/IBM_OSS_decoder.srcs/sources_1/new/vnu.sv:2]
+	Parameter DEG bound to: 32'sb00000000000000000000000000000011 
+	Parameter MAG_W bound to: 32'sb00000000000000000000000000000100 
+	Parameter MJ_W bound to: 32'sb00000000000000000000000000001000 
+	Parameter M_LOG2 bound to: 32'sb00000000000000000000000000000011 
+	Parameter LFSR_SEED bound to: 8'b00011110 
+INFO: [Synth 8-6155] done synthesizing module 'vnu__parameterized28' (0#1) [C:/Users/rimpl/vivado/QEC_SU26/rtl/IBM_OSS_decoder.srcs/sources_1/new/vnu.sv:2]
+INFO: [Synth 8-6157] synthesizing module 'vnu__parameterized29' [C:/Users/rimpl/vivado/QEC_SU26/rtl/IBM_OSS_decoder.srcs/sources_1/new/vnu.sv:2]
+	Parameter DEG bound to: 32'sb00000000000000000000000000000011 
+	Parameter MAG_W bound to: 32'sb00000000000000000000000000000100 
+	Parameter MJ_W bound to: 32'sb00000000000000000000000000001000 
+	Parameter M_LOG2 bound to: 32'sb00000000000000000000000000000011 
+	Parameter LFSR_SEED bound to: 8'b00011111 
+INFO: [Synth 8-6155] done synthesizing module 'vnu__parameterized29' (0#1) [C:/Users/rimpl/vivado/QEC_SU26/rtl/IBM_OSS_decoder.srcs/sources_1/new/vnu.sv:2]
+INFO: [Synth 8-6157] synthesizing module 'vnu__parameterized30' [C:/Users/rimpl/vivado/QEC_SU26/rtl/IBM_OSS_decoder.srcs/sources_1/new/vnu.sv:2]
+	Parameter DEG bound to: 32'sb00000000000000000000000000000011 
+	Parameter MAG_W bound to: 32'sb00000000000000000000000000000100 
+	Parameter MJ_W bound to: 32'sb00000000000000000000000000001000 
+	Parameter M_LOG2 bound to: 32'sb00000000000000000000000000000011 
+	Parameter LFSR_SEED bound to: 8'b00100000 
+INFO: [Synth 8-6155] done synthesizing module 'vnu__parameterized30' (0#1) [C:/Users/rimpl/vivado/QEC_SU26/rtl/IBM_OSS_decoder.srcs/sources_1/new/vnu.sv:2]
+INFO: [Synth 8-6157] synthesizing module 'vnu__parameterized31' [C:/Users/rimpl/vivado/QEC_SU26/rtl/IBM_OSS_decoder.srcs/sources_1/new/vnu.sv:2]
+	Parameter DEG bound to: 32'sb00000000000000000000000000000011 
+	Parameter MAG_W bound to: 32'sb00000000000000000000000000000100 
+	Parameter MJ_W bound to: 32'sb00000000000000000000000000001000 
+	Parameter M_LOG2 bound to: 32'sb00000000000000000000000000000011 
+	Parameter LFSR_SEED bound to: 8'b00100001 
+INFO: [Synth 8-6155] done synthesizing module 'vnu__parameterized31' (0#1) [C:/Users/rimpl/vivado/QEC_SU26/rtl/IBM_OSS_decoder.srcs/sources_1/new/vnu.sv:2]
+INFO: [Synth 8-6157] synthesizing module 'vnu__parameterized32' [C:/Users/rimpl/vivado/QEC_SU26/rtl/IBM_OSS_decoder.srcs/sources_1/new/vnu.sv:2]
+	Parameter DEG bound to: 32'sb00000000000000000000000000000011 
+	Parameter MAG_W bound to: 32'sb00000000000000000000000000000100 
+	Parameter MJ_W bound to: 32'sb00000000000000000000000000001000 
+	Parameter M_LOG2 bound to: 32'sb00000000000000000000000000000011 
+	Parameter LFSR_SEED bound to: 8'b00100010 
+INFO: [Synth 8-6155] done synthesizing module 'vnu__parameterized32' (0#1) [C:/Users/rimpl/vivado/QEC_SU26/rtl/IBM_OSS_decoder.srcs/sources_1/new/vnu.sv:2]
+INFO: [Synth 8-6157] synthesizing module 'vnu__parameterized33' [C:/Users/rimpl/vivado/QEC_SU26/rtl/IBM_OSS_decoder.srcs/sources_1/new/vnu.sv:2]
+	Parameter DEG bound to: 32'sb00000000000000000000000000000011 
+	Parameter MAG_W bound to: 32'sb00000000000000000000000000000100 
+	Parameter MJ_W bound to: 32'sb00000000000000000000000000001000 
+	Parameter M_LOG2 bound to: 32'sb00000000000000000000000000000011 
+	Parameter LFSR_SEED bound to: 8'b00100011 
+INFO: [Synth 8-6155] done synthesizing module 'vnu__parameterized33' (0#1) [C:/Users/rimpl/vivado/QEC_SU26/rtl/IBM_OSS_decoder.srcs/sources_1/new/vnu.sv:2]
+INFO: [Synth 8-6157] synthesizing module 'vnu__parameterized34' [C:/Users/rimpl/vivado/QEC_SU26/rtl/IBM_OSS_decoder.srcs/sources_1/new/vnu.sv:2]
+	Parameter DEG bound to: 32'sb00000000000000000000000000000011 
+	Parameter MAG_W bound to: 32'sb00000000000000000000000000000100 
+	Parameter MJ_W bound to: 32'sb00000000000000000000000000001000 
+	Parameter M_LOG2 bound to: 32'sb00000000000000000000000000000011 
+	Parameter LFSR_SEED bound to: 8'b00100100 
+INFO: [Synth 8-6155] done synthesizing module 'vnu__parameterized34' (0#1) [C:/Users/rimpl/vivado/QEC_SU26/rtl/IBM_OSS_decoder.srcs/sources_1/new/vnu.sv:2]
+INFO: [Synth 8-6157] synthesizing module 'vnu__parameterized35' [C:/Users/rimpl/vivado/QEC_SU26/rtl/IBM_OSS_decoder.srcs/sources_1/new/vnu.sv:2]
+	Parameter DEG bound to: 32'sb00000000000000000000000000000011 
+	Parameter MAG_W bound to: 32'sb00000000000000000000000000000100 
+	Parameter MJ_W bound to: 32'sb00000000000000000000000000001000 
+	Parameter M_LOG2 bound to: 32'sb00000000000000000000000000000011 
+	Parameter LFSR_SEED bound to: 8'b00100101 
+INFO: [Synth 8-6155] done synthesizing module 'vnu__parameterized35' (0#1) [C:/Users/rimpl/vivado/QEC_SU26/rtl/IBM_OSS_decoder.srcs/sources_1/new/vnu.sv:2]
+INFO: [Synth 8-6157] synthesizing module 'vnu__parameterized36' [C:/Users/rimpl/vivado/QEC_SU26/rtl/IBM_OSS_decoder.srcs/sources_1/new/vnu.sv:2]
+	Parameter DEG bound to: 32'sb00000000000000000000000000000011 
+	Parameter MAG_W bound to: 32'sb00000000000000000000000000000100 
+	Parameter MJ_W bound to: 32'sb00000000000000000000000000001000 
+	Parameter M_LOG2 bound to: 32'sb00000000000000000000000000000011 
+	Parameter LFSR_SEED bound to: 8'b00100110 
+INFO: [Synth 8-6155] done synthesizing module 'vnu__parameterized36' (0#1) [C:/Users/rimpl/vivado/QEC_SU26/rtl/IBM_OSS_decoder.srcs/sources_1/new/vnu.sv:2]
+INFO: [Synth 8-6157] synthesizing module 'vnu__parameterized37' [C:/Users/rimpl/vivado/QEC_SU26/rtl/IBM_OSS_decoder.srcs/sources_1/new/vnu.sv:2]
+	Parameter DEG bound to: 32'sb00000000000000000000000000000011 
+	Parameter MAG_W bound to: 32'sb00000000000000000000000000000100 
+	Parameter MJ_W bound to: 32'sb00000000000000000000000000001000 
+	Parameter M_LOG2 bound to: 32'sb00000000000000000000000000000011 
+	Parameter LFSR_SEED bound to: 8'b00100111 
+INFO: [Synth 8-6155] done synthesizing module 'vnu__parameterized37' (0#1) [C:/Users/rimpl/vivado/QEC_SU26/rtl/IBM_OSS_decoder.srcs/sources_1/new/vnu.sv:2]
+INFO: [Synth 8-6157] synthesizing module 'vnu__parameterized38' [C:/Users/rimpl/vivado/QEC_SU26/rtl/IBM_OSS_decoder.srcs/sources_1/new/vnu.sv:2]
+	Parameter DEG bound to: 32'sb00000000000000000000000000000011 
+	Parameter MAG_W bound to: 32'sb00000000000000000000000000000100 
+	Parameter MJ_W bound to: 32'sb00000000000000000000000000001000 
+	Parameter M_LOG2 bound to: 32'sb00000000000000000000000000000011 
+	Parameter LFSR_SEED bound to: 8'b00101000 
+INFO: [Synth 8-6155] done synthesizing module 'vnu__parameterized38' (0#1) [C:/Users/rimpl/vivado/QEC_SU26/rtl/IBM_OSS_decoder.srcs/sources_1/new/vnu.sv:2]
+INFO: [Synth 8-6157] synthesizing module 'vnu__parameterized39' [C:/Users/rimpl/vivado/QEC_SU26/rtl/IBM_OSS_decoder.srcs/sources_1/new/vnu.sv:2]
+	Parameter DEG bound to: 32'sb00000000000000000000000000000011 
+	Parameter MAG_W bound to: 32'sb00000000000000000000000000000100 
+	Parameter MJ_W bound to: 32'sb00000000000000000000000000001000 
+	Parameter M_LOG2 bound to: 32'sb00000000000000000000000000000011 
+	Parameter LFSR_SEED bound to: 8'b00101001 
+INFO: [Synth 8-6155] done synthesizing module 'vnu__parameterized39' (0#1) [C:/Users/rimpl/vivado/QEC_SU26/rtl/IBM_OSS_decoder.srcs/sources_1/new/vnu.sv:2]
+INFO: [Synth 8-6157] synthesizing module 'vnu__parameterized40' [C:/Users/rimpl/vivado/QEC_SU26/rtl/IBM_OSS_decoder.srcs/sources_1/new/vnu.sv:2]
+	Parameter DEG bound to: 32'sb00000000000000000000000000000011 
+	Parameter MAG_W bound to: 32'sb00000000000000000000000000000100 
+	Parameter MJ_W bound to: 32'sb00000000000000000000000000001000 
+	Parameter M_LOG2 bound to: 32'sb00000000000000000000000000000011 
+	Parameter LFSR_SEED bound to: 8'b00101010 
+INFO: [Synth 8-6155] done synthesizing module 'vnu__parameterized40' (0#1) [C:/Users/rimpl/vivado/QEC_SU26/rtl/IBM_OSS_decoder.srcs/sources_1/new/vnu.sv:2]
+INFO: [Synth 8-6157] synthesizing module 'vnu__parameterized41' [C:/Users/rimpl/vivado/QEC_SU26/rtl/IBM_OSS_decoder.srcs/sources_1/new/vnu.sv:2]
+	Parameter DEG bound to: 32'sb00000000000000000000000000000011 
+	Parameter MAG_W bound to: 32'sb00000000000000000000000000000100 
+	Parameter MJ_W bound to: 32'sb00000000000000000000000000001000 
+	Parameter M_LOG2 bound to: 32'sb00000000000000000000000000000011 
+	Parameter LFSR_SEED bound to: 8'b00101011 
+INFO: [Synth 8-6155] done synthesizing module 'vnu__parameterized41' (0#1) [C:/Users/rimpl/vivado/QEC_SU26/rtl/IBM_OSS_decoder.srcs/sources_1/new/vnu.sv:2]
+INFO: [Synth 8-6157] synthesizing module 'vnu__parameterized42' [C:/Users/rimpl/vivado/QEC_SU26/rtl/IBM_OSS_decoder.srcs/sources_1/new/vnu.sv:2]
+	Parameter DEG bound to: 32'sb00000000000000000000000000000011 
+	Parameter MAG_W bound to: 32'sb00000000000000000000000000000100 
+	Parameter MJ_W bound to: 32'sb00000000000000000000000000001000 
+	Parameter M_LOG2 bound to: 32'sb00000000000000000000000000000011 
+	Parameter LFSR_SEED bound to: 8'b00101100 
+INFO: [Synth 8-6155] done synthesizing module 'vnu__parameterized42' (0#1) [C:/Users/rimpl/vivado/QEC_SU26/rtl/IBM_OSS_decoder.srcs/sources_1/new/vnu.sv:2]
+INFO: [Synth 8-6157] synthesizing module 'vnu__parameterized43' [C:/Users/rimpl/vivado/QEC_SU26/rtl/IBM_OSS_decoder.srcs/sources_1/new/vnu.sv:2]
+	Parameter DEG bound to: 32'sb00000000000000000000000000000011 
+	Parameter MAG_W bound to: 32'sb00000000000000000000000000000100 
+	Parameter MJ_W bound to: 32'sb00000000000000000000000000001000 
+	Parameter M_LOG2 bound to: 32'sb00000000000000000000000000000011 
+	Parameter LFSR_SEED bound to: 8'b00101101 
+INFO: [Synth 8-6155] done synthesizing module 'vnu__parameterized43' (0#1) [C:/Users/rimpl/vivado/QEC_SU26/rtl/IBM_OSS_decoder.srcs/sources_1/new/vnu.sv:2]
+INFO: [Synth 8-6157] synthesizing module 'vnu__parameterized44' [C:/Users/rimpl/vivado/QEC_SU26/rtl/IBM_OSS_decoder.srcs/sources_1/new/vnu.sv:2]
+	Parameter DEG bound to: 32'sb00000000000000000000000000000011 
+	Parameter MAG_W bound to: 32'sb00000000000000000000000000000100 
+	Parameter MJ_W bound to: 32'sb00000000000000000000000000001000 
+	Parameter M_LOG2 bound to: 32'sb00000000000000000000000000000011 
+	Parameter LFSR_SEED bound to: 8'b00101110 
+INFO: [Synth 8-6155] done synthesizing module 'vnu__parameterized44' (0#1) [C:/Users/rimpl/vivado/QEC_SU26/rtl/IBM_OSS_decoder.srcs/sources_1/new/vnu.sv:2]
+INFO: [Synth 8-6157] synthesizing module 'vnu__parameterized45' [C:/Users/rimpl/vivado/QEC_SU26/rtl/IBM_OSS_decoder.srcs/sources_1/new/vnu.sv:2]
+	Parameter DEG bound to: 32'sb00000000000000000000000000000011 
+	Parameter MAG_W bound to: 32'sb00000000000000000000000000000100 
+	Parameter MJ_W bound to: 32'sb00000000000000000000000000001000 
+	Parameter M_LOG2 bound to: 32'sb00000000000000000000000000000011 
+	Parameter LFSR_SEED bound to: 8'b00101111 
+INFO: [Synth 8-6155] done synthesizing module 'vnu__parameterized45' (0#1) [C:/Users/rimpl/vivado/QEC_SU26/rtl/IBM_OSS_decoder.srcs/sources_1/new/vnu.sv:2]
+INFO: [Synth 8-6157] synthesizing module 'vnu__parameterized46' [C:/Users/rimpl/vivado/QEC_SU26/rtl/IBM_OSS_decoder.srcs/sources_1/new/vnu.sv:2]
+	Parameter DEG bound to: 32'sb00000000000000000000000000000011 
+	Parameter MAG_W bound to: 32'sb00000000000000000000000000000100 
+	Parameter MJ_W bound to: 32'sb00000000000000000000000000001000 
+	Parameter M_LOG2 bound to: 32'sb00000000000000000000000000000011 
+	Parameter LFSR_SEED bound to: 8'b00110000 
+INFO: [Synth 8-6155] done synthesizing module 'vnu__parameterized46' (0#1) [C:/Users/rimpl/vivado/QEC_SU26/rtl/IBM_OSS_decoder.srcs/sources_1/new/vnu.sv:2]
+INFO: [Synth 8-6157] synthesizing module 'vnu__parameterized47' [C:/Users/rimpl/vivado/QEC_SU26/rtl/IBM_OSS_decoder.srcs/sources_1/new/vnu.sv:2]
+	Parameter DEG bound to: 32'sb00000000000000000000000000000011 
+	Parameter MAG_W bound to: 32'sb00000000000000000000000000000100 
+	Parameter MJ_W bound to: 32'sb00000000000000000000000000001000 
+	Parameter M_LOG2 bound to: 32'sb00000000000000000000000000000011 
+	Parameter LFSR_SEED bound to: 8'b00110001 
+INFO: [Synth 8-6155] done synthesizing module 'vnu__parameterized47' (0#1) [C:/Users/rimpl/vivado/QEC_SU26/rtl/IBM_OSS_decoder.srcs/sources_1/new/vnu.sv:2]
+INFO: [Synth 8-6157] synthesizing module 'vnu__parameterized48' [C:/Users/rimpl/vivado/QEC_SU26/rtl/IBM_OSS_decoder.srcs/sources_1/new/vnu.sv:2]
+	Parameter DEG bound to: 32'sb00000000000000000000000000000011 
+	Parameter MAG_W bound to: 32'sb00000000000000000000000000000100 
+	Parameter MJ_W bound to: 32'sb00000000000000000000000000001000 
+	Parameter M_LOG2 bound to: 32'sb00000000000000000000000000000011 
+	Parameter LFSR_SEED bound to: 8'b00110010 
+INFO: [Synth 8-6155] done synthesizing module 'vnu__parameterized48' (0#1) [C:/Users/rimpl/vivado/QEC_SU26/rtl/IBM_OSS_decoder.srcs/sources_1/new/vnu.sv:2]
+INFO: [Synth 8-6157] synthesizing module 'vnu__parameterized49' [C:/Users/rimpl/vivado/QEC_SU26/rtl/IBM_OSS_decoder.srcs/sources_1/new/vnu.sv:2]
+	Parameter DEG bound to: 32'sb00000000000000000000000000000011 
+	Parameter MAG_W bound to: 32'sb00000000000000000000000000000100 
+	Parameter MJ_W bound to: 32'sb00000000000000000000000000001000 
+	Parameter M_LOG2 bound to: 32'sb00000000000000000000000000000011 
+	Parameter LFSR_SEED bound to: 8'b00110011 
+INFO: [Synth 8-6155] done synthesizing module 'vnu__parameterized49' (0#1) [C:/Users/rimpl/vivado/QEC_SU26/rtl/IBM_OSS_decoder.srcs/sources_1/new/vnu.sv:2]
+INFO: [Synth 8-6157] synthesizing module 'vnu__parameterized50' [C:/Users/rimpl/vivado/QEC_SU26/rtl/IBM_OSS_decoder.srcs/sources_1/new/vnu.sv:2]
+	Parameter DEG bound to: 32'sb00000000000000000000000000000011 
+	Parameter MAG_W bound to: 32'sb00000000000000000000000000000100 
+	Parameter MJ_W bound to: 32'sb00000000000000000000000000001000 
+	Parameter M_LOG2 bound to: 32'sb00000000000000000000000000000011 
+	Parameter LFSR_SEED bound to: 8'b00110100 
+INFO: [Synth 8-6155] done synthesizing module 'vnu__parameterized50' (0#1) [C:/Users/rimpl/vivado/QEC_SU26/rtl/IBM_OSS_decoder.srcs/sources_1/new/vnu.sv:2]
+INFO: [Synth 8-6157] synthesizing module 'vnu__parameterized51' [C:/Users/rimpl/vivado/QEC_SU26/rtl/IBM_OSS_decoder.srcs/sources_1/new/vnu.sv:2]
+	Parameter DEG bound to: 32'sb00000000000000000000000000000011 
+	Parameter MAG_W bound to: 32'sb00000000000000000000000000000100 
+	Parameter MJ_W bound to: 32'sb00000000000000000000000000001000 
+	Parameter M_LOG2 bound to: 32'sb00000000000000000000000000000011 
+	Parameter LFSR_SEED bound to: 8'b00110101 
+INFO: [Synth 8-6155] done synthesizing module 'vnu__parameterized51' (0#1) [C:/Users/rimpl/vivado/QEC_SU26/rtl/IBM_OSS_decoder.srcs/sources_1/new/vnu.sv:2]
+INFO: [Synth 8-6157] synthesizing module 'vnu__parameterized52' [C:/Users/rimpl/vivado/QEC_SU26/rtl/IBM_OSS_decoder.srcs/sources_1/new/vnu.sv:2]
+	Parameter DEG bound to: 32'sb00000000000000000000000000000011 
+	Parameter MAG_W bound to: 32'sb00000000000000000000000000000100 
+	Parameter MJ_W bound to: 32'sb00000000000000000000000000001000 
+	Parameter M_LOG2 bound to: 32'sb00000000000000000000000000000011 
+	Parameter LFSR_SEED bound to: 8'b00110110 
+INFO: [Synth 8-6155] done synthesizing module 'vnu__parameterized52' (0#1) [C:/Users/rimpl/vivado/QEC_SU26/rtl/IBM_OSS_decoder.srcs/sources_1/new/vnu.sv:2]
+INFO: [Synth 8-6157] synthesizing module 'vnu__parameterized53' [C:/Users/rimpl/vivado/QEC_SU26/rtl/IBM_OSS_decoder.srcs/sources_1/new/vnu.sv:2]
+	Parameter DEG bound to: 32'sb00000000000000000000000000000011 
+	Parameter MAG_W bound to: 32'sb00000000000000000000000000000100 
+	Parameter MJ_W bound to: 32'sb00000000000000000000000000001000 
+	Parameter M_LOG2 bound to: 32'sb00000000000000000000000000000011 
+	Parameter LFSR_SEED bound to: 8'b00110111 
+INFO: [Synth 8-6155] done synthesizing module 'vnu__parameterized53' (0#1) [C:/Users/rimpl/vivado/QEC_SU26/rtl/IBM_OSS_decoder.srcs/sources_1/new/vnu.sv:2]
+INFO: [Synth 8-6157] synthesizing module 'vnu__parameterized54' [C:/Users/rimpl/vivado/QEC_SU26/rtl/IBM_OSS_decoder.srcs/sources_1/new/vnu.sv:2]
+	Parameter DEG bound to: 32'sb00000000000000000000000000000011 
+	Parameter MAG_W bound to: 32'sb00000000000000000000000000000100 
+	Parameter MJ_W bound to: 32'sb00000000000000000000000000001000 
+	Parameter M_LOG2 bound to: 32'sb00000000000000000000000000000011 
+	Parameter LFSR_SEED bound to: 8'b00111000 
+INFO: [Synth 8-6155] done synthesizing module 'vnu__parameterized54' (0#1) [C:/Users/rimpl/vivado/QEC_SU26/rtl/IBM_OSS_decoder.srcs/sources_1/new/vnu.sv:2]
+INFO: [Synth 8-6157] synthesizing module 'vnu__parameterized55' [C:/Users/rimpl/vivado/QEC_SU26/rtl/IBM_OSS_decoder.srcs/sources_1/new/vnu.sv:2]
+	Parameter DEG bound to: 32'sb00000000000000000000000000000011 
+	Parameter MAG_W bound to: 32'sb00000000000000000000000000000100 
+	Parameter MJ_W bound to: 32'sb00000000000000000000000000001000 
+	Parameter M_LOG2 bound to: 32'sb00000000000000000000000000000011 
+	Parameter LFSR_SEED bound to: 8'b00111001 
+INFO: [Synth 8-6155] done synthesizing module 'vnu__parameterized55' (0#1) [C:/Users/rimpl/vivado/QEC_SU26/rtl/IBM_OSS_decoder.srcs/sources_1/new/vnu.sv:2]
+INFO: [Synth 8-6157] synthesizing module 'vnu__parameterized56' [C:/Users/rimpl/vivado/QEC_SU26/rtl/IBM_OSS_decoder.srcs/sources_1/new/vnu.sv:2]
+	Parameter DEG bound to: 32'sb00000000000000000000000000000011 
+	Parameter MAG_W bound to: 32'sb00000000000000000000000000000100 
+	Parameter MJ_W bound to: 32'sb00000000000000000000000000001000 
+	Parameter M_LOG2 bound to: 32'sb00000000000000000000000000000011 
+	Parameter LFSR_SEED bound to: 8'b00111010 
+INFO: [Synth 8-6155] done synthesizing module 'vnu__parameterized56' (0#1) [C:/Users/rimpl/vivado/QEC_SU26/rtl/IBM_OSS_decoder.srcs/sources_1/new/vnu.sv:2]
+INFO: [Synth 8-6157] synthesizing module 'vnu__parameterized57' [C:/Users/rimpl/vivado/QEC_SU26/rtl/IBM_OSS_decoder.srcs/sources_1/new/vnu.sv:2]
+	Parameter DEG bound to: 32'sb00000000000000000000000000000011 
+	Parameter MAG_W bound to: 32'sb00000000000000000000000000000100 
+	Parameter MJ_W bound to: 32'sb00000000000000000000000000001000 
+	Parameter M_LOG2 bound to: 32'sb00000000000000000000000000000011 
+	Parameter LFSR_SEED bound to: 8'b00111011 
+INFO: [Synth 8-6155] done synthesizing module 'vnu__parameterized57' (0#1) [C:/Users/rimpl/vivado/QEC_SU26/rtl/IBM_OSS_decoder.srcs/sources_1/new/vnu.sv:2]
+INFO: [Synth 8-6157] synthesizing module 'vnu__parameterized58' [C:/Users/rimpl/vivado/QEC_SU26/rtl/IBM_OSS_decoder.srcs/sources_1/new/vnu.sv:2]
+	Parameter DEG bound to: 32'sb00000000000000000000000000000011 
+	Parameter MAG_W bound to: 32'sb00000000000000000000000000000100 
+	Parameter MJ_W bound to: 32'sb00000000000000000000000000001000 
+	Parameter M_LOG2 bound to: 32'sb00000000000000000000000000000011 
+	Parameter LFSR_SEED bound to: 8'b00111100 
+INFO: [Synth 8-6155] done synthesizing module 'vnu__parameterized58' (0#1) [C:/Users/rimpl/vivado/QEC_SU26/rtl/IBM_OSS_decoder.srcs/sources_1/new/vnu.sv:2]
+INFO: [Synth 8-6157] synthesizing module 'vnu__parameterized59' [C:/Users/rimpl/vivado/QEC_SU26/rtl/IBM_OSS_decoder.srcs/sources_1/new/vnu.sv:2]
+	Parameter DEG bound to: 32'sb00000000000000000000000000000011 
+	Parameter MAG_W bound to: 32'sb00000000000000000000000000000100 
+	Parameter MJ_W bound to: 32'sb00000000000000000000000000001000 
+	Parameter M_LOG2 bound to: 32'sb00000000000000000000000000000011 
+	Parameter LFSR_SEED bound to: 8'b00111101 
+INFO: [Synth 8-6155] done synthesizing module 'vnu__parameterized59' (0#1) [C:/Users/rimpl/vivado/QEC_SU26/rtl/IBM_OSS_decoder.srcs/sources_1/new/vnu.sv:2]
+INFO: [Synth 8-6157] synthesizing module 'vnu__parameterized60' [C:/Users/rimpl/vivado/QEC_SU26/rtl/IBM_OSS_decoder.srcs/sources_1/new/vnu.sv:2]
+	Parameter DEG bound to: 32'sb00000000000000000000000000000011 
+	Parameter MAG_W bound to: 32'sb00000000000000000000000000000100 
+	Parameter MJ_W bound to: 32'sb00000000000000000000000000001000 
+	Parameter M_LOG2 bound to: 32'sb00000000000000000000000000000011 
+	Parameter LFSR_SEED bound to: 8'b00111110 
+INFO: [Synth 8-6155] done synthesizing module 'vnu__parameterized60' (0#1) [C:/Users/rimpl/vivado/QEC_SU26/rtl/IBM_OSS_decoder.srcs/sources_1/new/vnu.sv:2]
+INFO: [Synth 8-6157] synthesizing module 'vnu__parameterized61' [C:/Users/rimpl/vivado/QEC_SU26/rtl/IBM_OSS_decoder.srcs/sources_1/new/vnu.sv:2]
+	Parameter DEG bound to: 32'sb00000000000000000000000000000011 
+	Parameter MAG_W bound to: 32'sb00000000000000000000000000000100 
+	Parameter MJ_W bound to: 32'sb00000000000000000000000000001000 
+	Parameter M_LOG2 bound to: 32'sb00000000000000000000000000000011 
+	Parameter LFSR_SEED bound to: 8'b00111111 
+INFO: [Synth 8-6155] done synthesizing module 'vnu__parameterized61' (0#1) [C:/Users/rimpl/vivado/QEC_SU26/rtl/IBM_OSS_decoder.srcs/sources_1/new/vnu.sv:2]
+INFO: [Synth 8-6157] synthesizing module 'vnu__parameterized62' [C:/Users/rimpl/vivado/QEC_SU26/rtl/IBM_OSS_decoder.srcs/sources_1/new/vnu.sv:2]
+	Parameter DEG bound to: 32'sb00000000000000000000000000000011 
+	Parameter MAG_W bound to: 32'sb00000000000000000000000000000100 
+	Parameter MJ_W bound to: 32'sb00000000000000000000000000001000 
+	Parameter M_LOG2 bound to: 32'sb00000000000000000000000000000011 
+	Parameter LFSR_SEED bound to: 8'b01000000 
+INFO: [Synth 8-6155] done synthesizing module 'vnu__parameterized62' (0#1) [C:/Users/rimpl/vivado/QEC_SU26/rtl/IBM_OSS_decoder.srcs/sources_1/new/vnu.sv:2]
+INFO: [Synth 8-6157] synthesizing module 'vnu__parameterized63' [C:/Users/rimpl/vivado/QEC_SU26/rtl/IBM_OSS_decoder.srcs/sources_1/new/vnu.sv:2]
+	Parameter DEG bound to: 32'sb00000000000000000000000000000011 
+	Parameter MAG_W bound to: 32'sb00000000000000000000000000000100 
+	Parameter MJ_W bound to: 32'sb00000000000000000000000000001000 
+	Parameter M_LOG2 bound to: 32'sb00000000000000000000000000000011 
+	Parameter LFSR_SEED bound to: 8'b01000001 
+INFO: [Synth 8-6155] done synthesizing module 'vnu__parameterized63' (0#1) [C:/Users/rimpl/vivado/QEC_SU26/rtl/IBM_OSS_decoder.srcs/sources_1/new/vnu.sv:2]
+INFO: [Synth 8-6157] synthesizing module 'vnu__parameterized64' [C:/Users/rimpl/vivado/QEC_SU26/rtl/IBM_OSS_decoder.srcs/sources_1/new/vnu.sv:2]
+	Parameter DEG bound to: 32'sb00000000000000000000000000000011 
+	Parameter MAG_W bound to: 32'sb00000000000000000000000000000100 
+	Parameter MJ_W bound to: 32'sb00000000000000000000000000001000 
+	Parameter M_LOG2 bound to: 32'sb00000000000000000000000000000011 
+	Parameter LFSR_SEED bound to: 8'b01000010 
+INFO: [Synth 8-6155] done synthesizing module 'vnu__parameterized64' (0#1) [C:/Users/rimpl/vivado/QEC_SU26/rtl/IBM_OSS_decoder.srcs/sources_1/new/vnu.sv:2]
+INFO: [Synth 8-6157] synthesizing module 'vnu__parameterized65' [C:/Users/rimpl/vivado/QEC_SU26/rtl/IBM_OSS_decoder.srcs/sources_1/new/vnu.sv:2]
+	Parameter DEG bound to: 32'sb00000000000000000000000000000011 
+	Parameter MAG_W bound to: 32'sb00000000000000000000000000000100 
+	Parameter MJ_W bound to: 32'sb00000000000000000000000000001000 
+	Parameter M_LOG2 bound to: 32'sb00000000000000000000000000000011 
+	Parameter LFSR_SEED bound to: 8'b01000011 
+INFO: [Synth 8-6155] done synthesizing module 'vnu__parameterized65' (0#1) [C:/Users/rimpl/vivado/QEC_SU26/rtl/IBM_OSS_decoder.srcs/sources_1/new/vnu.sv:2]
+INFO: [Synth 8-6157] synthesizing module 'vnu__parameterized66' [C:/Users/rimpl/vivado/QEC_SU26/rtl/IBM_OSS_decoder.srcs/sources_1/new/vnu.sv:2]
+	Parameter DEG bound to: 32'sb00000000000000000000000000000011 
+	Parameter MAG_W bound to: 32'sb00000000000000000000000000000100 
+	Parameter MJ_W bound to: 32'sb00000000000000000000000000001000 
+	Parameter M_LOG2 bound to: 32'sb00000000000000000000000000000011 
+	Parameter LFSR_SEED bound to: 8'b01000100 
+INFO: [Synth 8-6155] done synthesizing module 'vnu__parameterized66' (0#1) [C:/Users/rimpl/vivado/QEC_SU26/rtl/IBM_OSS_decoder.srcs/sources_1/new/vnu.sv:2]
+INFO: [Synth 8-6157] synthesizing module 'vnu__parameterized67' [C:/Users/rimpl/vivado/QEC_SU26/rtl/IBM_OSS_decoder.srcs/sources_1/new/vnu.sv:2]
+	Parameter DEG bound to: 32'sb00000000000000000000000000000011 
+	Parameter MAG_W bound to: 32'sb00000000000000000000000000000100 
+	Parameter MJ_W bound to: 32'sb00000000000000000000000000001000 
+	Parameter M_LOG2 bound to: 32'sb00000000000000000000000000000011 
+	Parameter LFSR_SEED bound to: 8'b01000101 
+INFO: [Synth 8-6155] done synthesizing module 'vnu__parameterized67' (0#1) [C:/Users/rimpl/vivado/QEC_SU26/rtl/IBM_OSS_decoder.srcs/sources_1/new/vnu.sv:2]
+INFO: [Synth 8-6157] synthesizing module 'vnu__parameterized68' [C:/Users/rimpl/vivado/QEC_SU26/rtl/IBM_OSS_decoder.srcs/sources_1/new/vnu.sv:2]
+	Parameter DEG bound to: 32'sb00000000000000000000000000000011 
+	Parameter MAG_W bound to: 32'sb00000000000000000000000000000100 
+	Parameter MJ_W bound to: 32'sb00000000000000000000000000001000 
+	Parameter M_LOG2 bound to: 32'sb00000000000000000000000000000011 
+	Parameter LFSR_SEED bound to: 8'b01000110 
+INFO: [Synth 8-6155] done synthesizing module 'vnu__parameterized68' (0#1) [C:/Users/rimpl/vivado/QEC_SU26/rtl/IBM_OSS_decoder.srcs/sources_1/new/vnu.sv:2]
+INFO: [Synth 8-6157] synthesizing module 'vnu__parameterized69' [C:/Users/rimpl/vivado/QEC_SU26/rtl/IBM_OSS_decoder.srcs/sources_1/new/vnu.sv:2]
+	Parameter DEG bound to: 32'sb00000000000000000000000000000011 
+	Parameter MAG_W bound to: 32'sb00000000000000000000000000000100 
+	Parameter MJ_W bound to: 32'sb00000000000000000000000000001000 
+	Parameter M_LOG2 bound to: 32'sb00000000000000000000000000000011 
+	Parameter LFSR_SEED bound to: 8'b01000111 
+INFO: [Synth 8-6155] done synthesizing module 'vnu__parameterized69' (0#1) [C:/Users/rimpl/vivado/QEC_SU26/rtl/IBM_OSS_decoder.srcs/sources_1/new/vnu.sv:2]
+INFO: [Synth 8-6157] synthesizing module 'vnu__parameterized70' [C:/Users/rimpl/vivado/QEC_SU26/rtl/IBM_OSS_decoder.srcs/sources_1/new/vnu.sv:2]
+	Parameter DEG bound to: 32'sb00000000000000000000000000000011 
+	Parameter MAG_W bound to: 32'sb00000000000000000000000000000100 
+	Parameter MJ_W bound to: 32'sb00000000000000000000000000001000 
+	Parameter M_LOG2 bound to: 32'sb00000000000000000000000000000011 
+	Parameter LFSR_SEED bound to: 8'b01001000 
+INFO: [Synth 8-6155] done synthesizing module 'vnu__parameterized70' (0#1) [C:/Users/rimpl/vivado/QEC_SU26/rtl/IBM_OSS_decoder.srcs/sources_1/new/vnu.sv:2]
+INFO: [Synth 8-6157] synthesizing module 'vnu__parameterized71' [C:/Users/rimpl/vivado/QEC_SU26/rtl/IBM_OSS_decoder.srcs/sources_1/new/vnu.sv:2]
+	Parameter DEG bound to: 32'sb00000000000000000000000000000011 
+	Parameter MAG_W bound to: 32'sb00000000000000000000000000000100 
+	Parameter MJ_W bound to: 32'sb00000000000000000000000000001000 
+	Parameter M_LOG2 bound to: 32'sb00000000000000000000000000000011 
+	Parameter LFSR_SEED bound to: 8'b01001001 
+INFO: [Synth 8-6155] done synthesizing module 'vnu__parameterized71' (0#1) [C:/Users/rimpl/vivado/QEC_SU26/rtl/IBM_OSS_decoder.srcs/sources_1/new/vnu.sv:2]
+INFO: [Synth 8-6157] synthesizing module 'vnu__parameterized72' [C:/Users/rimpl/vivado/QEC_SU26/rtl/IBM_OSS_decoder.srcs/sources_1/new/vnu.sv:2]
+	Parameter DEG bound to: 32'sb00000000000000000000000000000011 
+	Parameter MAG_W bound to: 32'sb00000000000000000000000000000100 
+	Parameter MJ_W bound to: 32'sb00000000000000000000000000001000 
+	Parameter M_LOG2 bound to: 32'sb00000000000000000000000000000011 
+	Parameter LFSR_SEED bound to: 8'b01001010 
+INFO: [Synth 8-6155] done synthesizing module 'vnu__parameterized72' (0#1) [C:/Users/rimpl/vivado/QEC_SU26/rtl/IBM_OSS_decoder.srcs/sources_1/new/vnu.sv:2]
+INFO: [Synth 8-6157] synthesizing module 'vnu__parameterized73' [C:/Users/rimpl/vivado/QEC_SU26/rtl/IBM_OSS_decoder.srcs/sources_1/new/vnu.sv:2]
+	Parameter DEG bound to: 32'sb00000000000000000000000000000011 
+	Parameter MAG_W bound to: 32'sb00000000000000000000000000000100 
+	Parameter MJ_W bound to: 32'sb00000000000000000000000000001000 
+	Parameter M_LOG2 bound to: 32'sb00000000000000000000000000000011 
+	Parameter LFSR_SEED bound to: 8'b01001011 
+INFO: [Synth 8-6155] done synthesizing module 'vnu__parameterized73' (0#1) [C:/Users/rimpl/vivado/QEC_SU26/rtl/IBM_OSS_decoder.srcs/sources_1/new/vnu.sv:2]
+INFO: [Synth 8-6157] synthesizing module 'vnu__parameterized74' [C:/Users/rimpl/vivado/QEC_SU26/rtl/IBM_OSS_decoder.srcs/sources_1/new/vnu.sv:2]
+	Parameter DEG bound to: 32'sb00000000000000000000000000000011 
+	Parameter MAG_W bound to: 32'sb00000000000000000000000000000100 
+	Parameter MJ_W bound to: 32'sb00000000000000000000000000001000 
+	Parameter M_LOG2 bound to: 32'sb00000000000000000000000000000011 
+	Parameter LFSR_SEED bound to: 8'b01001100 
+INFO: [Synth 8-6155] done synthesizing module 'vnu__parameterized74' (0#1) [C:/Users/rimpl/vivado/QEC_SU26/rtl/IBM_OSS_decoder.srcs/sources_1/new/vnu.sv:2]
+INFO: [Synth 8-6157] synthesizing module 'vnu__parameterized75' [C:/Users/rimpl/vivado/QEC_SU26/rtl/IBM_OSS_decoder.srcs/sources_1/new/vnu.sv:2]
+	Parameter DEG bound to: 32'sb00000000000000000000000000000011 
+	Parameter MAG_W bound to: 32'sb00000000000000000000000000000100 
+	Parameter MJ_W bound to: 32'sb00000000000000000000000000001000 
+	Parameter M_LOG2 bound to: 32'sb00000000000000000000000000000011 
+	Parameter LFSR_SEED bound to: 8'b01001101 
+INFO: [Synth 8-6155] done synthesizing module 'vnu__parameterized75' (0#1) [C:/Users/rimpl/vivado/QEC_SU26/rtl/IBM_OSS_decoder.srcs/sources_1/new/vnu.sv:2]
+INFO: [Synth 8-6157] synthesizing module 'vnu__parameterized76' [C:/Users/rimpl/vivado/QEC_SU26/rtl/IBM_OSS_decoder.srcs/sources_1/new/vnu.sv:2]
+	Parameter DEG bound to: 32'sb00000000000000000000000000000011 
+	Parameter MAG_W bound to: 32'sb00000000000000000000000000000100 
+	Parameter MJ_W bound to: 32'sb00000000000000000000000000001000 
+	Parameter M_LOG2 bound to: 32'sb00000000000000000000000000000011 
+	Parameter LFSR_SEED bound to: 8'b01001110 
+INFO: [Synth 8-6155] done synthesizing module 'vnu__parameterized76' (0#1) [C:/Users/rimpl/vivado/QEC_SU26/rtl/IBM_OSS_decoder.srcs/sources_1/new/vnu.sv:2]
+INFO: [Synth 8-6157] synthesizing module 'vnu__parameterized77' [C:/Users/rimpl/vivado/QEC_SU26/rtl/IBM_OSS_decoder.srcs/sources_1/new/vnu.sv:2]
+	Parameter DEG bound to: 32'sb00000000000000000000000000000011 
+	Parameter MAG_W bound to: 32'sb00000000000000000000000000000100 
+	Parameter MJ_W bound to: 32'sb00000000000000000000000000001000 
+	Parameter M_LOG2 bound to: 32'sb00000000000000000000000000000011 
+	Parameter LFSR_SEED bound to: 8'b01001111 
+INFO: [Synth 8-6155] done synthesizing module 'vnu__parameterized77' (0#1) [C:/Users/rimpl/vivado/QEC_SU26/rtl/IBM_OSS_decoder.srcs/sources_1/new/vnu.sv:2]
+INFO: [Synth 8-6157] synthesizing module 'vnu__parameterized78' [C:/Users/rimpl/vivado/QEC_SU26/rtl/IBM_OSS_decoder.srcs/sources_1/new/vnu.sv:2]
+	Parameter DEG bound to: 32'sb00000000000000000000000000000011 
+	Parameter MAG_W bound to: 32'sb00000000000000000000000000000100 
+	Parameter MJ_W bound to: 32'sb00000000000000000000000000001000 
+	Parameter M_LOG2 bound to: 32'sb00000000000000000000000000000011 
+	Parameter LFSR_SEED bound to: 8'b01010000 
+INFO: [Synth 8-6155] done synthesizing module 'vnu__parameterized78' (0#1) [C:/Users/rimpl/vivado/QEC_SU26/rtl/IBM_OSS_decoder.srcs/sources_1/new/vnu.sv:2]
+INFO: [Synth 8-6157] synthesizing module 'vnu__parameterized79' [C:/Users/rimpl/vivado/QEC_SU26/rtl/IBM_OSS_decoder.srcs/sources_1/new/vnu.sv:2]
+	Parameter DEG bound to: 32'sb00000000000000000000000000000011 
+	Parameter MAG_W bound to: 32'sb00000000000000000000000000000100 
+	Parameter MJ_W bound to: 32'sb00000000000000000000000000001000 
+	Parameter M_LOG2 bound to: 32'sb00000000000000000000000000000011 
+	Parameter LFSR_SEED bound to: 8'b01010001 
+INFO: [Synth 8-6155] done synthesizing module 'vnu__parameterized79' (0#1) [C:/Users/rimpl/vivado/QEC_SU26/rtl/IBM_OSS_decoder.srcs/sources_1/new/vnu.sv:2]
+INFO: [Synth 8-6157] synthesizing module 'vnu__parameterized80' [C:/Users/rimpl/vivado/QEC_SU26/rtl/IBM_OSS_decoder.srcs/sources_1/new/vnu.sv:2]
+	Parameter DEG bound to: 32'sb00000000000000000000000000000011 
+	Parameter MAG_W bound to: 32'sb00000000000000000000000000000100 
+	Parameter MJ_W bound to: 32'sb00000000000000000000000000001000 
+	Parameter M_LOG2 bound to: 32'sb00000000000000000000000000000011 
+	Parameter LFSR_SEED bound to: 8'b01010010 
+INFO: [Synth 8-6155] done synthesizing module 'vnu__parameterized80' (0#1) [C:/Users/rimpl/vivado/QEC_SU26/rtl/IBM_OSS_decoder.srcs/sources_1/new/vnu.sv:2]
+INFO: [Synth 8-6157] synthesizing module 'vnu__parameterized81' [C:/Users/rimpl/vivado/QEC_SU26/rtl/IBM_OSS_decoder.srcs/sources_1/new/vnu.sv:2]
+	Parameter DEG bound to: 32'sb00000000000000000000000000000011 
+	Parameter MAG_W bound to: 32'sb00000000000000000000000000000100 
+	Parameter MJ_W bound to: 32'sb00000000000000000000000000001000 
+	Parameter M_LOG2 bound to: 32'sb00000000000000000000000000000011 
+	Parameter LFSR_SEED bound to: 8'b01010011 
+INFO: [Synth 8-6155] done synthesizing module 'vnu__parameterized81' (0#1) [C:/Users/rimpl/vivado/QEC_SU26/rtl/IBM_OSS_decoder.srcs/sources_1/new/vnu.sv:2]
+INFO: [Synth 8-6157] synthesizing module 'vnu__parameterized82' [C:/Users/rimpl/vivado/QEC_SU26/rtl/IBM_OSS_decoder.srcs/sources_1/new/vnu.sv:2]
+	Parameter DEG bound to: 32'sb00000000000000000000000000000011 
+	Parameter MAG_W bound to: 32'sb00000000000000000000000000000100 
+	Parameter MJ_W bound to: 32'sb00000000000000000000000000001000 
+	Parameter M_LOG2 bound to: 32'sb00000000000000000000000000000011 
+	Parameter LFSR_SEED bound to: 8'b01010100 
+INFO: [Synth 8-6155] done synthesizing module 'vnu__parameterized82' (0#1) [C:/Users/rimpl/vivado/QEC_SU26/rtl/IBM_OSS_decoder.srcs/sources_1/new/vnu.sv:2]
+INFO: [Synth 8-6157] synthesizing module 'vnu__parameterized83' [C:/Users/rimpl/vivado/QEC_SU26/rtl/IBM_OSS_decoder.srcs/sources_1/new/vnu.sv:2]
+	Parameter DEG bound to: 32'sb00000000000000000000000000000011 
+	Parameter MAG_W bound to: 32'sb00000000000000000000000000000100 
+	Parameter MJ_W bound to: 32'sb00000000000000000000000000001000 
+	Parameter M_LOG2 bound to: 32'sb00000000000000000000000000000011 
+	Parameter LFSR_SEED bound to: 8'b01010101 
+INFO: [Synth 8-6155] done synthesizing module 'vnu__parameterized83' (0#1) [C:/Users/rimpl/vivado/QEC_SU26/rtl/IBM_OSS_decoder.srcs/sources_1/new/vnu.sv:2]
+INFO: [Synth 8-6157] synthesizing module 'vnu__parameterized84' [C:/Users/rimpl/vivado/QEC_SU26/rtl/IBM_OSS_decoder.srcs/sources_1/new/vnu.sv:2]
+	Parameter DEG bound to: 32'sb00000000000000000000000000000011 
+	Parameter MAG_W bound to: 32'sb00000000000000000000000000000100 
+	Parameter MJ_W bound to: 32'sb00000000000000000000000000001000 
+	Parameter M_LOG2 bound to: 32'sb00000000000000000000000000000011 
+	Parameter LFSR_SEED bound to: 8'b01010110 
+INFO: [Synth 8-6155] done synthesizing module 'vnu__parameterized84' (0#1) [C:/Users/rimpl/vivado/QEC_SU26/rtl/IBM_OSS_decoder.srcs/sources_1/new/vnu.sv:2]
+INFO: [Synth 8-6157] synthesizing module 'vnu__parameterized85' [C:/Users/rimpl/vivado/QEC_SU26/rtl/IBM_OSS_decoder.srcs/sources_1/new/vnu.sv:2]
+	Parameter DEG bound to: 32'sb00000000000000000000000000000011 
+	Parameter MAG_W bound to: 32'sb00000000000000000000000000000100 
+	Parameter MJ_W bound to: 32'sb00000000000000000000000000001000 
+	Parameter M_LOG2 bound to: 32'sb00000000000000000000000000000011 
+	Parameter LFSR_SEED bound to: 8'b01010111 
+INFO: [Synth 8-6155] done synthesizing module 'vnu__parameterized85' (0#1) [C:/Users/rimpl/vivado/QEC_SU26/rtl/IBM_OSS_decoder.srcs/sources_1/new/vnu.sv:2]
+INFO: [Synth 8-6157] synthesizing module 'vnu__parameterized86' [C:/Users/rimpl/vivado/QEC_SU26/rtl/IBM_OSS_decoder.srcs/sources_1/new/vnu.sv:2]
+	Parameter DEG bound to: 32'sb00000000000000000000000000000011 
+	Parameter MAG_W bound to: 32'sb00000000000000000000000000000100 
+	Parameter MJ_W bound to: 32'sb00000000000000000000000000001000 
+	Parameter M_LOG2 bound to: 32'sb00000000000000000000000000000011 
+	Parameter LFSR_SEED bound to: 8'b01011000 
+INFO: [Synth 8-6155] done synthesizing module 'vnu__parameterized86' (0#1) [C:/Users/rimpl/vivado/QEC_SU26/rtl/IBM_OSS_decoder.srcs/sources_1/new/vnu.sv:2]
+INFO: [Synth 8-6157] synthesizing module 'vnu__parameterized87' [C:/Users/rimpl/vivado/QEC_SU26/rtl/IBM_OSS_decoder.srcs/sources_1/new/vnu.sv:2]
+	Parameter DEG bound to: 32'sb00000000000000000000000000000011 
+	Parameter MAG_W bound to: 32'sb00000000000000000000000000000100 
+	Parameter MJ_W bound to: 32'sb00000000000000000000000000001000 
+	Parameter M_LOG2 bound to: 32'sb00000000000000000000000000000011 
+	Parameter LFSR_SEED bound to: 8'b01011001 
+INFO: [Synth 8-6155] done synthesizing module 'vnu__parameterized87' (0#1) [C:/Users/rimpl/vivado/QEC_SU26/rtl/IBM_OSS_decoder.srcs/sources_1/new/vnu.sv:2]
+INFO: [Synth 8-6157] synthesizing module 'vnu__parameterized88' [C:/Users/rimpl/vivado/QEC_SU26/rtl/IBM_OSS_decoder.srcs/sources_1/new/vnu.sv:2]
+	Parameter DEG bound to: 32'sb00000000000000000000000000000011 
+	Parameter MAG_W bound to: 32'sb00000000000000000000000000000100 
+	Parameter MJ_W bound to: 32'sb00000000000000000000000000001000 
+	Parameter M_LOG2 bound to: 32'sb00000000000000000000000000000011 
+	Parameter LFSR_SEED bound to: 8'b01011010 
+INFO: [Synth 8-6155] done synthesizing module 'vnu__parameterized88' (0#1) [C:/Users/rimpl/vivado/QEC_SU26/rtl/IBM_OSS_decoder.srcs/sources_1/new/vnu.sv:2]
+INFO: [Synth 8-6157] synthesizing module 'vnu__parameterized89' [C:/Users/rimpl/vivado/QEC_SU26/rtl/IBM_OSS_decoder.srcs/sources_1/new/vnu.sv:2]
+	Parameter DEG bound to: 32'sb00000000000000000000000000000011 
+	Parameter MAG_W bound to: 32'sb00000000000000000000000000000100 
+	Parameter MJ_W bound to: 32'sb00000000000000000000000000001000 
+	Parameter M_LOG2 bound to: 32'sb00000000000000000000000000000011 
+	Parameter LFSR_SEED bound to: 8'b01011011 
+INFO: [Synth 8-6155] done synthesizing module 'vnu__parameterized89' (0#1) [C:/Users/rimpl/vivado/QEC_SU26/rtl/IBM_OSS_decoder.srcs/sources_1/new/vnu.sv:2]
+INFO: [Synth 8-6157] synthesizing module 'vnu__parameterized90' [C:/Users/rimpl/vivado/QEC_SU26/rtl/IBM_OSS_decoder.srcs/sources_1/new/vnu.sv:2]
+	Parameter DEG bound to: 32'sb00000000000000000000000000000011 
+	Parameter MAG_W bound to: 32'sb00000000000000000000000000000100 
+	Parameter MJ_W bound to: 32'sb00000000000000000000000000001000 
+	Parameter M_LOG2 bound to: 32'sb00000000000000000000000000000011 
+	Parameter LFSR_SEED bound to: 8'b01011100 
+INFO: [Synth 8-6155] done synthesizing module 'vnu__parameterized90' (0#1) [C:/Users/rimpl/vivado/QEC_SU26/rtl/IBM_OSS_decoder.srcs/sources_1/new/vnu.sv:2]
+INFO: [Synth 8-6157] synthesizing module 'vnu__parameterized91' [C:/Users/rimpl/vivado/QEC_SU26/rtl/IBM_OSS_decoder.srcs/sources_1/new/vnu.sv:2]
+	Parameter DEG bound to: 32'sb00000000000000000000000000000011 
+	Parameter MAG_W bound to: 32'sb00000000000000000000000000000100 
+	Parameter MJ_W bound to: 32'sb00000000000000000000000000001000 
+	Parameter M_LOG2 bound to: 32'sb00000000000000000000000000000011 
+	Parameter LFSR_SEED bound to: 8'b01011101 
+INFO: [Synth 8-6155] done synthesizing module 'vnu__parameterized91' (0#1) [C:/Users/rimpl/vivado/QEC_SU26/rtl/IBM_OSS_decoder.srcs/sources_1/new/vnu.sv:2]
+INFO: [Synth 8-6157] synthesizing module 'vnu__parameterized92' [C:/Users/rimpl/vivado/QEC_SU26/rtl/IBM_OSS_decoder.srcs/sources_1/new/vnu.sv:2]
+	Parameter DEG bound to: 32'sb00000000000000000000000000000011 
+	Parameter MAG_W bound to: 32'sb00000000000000000000000000000100 
+	Parameter MJ_W bound to: 32'sb00000000000000000000000000001000 
+	Parameter M_LOG2 bound to: 32'sb00000000000000000000000000000011 
+	Parameter LFSR_SEED bound to: 8'b01011110 
+INFO: [Synth 8-6155] done synthesizing module 'vnu__parameterized92' (0#1) [C:/Users/rimpl/vivado/QEC_SU26/rtl/IBM_OSS_decoder.srcs/sources_1/new/vnu.sv:2]
+INFO: [Synth 8-6157] synthesizing module 'vnu__parameterized93' [C:/Users/rimpl/vivado/QEC_SU26/rtl/IBM_OSS_decoder.srcs/sources_1/new/vnu.sv:2]
+	Parameter DEG bound to: 32'sb00000000000000000000000000000011 
+	Parameter MAG_W bound to: 32'sb00000000000000000000000000000100 
+	Parameter MJ_W bound to: 32'sb00000000000000000000000000001000 
+	Parameter M_LOG2 bound to: 32'sb00000000000000000000000000000011 
+	Parameter LFSR_SEED bound to: 8'b01011111 
+INFO: [Synth 8-6155] done synthesizing module 'vnu__parameterized93' (0#1) [C:/Users/rimpl/vivado/QEC_SU26/rtl/IBM_OSS_decoder.srcs/sources_1/new/vnu.sv:2]
+INFO: [Synth 8-6157] synthesizing module 'vnu__parameterized94' [C:/Users/rimpl/vivado/QEC_SU26/rtl/IBM_OSS_decoder.srcs/sources_1/new/vnu.sv:2]
+	Parameter DEG bound to: 32'sb00000000000000000000000000000011 
+	Parameter MAG_W bound to: 32'sb00000000000000000000000000000100 
+	Parameter MJ_W bound to: 32'sb00000000000000000000000000001000 
+	Parameter M_LOG2 bound to: 32'sb00000000000000000000000000000011 
+	Parameter LFSR_SEED bound to: 8'b01100000 
+INFO: [Synth 8-6155] done synthesizing module 'vnu__parameterized94' (0#1) [C:/Users/rimpl/vivado/QEC_SU26/rtl/IBM_OSS_decoder.srcs/sources_1/new/vnu.sv:2]
+INFO: [Synth 8-6157] synthesizing module 'vnu__parameterized95' [C:/Users/rimpl/vivado/QEC_SU26/rtl/IBM_OSS_decoder.srcs/sources_1/new/vnu.sv:2]
+	Parameter DEG bound to: 32'sb00000000000000000000000000000011 
+	Parameter MAG_W bound to: 32'sb00000000000000000000000000000100 
+	Parameter MJ_W bound to: 32'sb00000000000000000000000000001000 
+	Parameter M_LOG2 bound to: 32'sb00000000000000000000000000000011 
+	Parameter LFSR_SEED bound to: 8'b01100001 
+INFO: [Synth 8-6155] done synthesizing module 'vnu__parameterized95' (0#1) [C:/Users/rimpl/vivado/QEC_SU26/rtl/IBM_OSS_decoder.srcs/sources_1/new/vnu.sv:2]
+INFO: [Synth 8-6157] synthesizing module 'vnu__parameterized96' [C:/Users/rimpl/vivado/QEC_SU26/rtl/IBM_OSS_decoder.srcs/sources_1/new/vnu.sv:2]
+INFO: [Common 17-14] Message 'Synth 8-6157' appears 100 times and further instances of the messages will be disabled. Use the Tcl command set_msg_config to change the current settings.
+	Parameter DEG bound to: 32'sb00000000000000000000000000000011 
+	Parameter MAG_W bound to: 32'sb00000000000000000000000000000100 
+	Parameter MJ_W bound to: 32'sb00000000000000000000000000001000 
+	Parameter M_LOG2 bound to: 32'sb00000000000000000000000000000011 
+	Parameter LFSR_SEED bound to: 8'b01100010 
+INFO: [Synth 8-6155] done synthesizing module 'vnu__parameterized96' (0#1) [C:/Users/rimpl/vivado/QEC_SU26/rtl/IBM_OSS_decoder.srcs/sources_1/new/vnu.sv:2]
+	Parameter DEG bound to: 32'sb00000000000000000000000000000011 
+	Parameter MAG_W bound to: 32'sb00000000000000000000000000000100 
+	Parameter MJ_W bound to: 32'sb00000000000000000000000000001000 
+	Parameter M_LOG2 bound to: 32'sb00000000000000000000000000000011 
+	Parameter LFSR_SEED bound to: 8'b01100011 
+INFO: [Synth 8-6155] done synthesizing module 'vnu__parameterized97' (0#1) [C:/Users/rimpl/vivado/QEC_SU26/rtl/IBM_OSS_decoder.srcs/sources_1/new/vnu.sv:2]
+INFO: [Common 17-14] Message 'Synth 8-6155' appears 100 times and further instances of the messages will be disabled. Use the Tcl command set_msg_config to change the current settings.
+	Parameter DEG bound to: 32'sb00000000000000000000000000000011 
+	Parameter MAG_W bound to: 32'sb00000000000000000000000000000100 
+	Parameter MJ_W bound to: 32'sb00000000000000000000000000001000 
+	Parameter M_LOG2 bound to: 32'sb00000000000000000000000000000011 
+	Parameter LFSR_SEED bound to: 8'b01100100 
+	Parameter DEG bound to: 32'sb00000000000000000000000000000011 
+	Parameter MAG_W bound to: 32'sb00000000000000000000000000000100 
+	Parameter MJ_W bound to: 32'sb00000000000000000000000000001000 
+	Parameter M_LOG2 bound to: 32'sb00000000000000000000000000000011 
+	Parameter LFSR_SEED bound to: 8'b01100101 
+	Parameter DEG bound to: 32'sb00000000000000000000000000000011 
+	Parameter MAG_W bound to: 32'sb00000000000000000000000000000100 
+	Parameter MJ_W bound to: 32'sb00000000000000000000000000001000 
+	Parameter M_LOG2 bound to: 32'sb00000000000000000000000000000011 
+	Parameter LFSR_SEED bound to: 8'b01100110 
+	Parameter DEG bound to: 32'sb00000000000000000000000000000011 
+	Parameter MAG_W bound to: 32'sb00000000000000000000000000000100 
+	Parameter MJ_W bound to: 32'sb00000000000000000000000000001000 
+	Parameter M_LOG2 bound to: 32'sb00000000000000000000000000000011 
+	Parameter LFSR_SEED bound to: 8'b01100111 
+	Parameter DEG bound to: 32'sb00000000000000000000000000000011 
+	Parameter MAG_W bound to: 32'sb00000000000000000000000000000100 
+	Parameter MJ_W bound to: 32'sb00000000000000000000000000001000 
+	Parameter M_LOG2 bound to: 32'sb00000000000000000000000000000011 
+	Parameter LFSR_SEED bound to: 8'b01101000 
+	Parameter DEG bound to: 32'sb00000000000000000000000000000011 
+	Parameter MAG_W bound to: 32'sb00000000000000000000000000000100 
+	Parameter MJ_W bound to: 32'sb00000000000000000000000000001000 
+	Parameter M_LOG2 bound to: 32'sb00000000000000000000000000000011 
+	Parameter LFSR_SEED bound to: 8'b01101001 
+	Parameter DEG bound to: 32'sb00000000000000000000000000000011 
+	Parameter MAG_W bound to: 32'sb00000000000000000000000000000100 
+	Parameter MJ_W bound to: 32'sb00000000000000000000000000001000 
+	Parameter M_LOG2 bound to: 32'sb00000000000000000000000000000011 
+	Parameter LFSR_SEED bound to: 8'b01101010 
+	Parameter DEG bound to: 32'sb00000000000000000000000000000011 
+	Parameter MAG_W bound to: 32'sb00000000000000000000000000000100 
+	Parameter MJ_W bound to: 32'sb00000000000000000000000000001000 
+	Parameter M_LOG2 bound to: 32'sb00000000000000000000000000000011 
+	Parameter LFSR_SEED bound to: 8'b01101011 
+	Parameter DEG bound to: 32'sb00000000000000000000000000000011 
+	Parameter MAG_W bound to: 32'sb00000000000000000000000000000100 
+	Parameter MJ_W bound to: 32'sb00000000000000000000000000001000 
+	Parameter M_LOG2 bound to: 32'sb00000000000000000000000000000011 
+	Parameter LFSR_SEED bound to: 8'b01101100 
+	Parameter DEG bound to: 32'sb00000000000000000000000000000011 
+	Parameter MAG_W bound to: 32'sb00000000000000000000000000000100 
+	Parameter MJ_W bound to: 32'sb00000000000000000000000000001000 
+	Parameter M_LOG2 bound to: 32'sb00000000000000000000000000000011 
+	Parameter LFSR_SEED bound to: 8'b01101101 
+	Parameter DEG bound to: 32'sb00000000000000000000000000000011 
+	Parameter MAG_W bound to: 32'sb00000000000000000000000000000100 
+	Parameter MJ_W bound to: 32'sb00000000000000000000000000001000 
+	Parameter M_LOG2 bound to: 32'sb00000000000000000000000000000011 
+	Parameter LFSR_SEED bound to: 8'b01101110 
+	Parameter DEG bound to: 32'sb00000000000000000000000000000011 
+	Parameter MAG_W bound to: 32'sb00000000000000000000000000000100 
+	Parameter MJ_W bound to: 32'sb00000000000000000000000000001000 
+	Parameter M_LOG2 bound to: 32'sb00000000000000000000000000000011 
+	Parameter LFSR_SEED bound to: 8'b01101111 
+	Parameter DEG bound to: 32'sb00000000000000000000000000000011 
+	Parameter MAG_W bound to: 32'sb00000000000000000000000000000100 
+	Parameter MJ_W bound to: 32'sb00000000000000000000000000001000 
+	Parameter M_LOG2 bound to: 32'sb00000000000000000000000000000011 
+	Parameter LFSR_SEED bound to: 8'b01110000 
+	Parameter DEG bound to: 32'sb00000000000000000000000000000011 
+	Parameter MAG_W bound to: 32'sb00000000000000000000000000000100 
+	Parameter MJ_W bound to: 32'sb00000000000000000000000000001000 
+	Parameter M_LOG2 bound to: 32'sb00000000000000000000000000000011 
+	Parameter LFSR_SEED bound to: 8'b01110001 
+	Parameter DEG bound to: 32'sb00000000000000000000000000000011 
+	Parameter MAG_W bound to: 32'sb00000000000000000000000000000100 
+	Parameter MJ_W bound to: 32'sb00000000000000000000000000001000 
+	Parameter M_LOG2 bound to: 32'sb00000000000000000000000000000011 
+	Parameter LFSR_SEED bound to: 8'b01110010 
+	Parameter DEG bound to: 32'sb00000000000000000000000000000011 
+	Parameter MAG_W bound to: 32'sb00000000000000000000000000000100 
+	Parameter MJ_W bound to: 32'sb00000000000000000000000000001000 
+	Parameter M_LOG2 bound to: 32'sb00000000000000000000000000000011 
+	Parameter LFSR_SEED bound to: 8'b01110011 
+	Parameter DEG bound to: 32'sb00000000000000000000000000000011 
+	Parameter MAG_W bound to: 32'sb00000000000000000000000000000100 
+	Parameter MJ_W bound to: 32'sb00000000000000000000000000001000 
+	Parameter M_LOG2 bound to: 32'sb00000000000000000000000000000011 
+	Parameter LFSR_SEED bound to: 8'b01110100 
+	Parameter DEG bound to: 32'sb00000000000000000000000000000011 
+	Parameter MAG_W bound to: 32'sb00000000000000000000000000000100 
+	Parameter MJ_W bound to: 32'sb00000000000000000000000000001000 
+	Parameter M_LOG2 bound to: 32'sb00000000000000000000000000000011 
+	Parameter LFSR_SEED bound to: 8'b01110101 
+	Parameter DEG bound to: 32'sb00000000000000000000000000000011 
+	Parameter MAG_W bound to: 32'sb00000000000000000000000000000100 
+	Parameter MJ_W bound to: 32'sb00000000000000000000000000001000 
+	Parameter M_LOG2 bound to: 32'sb00000000000000000000000000000011 
+	Parameter LFSR_SEED bound to: 8'b01110110 
+	Parameter DEG bound to: 32'sb00000000000000000000000000000011 
+	Parameter MAG_W bound to: 32'sb00000000000000000000000000000100 
+	Parameter MJ_W bound to: 32'sb00000000000000000000000000001000 
+	Parameter M_LOG2 bound to: 32'sb00000000000000000000000000000011 
+	Parameter LFSR_SEED bound to: 8'b01110111 
+	Parameter DEG bound to: 32'sb00000000000000000000000000000011 
+	Parameter MAG_W bound to: 32'sb00000000000000000000000000000100 
+	Parameter MJ_W bound to: 32'sb00000000000000000000000000001000 
+	Parameter M_LOG2 bound to: 32'sb00000000000000000000000000000011 
+	Parameter LFSR_SEED bound to: 8'b01111000 
+	Parameter DEG bound to: 32'sb00000000000000000000000000000011 
+	Parameter MAG_W bound to: 32'sb00000000000000000000000000000100 
+	Parameter MJ_W bound to: 32'sb00000000000000000000000000001000 
+	Parameter M_LOG2 bound to: 32'sb00000000000000000000000000000011 
+	Parameter LFSR_SEED bound to: 8'b01111001 
+	Parameter DEG bound to: 32'sb00000000000000000000000000000011 
+	Parameter MAG_W bound to: 32'sb00000000000000000000000000000100 
+	Parameter MJ_W bound to: 32'sb00000000000000000000000000001000 
+	Parameter M_LOG2 bound to: 32'sb00000000000000000000000000000011 
+	Parameter LFSR_SEED bound to: 8'b01111010 
+	Parameter DEG bound to: 32'sb00000000000000000000000000000011 
+	Parameter MAG_W bound to: 32'sb00000000000000000000000000000100 
+	Parameter MJ_W bound to: 32'sb00000000000000000000000000001000 
+	Parameter M_LOG2 bound to: 32'sb00000000000000000000000000000011 
+	Parameter LFSR_SEED bound to: 8'b01111011 
+	Parameter DEG bound to: 32'sb00000000000000000000000000000011 
+	Parameter MAG_W bound to: 32'sb00000000000000000000000000000100 
+	Parameter MJ_W bound to: 32'sb00000000000000000000000000001000 
+	Parameter M_LOG2 bound to: 32'sb00000000000000000000000000000011 
+	Parameter LFSR_SEED bound to: 8'b01111100 
+	Parameter DEG bound to: 32'sb00000000000000000000000000000011 
+	Parameter MAG_W bound to: 32'sb00000000000000000000000000000100 
+	Parameter MJ_W bound to: 32'sb00000000000000000000000000001000 
+	Parameter M_LOG2 bound to: 32'sb00000000000000000000000000000011 
+	Parameter LFSR_SEED bound to: 8'b01111101 
+	Parameter DEG bound to: 32'sb00000000000000000000000000000011 
+	Parameter MAG_W bound to: 32'sb00000000000000000000000000000100 
+	Parameter MJ_W bound to: 32'sb00000000000000000000000000001000 
+	Parameter M_LOG2 bound to: 32'sb00000000000000000000000000000011 
+	Parameter LFSR_SEED bound to: 8'b01111110 
+	Parameter DEG bound to: 32'sb00000000000000000000000000000011 
+	Parameter MAG_W bound to: 32'sb00000000000000000000000000000100 
+	Parameter MJ_W bound to: 32'sb00000000000000000000000000001000 
+	Parameter M_LOG2 bound to: 32'sb00000000000000000000000000000011 
+	Parameter LFSR_SEED bound to: 8'b01111111 
+	Parameter DEG bound to: 32'sb00000000000000000000000000000011 
+	Parameter MAG_W bound to: 32'sb00000000000000000000000000000100 
+	Parameter MJ_W bound to: 32'sb00000000000000000000000000001000 
+	Parameter M_LOG2 bound to: 32'sb00000000000000000000000000000011 
+	Parameter LFSR_SEED bound to: 8'b10000000 
+	Parameter DEG bound to: 32'sb00000000000000000000000000000011 
+	Parameter MAG_W bound to: 32'sb00000000000000000000000000000100 
+	Parameter MJ_W bound to: 32'sb00000000000000000000000000001000 
+	Parameter M_LOG2 bound to: 32'sb00000000000000000000000000000011 
+	Parameter LFSR_SEED bound to: 8'b10000001 
+	Parameter DEG bound to: 32'sb00000000000000000000000000000011 
+	Parameter MAG_W bound to: 32'sb00000000000000000000000000000100 
+	Parameter MJ_W bound to: 32'sb00000000000000000000000000001000 
+	Parameter M_LOG2 bound to: 32'sb00000000000000000000000000000011 
+	Parameter LFSR_SEED bound to: 8'b10000010 
+	Parameter DEG bound to: 32'sb00000000000000000000000000000011 
+	Parameter MAG_W bound to: 32'sb00000000000000000000000000000100 
+	Parameter MJ_W bound to: 32'sb00000000000000000000000000001000 
+	Parameter M_LOG2 bound to: 32'sb00000000000000000000000000000011 
+	Parameter LFSR_SEED bound to: 8'b10000011 
+	Parameter DEG bound to: 32'sb00000000000000000000000000000011 
+	Parameter MAG_W bound to: 32'sb00000000000000000000000000000100 
+	Parameter MJ_W bound to: 32'sb00000000000000000000000000001000 
+	Parameter M_LOG2 bound to: 32'sb00000000000000000000000000000011 
+	Parameter LFSR_SEED bound to: 8'b10000100 
+	Parameter DEG bound to: 32'sb00000000000000000000000000000011 
+	Parameter MAG_W bound to: 32'sb00000000000000000000000000000100 
+	Parameter MJ_W bound to: 32'sb00000000000000000000000000001000 
+	Parameter M_LOG2 bound to: 32'sb00000000000000000000000000000011 
+	Parameter LFSR_SEED bound to: 8'b10000101 
+	Parameter DEG bound to: 32'sb00000000000000000000000000000011 
+	Parameter MAG_W bound to: 32'sb00000000000000000000000000000100 
+	Parameter MJ_W bound to: 32'sb00000000000000000000000000001000 
+	Parameter M_LOG2 bound to: 32'sb00000000000000000000000000000011 
+	Parameter LFSR_SEED bound to: 8'b10000110 
+	Parameter DEG bound to: 32'sb00000000000000000000000000000011 
+	Parameter MAG_W bound to: 32'sb00000000000000000000000000000100 
+	Parameter MJ_W bound to: 32'sb00000000000000000000000000001000 
+	Parameter M_LOG2 bound to: 32'sb00000000000000000000000000000011 
+	Parameter LFSR_SEED bound to: 8'b10000111 
+	Parameter DEG bound to: 32'sb00000000000000000000000000000011 
+	Parameter MAG_W bound to: 32'sb00000000000000000000000000000100 
+	Parameter MJ_W bound to: 32'sb00000000000000000000000000001000 
+	Parameter M_LOG2 bound to: 32'sb00000000000000000000000000000011 
+	Parameter LFSR_SEED bound to: 8'b10001000 
+	Parameter DEG bound to: 32'sb00000000000000000000000000000011 
+	Parameter MAG_W bound to: 32'sb00000000000000000000000000000100 
+	Parameter MJ_W bound to: 32'sb00000000000000000000000000001000 
+	Parameter M_LOG2 bound to: 32'sb00000000000000000000000000000011 
+	Parameter LFSR_SEED bound to: 8'b10001001 
+	Parameter DEG bound to: 32'sb00000000000000000000000000000011 
+	Parameter MAG_W bound to: 32'sb00000000000000000000000000000100 
+	Parameter MJ_W bound to: 32'sb00000000000000000000000000001000 
+	Parameter M_LOG2 bound to: 32'sb00000000000000000000000000000011 
+	Parameter LFSR_SEED bound to: 8'b10001010 
+	Parameter DEG bound to: 32'sb00000000000000000000000000000011 
+	Parameter MAG_W bound to: 32'sb00000000000000000000000000000100 
+	Parameter MJ_W bound to: 32'sb00000000000000000000000000001000 
+	Parameter M_LOG2 bound to: 32'sb00000000000000000000000000000011 
+	Parameter LFSR_SEED bound to: 8'b10001011 
+	Parameter DEG bound to: 32'sb00000000000000000000000000000011 
+	Parameter MAG_W bound to: 32'sb00000000000000000000000000000100 
+	Parameter MJ_W bound to: 32'sb00000000000000000000000000001000 
+	Parameter M_LOG2 bound to: 32'sb00000000000000000000000000000011 
+	Parameter LFSR_SEED bound to: 8'b10001100 
+	Parameter DEG bound to: 32'sb00000000000000000000000000000011 
+	Parameter MAG_W bound to: 32'sb00000000000000000000000000000100 
+	Parameter MJ_W bound to: 32'sb00000000000000000000000000001000 
+	Parameter M_LOG2 bound to: 32'sb00000000000000000000000000000011 
+	Parameter LFSR_SEED bound to: 8'b10001101 
+	Parameter DEG bound to: 32'sb00000000000000000000000000000011 
+	Parameter MAG_W bound to: 32'sb00000000000000000000000000000100 
+	Parameter MJ_W bound to: 32'sb00000000000000000000000000001000 
+	Parameter M_LOG2 bound to: 32'sb00000000000000000000000000000011 
+	Parameter LFSR_SEED bound to: 8'b10001110 
+	Parameter DEG bound to: 32'sb00000000000000000000000000000011 
+	Parameter MAG_W bound to: 32'sb00000000000000000000000000000100 
+	Parameter MJ_W bound to: 32'sb00000000000000000000000000001000 
+	Parameter M_LOG2 bound to: 32'sb00000000000000000000000000000011 
+	Parameter LFSR_SEED bound to: 8'b10001111 
+	Parameter DEG bound to: 32'sb00000000000000000000000000000011 
+	Parameter MAG_W bound to: 32'sb00000000000000000000000000000100 
+	Parameter MJ_W bound to: 32'sb00000000000000000000000000001000 
+	Parameter M_LOG2 bound to: 32'sb00000000000000000000000000000011 
+	Parameter LFSR_SEED bound to: 8'b10010000 
+INFO: [Synth 8-226] default block is never used [C:/Users/rimpl/vivado/QEC_SU26/rtl/IBM_OSS_decoder.srcs/sources_1/new/dmembp_top.sv:179]
+WARNING: [Synth 8-3848] Net cnu_to_vnu_idx[0][0] in module/entity dmembp_top does not have driver. [C:/Users/rimpl/vivado/QEC_SU26/rtl/IBM_OSS_decoder.srcs/sources_1/new/dmembp_top.sv:60]
+WARNING: [Synth 8-3848] Net cnu_to_vnu_idx[0][1] in module/entity dmembp_top does not have driver. [C:/Users/rimpl/vivado/QEC_SU26/rtl/IBM_OSS_decoder.srcs/sources_1/new/dmembp_top.sv:60]
+WARNING: [Synth 8-3848] Net cnu_to_vnu_idx[0][2] in module/entity dmembp_top does not have driver. [C:/Users/rimpl/vivado/QEC_SU26/rtl/IBM_OSS_decoder.srcs/sources_1/new/dmembp_top.sv:60]
+WARNING: [Synth 8-3848] Net cnu_to_vnu_idx[0][3] in module/entity dmembp_top does not have driver. [C:/Users/rimpl/vivado/QEC_SU26/rtl/IBM_OSS_decoder.srcs/sources_1/new/dmembp_top.sv:60]
+WARNING: [Synth 8-3848] Net cnu_to_vnu_idx[0][4] in module/entity dmembp_top does not have driver. [C:/Users/rimpl/vivado/QEC_SU26/rtl/IBM_OSS_decoder.srcs/sources_1/new/dmembp_top.sv:60]
+WARNING: [Synth 8-3848] Net cnu_to_vnu_idx[0][5] in module/entity dmembp_top does not have driver. [C:/Users/rimpl/vivado/QEC_SU26/rtl/IBM_OSS_decoder.srcs/sources_1/new/dmembp_top.sv:60]
+WARNING: [Synth 8-3848] Net cnu_to_vnu_idx[1][0] in module/entity dmembp_top does not have driver. [C:/Users/rimpl/vivado/QEC_SU26/rtl/IBM_OSS_decoder.srcs/sources_1/new/dmembp_top.sv:60]
+WARNING: [Synth 8-3848] Net cnu_to_vnu_idx[1][1] in module/entity dmembp_top does not have driver. [C:/Users/rimpl/vivado/QEC_SU26/rtl/IBM_OSS_decoder.srcs/sources_1/new/dmembp_top.sv:60]
+WARNING: [Synth 8-3848] Net cnu_to_vnu_idx[1][2] in module/entity dmembp_top does not have driver. [C:/Users/rimpl/vivado/QEC_SU26/rtl/IBM_OSS_decoder.srcs/sources_1/new/dmembp_top.sv:60]
+WARNING: [Synth 8-3848] Net cnu_to_vnu_idx[1][3] in module/entity dmembp_top does not have driver. [C:/Users/rimpl/vivado/QEC_SU26/rtl/IBM_OSS_decoder.srcs/sources_1/new/dmembp_top.sv:60]
+WARNING: [Synth 8-3848] Net cnu_to_vnu_idx[1][4] in module/entity dmembp_top does not have driver. [C:/Users/rimpl/vivado/QEC_SU26/rtl/IBM_OSS_decoder.srcs/sources_1/new/dmembp_top.sv:60]
+WARNING: [Synth 8-3848] Net cnu_to_vnu_idx[1][5] in module/entity dmembp_top does not have driver. [C:/Users/rimpl/vivado/QEC_SU26/rtl/IBM_OSS_decoder.srcs/sources_1/new/dmembp_top.sv:60]
+WARNING: [Synth 8-3848] Net cnu_to_vnu_idx[2][0] in module/entity dmembp_top does not have driver. [C:/Users/rimpl/vivado/QEC_SU26/rtl/IBM_OSS_decoder.srcs/sources_1/new/dmembp_top.sv:60]
+WARNING: [Synth 8-3848] Net cnu_to_vnu_idx[2][1] in module/entity dmembp_top does not have driver. [C:/Users/rimpl/vivado/QEC_SU26/rtl/IBM_OSS_decoder.srcs/sources_1/new/dmembp_top.sv:60]
+WARNING: [Synth 8-3848] Net cnu_to_vnu_idx[2][2] in module/entity dmembp_top does not have driver. [C:/Users/rimpl/vivado/QEC_SU26/rtl/IBM_OSS_decoder.srcs/sources_1/new/dmembp_top.sv:60]
+WARNING: [Synth 8-3848] Net cnu_to_vnu_idx[2][3] in module/entity dmembp_top does not have driver. [C:/Users/rimpl/vivado/QEC_SU26/rtl/IBM_OSS_decoder.srcs/sources_1/new/dmembp_top.sv:60]
+WARNING: [Synth 8-3848] Net cnu_to_vnu_idx[2][4] in module/entity dmembp_top does not have driver. [C:/Users/rimpl/vivado/QEC_SU26/rtl/IBM_OSS_decoder.srcs/sources_1/new/dmembp_top.sv:60]
+WARNING: [Synth 8-3848] Net cnu_to_vnu_idx[2][5] in module/entity dmembp_top does not have driver. [C:/Users/rimpl/vivado/QEC_SU26/rtl/IBM_OSS_decoder.srcs/sources_1/new/dmembp_top.sv:60]
+WARNING: [Synth 8-3848] Net cnu_to_vnu_idx[3][0] in module/entity dmembp_top does not have driver. [C:/Users/rimpl/vivado/QEC_SU26/rtl/IBM_OSS_decoder.srcs/sources_1/new/dmembp_top.sv:60]
+WARNING: [Synth 8-3848] Net cnu_to_vnu_idx[3][1] in module/entity dmembp_top does not have driver. [C:/Users/rimpl/vivado/QEC_SU26/rtl/IBM_OSS_decoder.srcs/sources_1/new/dmembp_top.sv:60]
+WARNING: [Synth 8-3848] Net cnu_to_vnu_idx[3][2] in module/entity dmembp_top does not have driver. [C:/Users/rimpl/vivado/QEC_SU26/rtl/IBM_OSS_decoder.srcs/sources_1/new/dmembp_top.sv:60]
+WARNING: [Synth 8-3848] Net cnu_to_vnu_idx[3][3] in module/entity dmembp_top does not have driver. [C:/Users/rimpl/vivado/QEC_SU26/rtl/IBM_OSS_decoder.srcs/sources_1/new/dmembp_top.sv:60]
+WARNING: [Synth 8-3848] Net cnu_to_vnu_idx[3][4] in module/entity dmembp_top does not have driver. [C:/Users/rimpl/vivado/QEC_SU26/rtl/IBM_OSS_decoder.srcs/sources_1/new/dmembp_top.sv:60]
+WARNING: [Synth 8-3848] Net cnu_to_vnu_idx[3][5] in module/entity dmembp_top does not have driver. [C:/Users/rimpl/vivado/QEC_SU26/rtl/IBM_OSS_decoder.srcs/sources_1/new/dmembp_top.sv:60]
+WARNING: [Synth 8-3848] Net cnu_to_vnu_idx[4][0] in module/entity dmembp_top does not have driver. [C:/Users/rimpl/vivado/QEC_SU26/rtl/IBM_OSS_decoder.srcs/sources_1/new/dmembp_top.sv:60]
+WARNING: [Synth 8-3848] Net cnu_to_vnu_idx[4][1] in module/entity dmembp_top does not have driver. [C:/Users/rimpl/vivado/QEC_SU26/rtl/IBM_OSS_decoder.srcs/sources_1/new/dmembp_top.sv:60]
+WARNING: [Synth 8-3848] Net cnu_to_vnu_idx[4][2] in module/entity dmembp_top does not have driver. [C:/Users/rimpl/vivado/QEC_SU26/rtl/IBM_OSS_decoder.srcs/sources_1/new/dmembp_top.sv:60]
+WARNING: [Synth 8-3848] Net cnu_to_vnu_idx[4][3] in module/entity dmembp_top does not have driver. [C:/Users/rimpl/vivado/QEC_SU26/rtl/IBM_OSS_decoder.srcs/sources_1/new/dmembp_top.sv:60]
+WARNING: [Synth 8-3848] Net cnu_to_vnu_idx[4][4] in module/entity dmembp_top does not have driver. [C:/Users/rimpl/vivado/QEC_SU26/rtl/IBM_OSS_decoder.srcs/sources_1/new/dmembp_top.sv:60]
+WARNING: [Synth 8-3848] Net cnu_to_vnu_idx[4][5] in module/entity dmembp_top does not have driver. [C:/Users/rimpl/vivado/QEC_SU26/rtl/IBM_OSS_decoder.srcs/sources_1/new/dmembp_top.sv:60]
+WARNING: [Synth 8-3848] Net cnu_to_vnu_idx[5][0] in module/entity dmembp_top does not have driver. [C:/Users/rimpl/vivado/QEC_SU26/rtl/IBM_OSS_decoder.srcs/sources_1/new/dmembp_top.sv:60]
+WARNING: [Synth 8-3848] Net cnu_to_vnu_idx[5][1] in module/entity dmembp_top does not have driver. [C:/Users/rimpl/vivado/QEC_SU26/rtl/IBM_OSS_decoder.srcs/sources_1/new/dmembp_top.sv:60]
+WARNING: [Synth 8-3848] Net cnu_to_vnu_idx[5][2] in module/entity dmembp_top does not have driver. [C:/Users/rimpl/vivado/QEC_SU26/rtl/IBM_OSS_decoder.srcs/sources_1/new/dmembp_top.sv:60]
+WARNING: [Synth 8-3848] Net cnu_to_vnu_idx[5][3] in module/entity dmembp_top does not have driver. [C:/Users/rimpl/vivado/QEC_SU26/rtl/IBM_OSS_decoder.srcs/sources_1/new/dmembp_top.sv:60]
+WARNING: [Synth 8-3848] Net cnu_to_vnu_idx[5][4] in module/entity dmembp_top does not have driver. [C:/Users/rimpl/vivado/QEC_SU26/rtl/IBM_OSS_decoder.srcs/sources_1/new/dmembp_top.sv:60]
+WARNING: [Synth 8-3848] Net cnu_to_vnu_idx[5][5] in module/entity dmembp_top does not have driver. [C:/Users/rimpl/vivado/QEC_SU26/rtl/IBM_OSS_decoder.srcs/sources_1/new/dmembp_top.sv:60]
+WARNING: [Synth 8-3848] Net cnu_to_vnu_idx[6][0] in module/entity dmembp_top does not have driver. [C:/Users/rimpl/vivado/QEC_SU26/rtl/IBM_OSS_decoder.srcs/sources_1/new/dmembp_top.sv:60]
+WARNING: [Synth 8-3848] Net cnu_to_vnu_idx[6][1] in module/entity dmembp_top does not have driver. [C:/Users/rimpl/vivado/QEC_SU26/rtl/IBM_OSS_decoder.srcs/sources_1/new/dmembp_top.sv:60]
+WARNING: [Synth 8-3848] Net cnu_to_vnu_idx[6][2] in module/entity dmembp_top does not have driver. [C:/Users/rimpl/vivado/QEC_SU26/rtl/IBM_OSS_decoder.srcs/sources_1/new/dmembp_top.sv:60]
+WARNING: [Synth 8-3848] Net cnu_to_vnu_idx[6][3] in module/entity dmembp_top does not have driver. [C:/Users/rimpl/vivado/QEC_SU26/rtl/IBM_OSS_decoder.srcs/sources_1/new/dmembp_top.sv:60]
+WARNING: [Synth 8-3848] Net cnu_to_vnu_idx[6][4] in module/entity dmembp_top does not have driver. [C:/Users/rimpl/vivado/QEC_SU26/rtl/IBM_OSS_decoder.srcs/sources_1/new/dmembp_top.sv:60]
+WARNING: [Synth 8-3848] Net cnu_to_vnu_idx[6][5] in module/entity dmembp_top does not have driver. [C:/Users/rimpl/vivado/QEC_SU26/rtl/IBM_OSS_decoder.srcs/sources_1/new/dmembp_top.sv:60]
+WARNING: [Synth 8-3848] Net cnu_to_vnu_idx[7][0] in module/entity dmembp_top does not have driver. [C:/Users/rimpl/vivado/QEC_SU26/rtl/IBM_OSS_decoder.srcs/sources_1/new/dmembp_top.sv:60]
+WARNING: [Synth 8-3848] Net cnu_to_vnu_idx[7][1] in module/entity dmembp_top does not have driver. [C:/Users/rimpl/vivado/QEC_SU26/rtl/IBM_OSS_decoder.srcs/sources_1/new/dmembp_top.sv:60]
+WARNING: [Synth 8-3848] Net cnu_to_vnu_idx[7][2] in module/entity dmembp_top does not have driver. [C:/Users/rimpl/vivado/QEC_SU26/rtl/IBM_OSS_decoder.srcs/sources_1/new/dmembp_top.sv:60]
+WARNING: [Synth 8-3848] Net cnu_to_vnu_idx[7][3] in module/entity dmembp_top does not have driver. [C:/Users/rimpl/vivado/QEC_SU26/rtl/IBM_OSS_decoder.srcs/sources_1/new/dmembp_top.sv:60]
+WARNING: [Synth 8-3848] Net cnu_to_vnu_idx[7][4] in module/entity dmembp_top does not have driver. [C:/Users/rimpl/vivado/QEC_SU26/rtl/IBM_OSS_decoder.srcs/sources_1/new/dmembp_top.sv:60]
+WARNING: [Synth 8-3848] Net cnu_to_vnu_idx[7][5] in module/entity dmembp_top does not have driver. [C:/Users/rimpl/vivado/QEC_SU26/rtl/IBM_OSS_decoder.srcs/sources_1/new/dmembp_top.sv:60]
+WARNING: [Synth 8-3848] Net cnu_to_vnu_idx[8][0] in module/entity dmembp_top does not have driver. [C:/Users/rimpl/vivado/QEC_SU26/rtl/IBM_OSS_decoder.srcs/sources_1/new/dmembp_top.sv:60]
+WARNING: [Synth 8-3848] Net cnu_to_vnu_idx[8][1] in module/entity dmembp_top does not have driver. [C:/Users/rimpl/vivado/QEC_SU26/rtl/IBM_OSS_decoder.srcs/sources_1/new/dmembp_top.sv:60]
+WARNING: [Synth 8-3848] Net cnu_to_vnu_idx[8][2] in module/entity dmembp_top does not have driver. [C:/Users/rimpl/vivado/QEC_SU26/rtl/IBM_OSS_decoder.srcs/sources_1/new/dmembp_top.sv:60]
+WARNING: [Synth 8-3848] Net cnu_to_vnu_idx[8][3] in module/entity dmembp_top does not have driver. [C:/Users/rimpl/vivado/QEC_SU26/rtl/IBM_OSS_decoder.srcs/sources_1/new/dmembp_top.sv:60]
+WARNING: [Synth 8-3848] Net cnu_to_vnu_idx[8][4] in module/entity dmembp_top does not have driver. [C:/Users/rimpl/vivado/QEC_SU26/rtl/IBM_OSS_decoder.srcs/sources_1/new/dmembp_top.sv:60]
+WARNING: [Synth 8-3848] Net cnu_to_vnu_idx[8][5] in module/entity dmembp_top does not have driver. [C:/Users/rimpl/vivado/QEC_SU26/rtl/IBM_OSS_decoder.srcs/sources_1/new/dmembp_top.sv:60]
+WARNING: [Synth 8-3848] Net cnu_to_vnu_idx[9][0] in module/entity dmembp_top does not have driver. [C:/Users/rimpl/vivado/QEC_SU26/rtl/IBM_OSS_decoder.srcs/sources_1/new/dmembp_top.sv:60]
+WARNING: [Synth 8-3848] Net cnu_to_vnu_idx[9][1] in module/entity dmembp_top does not have driver. [C:/Users/rimpl/vivado/QEC_SU26/rtl/IBM_OSS_decoder.srcs/sources_1/new/dmembp_top.sv:60]
+WARNING: [Synth 8-3848] Net cnu_to_vnu_idx[9][2] in module/entity dmembp_top does not have driver. [C:/Users/rimpl/vivado/QEC_SU26/rtl/IBM_OSS_decoder.srcs/sources_1/new/dmembp_top.sv:60]
+WARNING: [Synth 8-3848] Net cnu_to_vnu_idx[9][3] in module/entity dmembp_top does not have driver. [C:/Users/rimpl/vivado/QEC_SU26/rtl/IBM_OSS_decoder.srcs/sources_1/new/dmembp_top.sv:60]
+WARNING: [Synth 8-3848] Net cnu_to_vnu_idx[9][4] in module/entity dmembp_top does not have driver. [C:/Users/rimpl/vivado/QEC_SU26/rtl/IBM_OSS_decoder.srcs/sources_1/new/dmembp_top.sv:60]
+WARNING: [Synth 8-3848] Net cnu_to_vnu_idx[9][5] in module/entity dmembp_top does not have driver. [C:/Users/rimpl/vivado/QEC_SU26/rtl/IBM_OSS_decoder.srcs/sources_1/new/dmembp_top.sv:60]
+WARNING: [Synth 8-3848] Net cnu_to_vnu_idx[10][0] in module/entity dmembp_top does not have driver. [C:/Users/rimpl/vivado/QEC_SU26/rtl/IBM_OSS_decoder.srcs/sources_1/new/dmembp_top.sv:60]
+WARNING: [Synth 8-3848] Net cnu_to_vnu_idx[10][1] in module/entity dmembp_top does not have driver. [C:/Users/rimpl/vivado/QEC_SU26/rtl/IBM_OSS_decoder.srcs/sources_1/new/dmembp_top.sv:60]
+WARNING: [Synth 8-3848] Net cnu_to_vnu_idx[10][2] in module/entity dmembp_top does not have driver. [C:/Users/rimpl/vivado/QEC_SU26/rtl/IBM_OSS_decoder.srcs/sources_1/new/dmembp_top.sv:60]
+WARNING: [Synth 8-3848] Net cnu_to_vnu_idx[10][3] in module/entity dmembp_top does not have driver. [C:/Users/rimpl/vivado/QEC_SU26/rtl/IBM_OSS_decoder.srcs/sources_1/new/dmembp_top.sv:60]
+WARNING: [Synth 8-3848] Net cnu_to_vnu_idx[10][4] in module/entity dmembp_top does not have driver. [C:/Users/rimpl/vivado/QEC_SU26/rtl/IBM_OSS_decoder.srcs/sources_1/new/dmembp_top.sv:60]
+WARNING: [Synth 8-3848] Net cnu_to_vnu_idx[10][5] in module/entity dmembp_top does not have driver. [C:/Users/rimpl/vivado/QEC_SU26/rtl/IBM_OSS_decoder.srcs/sources_1/new/dmembp_top.sv:60]
+WARNING: [Synth 8-3848] Net cnu_to_vnu_idx[11][0] in module/entity dmembp_top does not have driver. [C:/Users/rimpl/vivado/QEC_SU26/rtl/IBM_OSS_decoder.srcs/sources_1/new/dmembp_top.sv:60]
+WARNING: [Synth 8-3848] Net cnu_to_vnu_idx[11][1] in module/entity dmembp_top does not have driver. [C:/Users/rimpl/vivado/QEC_SU26/rtl/IBM_OSS_decoder.srcs/sources_1/new/dmembp_top.sv:60]
+WARNING: [Synth 8-3848] Net cnu_to_vnu_idx[11][2] in module/entity dmembp_top does not have driver. [C:/Users/rimpl/vivado/QEC_SU26/rtl/IBM_OSS_decoder.srcs/sources_1/new/dmembp_top.sv:60]
+WARNING: [Synth 8-3848] Net cnu_to_vnu_idx[11][3] in module/entity dmembp_top does not have driver. [C:/Users/rimpl/vivado/QEC_SU26/rtl/IBM_OSS_decoder.srcs/sources_1/new/dmembp_top.sv:60]
+WARNING: [Synth 8-3848] Net cnu_to_vnu_idx[11][4] in module/entity dmembp_top does not have driver. [C:/Users/rimpl/vivado/QEC_SU26/rtl/IBM_OSS_decoder.srcs/sources_1/new/dmembp_top.sv:60]
+WARNING: [Synth 8-3848] Net cnu_to_vnu_idx[11][5] in module/entity dmembp_top does not have driver. [C:/Users/rimpl/vivado/QEC_SU26/rtl/IBM_OSS_decoder.srcs/sources_1/new/dmembp_top.sv:60]
+WARNING: [Synth 8-3848] Net cnu_to_vnu_idx[12][0] in module/entity dmembp_top does not have driver. [C:/Users/rimpl/vivado/QEC_SU26/rtl/IBM_OSS_decoder.srcs/sources_1/new/dmembp_top.sv:60]
+WARNING: [Synth 8-3848] Net cnu_to_vnu_idx[12][1] in module/entity dmembp_top does not have driver. [C:/Users/rimpl/vivado/QEC_SU26/rtl/IBM_OSS_decoder.srcs/sources_1/new/dmembp_top.sv:60]
+WARNING: [Synth 8-3848] Net cnu_to_vnu_idx[12][2] in module/entity dmembp_top does not have driver. [C:/Users/rimpl/vivado/QEC_SU26/rtl/IBM_OSS_decoder.srcs/sources_1/new/dmembp_top.sv:60]
+WARNING: [Synth 8-3848] Net cnu_to_vnu_idx[12][3] in module/entity dmembp_top does not have driver. [C:/Users/rimpl/vivado/QEC_SU26/rtl/IBM_OSS_decoder.srcs/sources_1/new/dmembp_top.sv:60]
+WARNING: [Synth 8-3848] Net cnu_to_vnu_idx[12][4] in module/entity dmembp_top does not have driver. [C:/Users/rimpl/vivado/QEC_SU26/rtl/IBM_OSS_decoder.srcs/sources_1/new/dmembp_top.sv:60]
+WARNING: [Synth 8-3848] Net cnu_to_vnu_idx[12][5] in module/entity dmembp_top does not have driver. [C:/Users/rimpl/vivado/QEC_SU26/rtl/IBM_OSS_decoder.srcs/sources_1/new/dmembp_top.sv:60]
+WARNING: [Synth 8-3848] Net cnu_to_vnu_idx[13][0] in module/entity dmembp_top does not have driver. [C:/Users/rimpl/vivado/QEC_SU26/rtl/IBM_OSS_decoder.srcs/sources_1/new/dmembp_top.sv:60]
+WARNING: [Synth 8-3848] Net cnu_to_vnu_idx[13][1] in module/entity dmembp_top does not have driver. [C:/Users/rimpl/vivado/QEC_SU26/rtl/IBM_OSS_decoder.srcs/sources_1/new/dmembp_top.sv:60]
+WARNING: [Synth 8-3848] Net cnu_to_vnu_idx[13][2] in module/entity dmembp_top does not have driver. [C:/Users/rimpl/vivado/QEC_SU26/rtl/IBM_OSS_decoder.srcs/sources_1/new/dmembp_top.sv:60]
+WARNING: [Synth 8-3848] Net cnu_to_vnu_idx[13][3] in module/entity dmembp_top does not have driver. [C:/Users/rimpl/vivado/QEC_SU26/rtl/IBM_OSS_decoder.srcs/sources_1/new/dmembp_top.sv:60]
+WARNING: [Synth 8-3848] Net cnu_to_vnu_idx[13][4] in module/entity dmembp_top does not have driver. [C:/Users/rimpl/vivado/QEC_SU26/rtl/IBM_OSS_decoder.srcs/sources_1/new/dmembp_top.sv:60]
+WARNING: [Synth 8-3848] Net cnu_to_vnu_idx[13][5] in module/entity dmembp_top does not have driver. [C:/Users/rimpl/vivado/QEC_SU26/rtl/IBM_OSS_decoder.srcs/sources_1/new/dmembp_top.sv:60]
+WARNING: [Synth 8-3848] Net cnu_to_vnu_idx[14][0] in module/entity dmembp_top does not have driver. [C:/Users/rimpl/vivado/QEC_SU26/rtl/IBM_OSS_decoder.srcs/sources_1/new/dmembp_top.sv:60]
+WARNING: [Synth 8-3848] Net cnu_to_vnu_idx[14][1] in module/entity dmembp_top does not have driver. [C:/Users/rimpl/vivado/QEC_SU26/rtl/IBM_OSS_decoder.srcs/sources_1/new/dmembp_top.sv:60]
+WARNING: [Synth 8-3848] Net cnu_to_vnu_idx[14][2] in module/entity dmembp_top does not have driver. [C:/Users/rimpl/vivado/QEC_SU26/rtl/IBM_OSS_decoder.srcs/sources_1/new/dmembp_top.sv:60]
+WARNING: [Synth 8-3848] Net cnu_to_vnu_idx[14][3] in module/entity dmembp_top does not have driver. [C:/Users/rimpl/vivado/QEC_SU26/rtl/IBM_OSS_decoder.srcs/sources_1/new/dmembp_top.sv:60]
+WARNING: [Synth 8-3848] Net cnu_to_vnu_idx[14][4] in module/entity dmembp_top does not have driver. [C:/Users/rimpl/vivado/QEC_SU26/rtl/IBM_OSS_decoder.srcs/sources_1/new/dmembp_top.sv:60]
+WARNING: [Synth 8-3848] Net cnu_to_vnu_idx[14][5] in module/entity dmembp_top does not have driver. [C:/Users/rimpl/vivado/QEC_SU26/rtl/IBM_OSS_decoder.srcs/sources_1/new/dmembp_top.sv:60]
+WARNING: [Synth 8-3848] Net cnu_to_vnu_idx[15][0] in module/entity dmembp_top does not have driver. [C:/Users/rimpl/vivado/QEC_SU26/rtl/IBM_OSS_decoder.srcs/sources_1/new/dmembp_top.sv:60]
+WARNING: [Synth 8-3848] Net cnu_to_vnu_idx[15][1] in module/entity dmembp_top does not have driver. [C:/Users/rimpl/vivado/QEC_SU26/rtl/IBM_OSS_decoder.srcs/sources_1/new/dmembp_top.sv:60]
+WARNING: [Synth 8-3848] Net cnu_to_vnu_idx[15][2] in module/entity dmembp_top does not have driver. [C:/Users/rimpl/vivado/QEC_SU26/rtl/IBM_OSS_decoder.srcs/sources_1/new/dmembp_top.sv:60]
+WARNING: [Synth 8-3848] Net cnu_to_vnu_idx[15][3] in module/entity dmembp_top does not have driver. [C:/Users/rimpl/vivado/QEC_SU26/rtl/IBM_OSS_decoder.srcs/sources_1/new/dmembp_top.sv:60]
+WARNING: [Synth 8-3848] Net cnu_to_vnu_idx[15][4] in module/entity dmembp_top does not have driver. [C:/Users/rimpl/vivado/QEC_SU26/rtl/IBM_OSS_decoder.srcs/sources_1/new/dmembp_top.sv:60]
+WARNING: [Synth 8-3848] Net cnu_to_vnu_idx[15][5] in module/entity dmembp_top does not have driver. [C:/Users/rimpl/vivado/QEC_SU26/rtl/IBM_OSS_decoder.srcs/sources_1/new/dmembp_top.sv:60]
+WARNING: [Synth 8-3848] Net cnu_to_vnu_idx[16][0] in module/entity dmembp_top does not have driver. [C:/Users/rimpl/vivado/QEC_SU26/rtl/IBM_OSS_decoder.srcs/sources_1/new/dmembp_top.sv:60]
+WARNING: [Synth 8-3848] Net cnu_to_vnu_idx[16][1] in module/entity dmembp_top does not have driver. [C:/Users/rimpl/vivado/QEC_SU26/rtl/IBM_OSS_decoder.srcs/sources_1/new/dmembp_top.sv:60]
+WARNING: [Synth 8-3848] Net cnu_to_vnu_idx[16][2] in module/entity dmembp_top does not have driver. [C:/Users/rimpl/vivado/QEC_SU26/rtl/IBM_OSS_decoder.srcs/sources_1/new/dmembp_top.sv:60]
+WARNING: [Synth 8-3848] Net cnu_to_vnu_idx[16][3] in module/entity dmembp_top does not have driver. [C:/Users/rimpl/vivado/QEC_SU26/rtl/IBM_OSS_decoder.srcs/sources_1/new/dmembp_top.sv:60]
+INFO: [Common 17-14] Message 'Synth 8-3848' appears 100 times and further instances of the messages will be disabled. Use the Tcl command set_msg_config to change the current settings.
+WARNING: [Synth 8-7129] Port clk in module cnu is either unconnected or has no load
+---------------------------------------------------------------------------------
+Finished RTL Elaboration : Time (s): cpu = 00:04:05 ; elapsed = 00:12:05 . Memory (MB): peak = 13096.840 ; gain = 11297.062
+---------------------------------------------------------------------------------
+---------------------------------------------------------------------------------
+Start Handling Custom Attributes
+---------------------------------------------------------------------------------
+---------------------------------------------------------------------------------
+Finished Handling Custom Attributes : Time (s): cpu = 00:04:18 ; elapsed = 00:12:19 . Memory (MB): peak = 13096.840 ; gain = 11297.062
+---------------------------------------------------------------------------------
+---------------------------------------------------------------------------------
+Finished RTL Optimization Phase 1 : Time (s): cpu = 00:04:18 ; elapsed = 00:12:19 . Memory (MB): peak = 13096.840 ; gain = 11297.062
+---------------------------------------------------------------------------------
+Netlist sorting complete. Time (s): cpu = 00:00:12 ; elapsed = 00:00:15 . Memory (MB): peak = 13096.840 ; gain = 0.000
+INFO: [Project 1-570] Preparing netlist for logic optimization
+
+Processing XDC Constraints
+Initializing timing engine
+Parsing XDC File [C:/Users/rimpl/vivado/QEC_SU26/rtl/IBM_OSS_decoder.srcs/constrs_1/new/timing.xdc]
+Finished Parsing XDC File [C:/Users/rimpl/vivado/QEC_SU26/rtl/IBM_OSS_decoder.srcs/constrs_1/new/timing.xdc]
+Completed Processing XDC Constraints
+
+Netlist sorting complete. Time (s): cpu = 00:00:01 ; elapsed = 00:00:00.100 . Memory (MB): peak = 14526.719 ; gain = 0.000
+INFO: [Project 1-111] Unisim Transformation Summary:
+No Unisim elements were transformed.
+
+write_xdc: Time (s): cpu = 00:00:08 ; elapsed = 00:00:06 . Memory (MB): peak = 14550.754 ; gain = 24.035
+Constraint Validation Runtime : Time (s): cpu = 00:00:08 ; elapsed = 00:00:06 . Memory (MB): peak = 14550.754 ; gain = 24.035
+INFO: [Designutils 20-5440] No compile time benefit to using incremental synthesis; A full resynthesis will be run
+INFO: [Designutils 20-4379] Flow is switching to default flow due to incremental criteria not met. If you would like to alter this behaviour and have the flow terminate instead, please set the following parameter config_implementation {autoIncr.Synth.RejectBehavior Terminate}
+INFO: [Synth 8-11241] undeclared symbol 'REGCCE', assumed default net type 'wire' [C:/Vivado/2022.2/data/verilog/src/unimacro/BRAM_SINGLE_MACRO.v:2170]
+---------------------------------------------------------------------------------
+Finished Constraint Validation : Time (s): cpu = 00:07:54 ; elapsed = 00:16:43 . Memory (MB): peak = 14556.738 ; gain = 12756.961
+---------------------------------------------------------------------------------
+---------------------------------------------------------------------------------
+Start Loading Part and Timing Information
+---------------------------------------------------------------------------------
+Loading part: xcvu19p_CIV-fsva3824-2-e
+INFO: [Synth 8-6742] Reading net delay rules and data
+INFO: [Synth 8-802] inferred FSM for state register 'state_reg' in module 'dmembp_top'
+---------------------------------------------------------------------------------------------------
+                   State |                     New Encoding |                Previous Encoding 
+---------------------------------------------------------------------------------------------------
+                  S_INIT |                             1000 |                               00
+             S_CNU_PHASE |                             0100 |                               01
+             S_VNU_PHASE |                             0010 |                               10
+                  S_DONE |                             0001 |                               11
+---------------------------------------------------------------------------------------------------
+INFO: [Synth 8-3354] encoded FSM with state register 'state_reg' using encoding 'one-hot' in module 'dmembp_top'
+---------------------------------------------------------------------------------
+Finished RTL Optimization Phase 2 : Time (s): cpu = 00:10:18 ; elapsed = 00:19:17 . Memory (MB): peak = 14556.738 ; gain = 12756.961
+---------------------------------------------------------------------------------
+---------------------------------------------------------------------------------
+Start RTL Component Statistics 
+---------------------------------------------------------------------------------
+Detailed RTL Component Info : 
++---Adders : 
+	   4 Input   10 Bit       Adders := 144   
+	   3 Input   10 Bit       Adders := 432   
+	   2 Input    8 Bit       Adders := 432   
+	   2 Input    6 Bit       Adders := 1     
+	   2 Input    5 Bit       Adders := 144   
+	   3 Input    4 Bit       Adders := 144   
+	   2 Input    4 Bit       Adders := 720   
++---XORs : 
+	   7 Input      1 Bit         XORs := 72    
+	   2 Input      1 Bit         XORs := 432   
+	   6 Input      1 Bit         XORs := 72    
+	   4 Input      1 Bit         XORs := 144   
++---Registers : 
+	              144 Bit    Registers := 1     
+	                8 Bit    Registers := 288   
+	                6 Bit    Registers := 1     
+	                4 Bit    Registers := 144   
+	                1 Bit    Registers := 1     
++---Muxes : 
+	   2 Input   10 Bit        Muxes := 441   
+	   2 Input    8 Bit        Muxes := 1008  
+	   2 Input    6 Bit        Muxes := 1     
+	 144 Input    5 Bit        Muxes := 1296  
+	   3 Input    5 Bit        Muxes := 432   
+	   2 Input    5 Bit        Muxes := 1584  
+	   2 Input    4 Bit        Muxes := 2162  
+	   4 Input    4 Bit        Muxes := 1     
+	   4 Input    2 Bit        Muxes := 1     
+	 144 Input    1 Bit        Muxes := 432   
+	   3 Input    1 Bit        Muxes := 1     
+	   2 Input    1 Bit        Muxes := 144   
+---------------------------------------------------------------------------------
+Finished RTL Component Statistics 
+---------------------------------------------------------------------------------
+---------------------------------------------------------------------------------
+Start Part Resource Summary
+---------------------------------------------------------------------------------
+Part Resources:
+DSPs: 3840 (col length:120)
+BRAMs: 4320 (col length: RAMB18 480 RAMB36 240)
+---------------------------------------------------------------------------------
+Finished Part Resource Summary
+---------------------------------------------------------------------------------
+---------------------------------------------------------------------------------
+Start Cross Boundary and Area Optimization
+---------------------------------------------------------------------------------
+WARNING: [Synth 8-7129] Port clk in module cnu__14 is either unconnected or has no load
+WARNING: [Synth 8-7129] Port clk in module cnu__13 is either unconnected or has no load
+WARNING: [Synth 8-7129] Port clk in module cnu__12 is either unconnected or has no load
+WARNING: [Synth 8-7129] Port clk in module cnu__11 is either unconnected or has no load
+WARNING: [Synth 8-7129] Port clk in module cnu__10 is either unconnected or has no load
+WARNING: [Synth 8-7129] Port clk in module cnu__9 is either unconnected or has no load
+WARNING: [Synth 8-7129] Port clk in module cnu__8 is either unconnected or has no load
+WARNING: [Synth 8-7129] Port clk in module cnu__7 is either unconnected or has no load
+WARNING: [Synth 8-7129] Port clk in module cnu__6 is either unconnected or has no load
+WARNING: [Synth 8-7129] Port clk in module cnu__5 is either unconnected or has no load
+WARNING: [Synth 8-7129] Port clk in module cnu__4 is either unconnected or has no load
+WARNING: [Synth 8-7129] Port clk in module cnu__3 is either unconnected or has no load
+WARNING: [Synth 8-7129] Port clk in module cnu__2 is either unconnected or has no load
+WARNING: [Synth 8-7129] Port clk in module cnu__1 is either unconnected or has no load
+WARNING: [Synth 8-7129] Port clk in module cnu__25 is either unconnected or has no load
+WARNING: [Synth 8-7129] Port clk in module cnu__24 is either unconnected or has no load
+WARNING: [Synth 8-7129] Port clk in module cnu__23 is either unconnected or has no load
+WARNING: [Synth 8-7129] Port clk in module cnu__22 is either unconnected or has no load
+WARNING: [Synth 8-7129] Port clk in module cnu__21 is either unconnected or has no load
+WARNING: [Synth 8-7129] Port clk in module cnu__20 is either unconnected or has no load
+WARNING: [Synth 8-7129] Port clk in module cnu__19 is either unconnected or has no load
+WARNING: [Synth 8-7129] Port clk in module cnu__18 is either unconnected or has no load
+WARNING: [Synth 8-7129] Port clk in module cnu__17 is either unconnected or has no load
+WARNING: [Synth 8-7129] Port clk in module cnu__16 is either unconnected or has no load
+WARNING: [Synth 8-7129] Port clk in module cnu__15 is either unconnected or has no load
+WARNING: [Synth 8-7129] Port clk in module cnu__32 is either unconnected or has no load
+WARNING: [Synth 8-7129] Port clk in module cnu__31 is either unconnected or has no load
+WARNING: [Synth 8-7129] Port clk in module cnu__30 is either unconnected or has no load
+WARNING: [Synth 8-7129] Port clk in module cnu__29 is either unconnected or has no load
+WARNING: [Synth 8-7129] Port clk in module cnu__28 is either unconnected or has no load
+WARNING: [Synth 8-7129] Port clk in module cnu__27 is either unconnected or has no load
+WARNING: [Synth 8-7129] Port clk in module cnu__26 is either unconnected or has no load
+WARNING: [Synth 8-7129] Port clk in module cnu__41 is either unconnected or has no load
+WARNING: [Synth 8-7129] Port clk in module cnu__40 is either unconnected or has no load
+WARNING: [Synth 8-7129] Port clk in module cnu__39 is either unconnected or has no load
+WARNING: [Synth 8-7129] Port clk in module cnu__38 is either unconnected or has no load
+WARNING: [Synth 8-7129] Port clk in module cnu__37 is either unconnected or has no load
+WARNING: [Synth 8-7129] Port clk in module cnu__36 is either unconnected or has no load
+WARNING: [Synth 8-7129] Port clk in module cnu__35 is either unconnected or has no load
+WARNING: [Synth 8-7129] Port clk in module cnu__34 is either unconnected or has no load
+WARNING: [Synth 8-7129] Port clk in module cnu__33 is either unconnected or has no load
+WARNING: [Synth 8-7129] Port clk in module cnu__52 is either unconnected or has no load
+WARNING: [Synth 8-7129] Port clk in module cnu__51 is either unconnected or has no load
+WARNING: [Synth 8-7129] Port clk in module cnu__50 is either unconnected or has no load
+WARNING: [Synth 8-7129] Port clk in module cnu__49 is either unconnected or has no load
+WARNING: [Synth 8-7129] Port clk in module cnu__48 is either unconnected or has no load
+WARNING: [Synth 8-7129] Port clk in module cnu__47 is either unconnected or has no load
+WARNING: [Synth 8-7129] Port clk in module cnu__46 is either unconnected or has no load
+WARNING: [Synth 8-7129] Port clk in module cnu__45 is either unconnected or has no load
+WARNING: [Synth 8-7129] Port clk in module cnu__44 is either unconnected or has no load
+WARNING: [Synth 8-7129] Port clk in module cnu__43 is either unconnected or has no load
+WARNING: [Synth 8-7129] Port clk in module cnu__42 is either unconnected or has no load
+WARNING: [Synth 8-7129] Port clk in module cnu__66 is either unconnected or has no load
+WARNING: [Synth 8-7129] Port clk in module cnu__65 is either unconnected or has no load
+WARNING: [Synth 8-7129] Port clk in module cnu__64 is either unconnected or has no load
+WARNING: [Synth 8-7129] Port clk in module cnu__63 is either unconnected or has no load
+WARNING: [Synth 8-7129] Port clk in module cnu__62 is either unconnected or has no load
+WARNING: [Synth 8-7129] Port clk in module cnu__61 is either unconnected or has no load
+WARNING: [Synth 8-7129] Port clk in module cnu__60 is either unconnected or has no load
+WARNING: [Synth 8-7129] Port clk in module cnu__59 is either unconnected or has no load
+WARNING: [Synth 8-7129] Port clk in module cnu__58 is either unconnected or has no load
+WARNING: [Synth 8-7129] Port clk in module cnu__57 is either unconnected or has no load
+WARNING: [Synth 8-7129] Port clk in module cnu__56 is either unconnected or has no load
+WARNING: [Synth 8-7129] Port clk in module cnu__55 is either unconnected or has no load
+WARNING: [Synth 8-7129] Port clk in module cnu__54 is either unconnected or has no load
+WARNING: [Synth 8-7129] Port clk in module cnu__53 is either unconnected or has no load
+WARNING: [Synth 8-7129] Port clk in module cnu is either unconnected or has no load
+WARNING: [Synth 8-7129] Port clk in module cnu__71 is either unconnected or has no load
+WARNING: [Synth 8-7129] Port clk in module cnu__70 is either unconnected or has no load
+WARNING: [Synth 8-7129] Port clk in module cnu__69 is either unconnected or has no load
+WARNING: [Synth 8-7129] Port clk in module cnu__68 is either unconnected or has no load
+WARNING: [Synth 8-7129] Port clk in module cnu__67 is either unconnected or has no load
+INFO: [Synth 8-3333] propagating constant 1 across sequential element (\gen_vnu[8].u_vnu /\beta_int_reg[2] )
+INFO: [Synth 8-3333] propagating constant 1 across sequential element (\gen_vnu[8].u_vnu /\beta_int_reg[1] )
+INFO: [Synth 8-3333] propagating constant 1 across sequential element (\gen_vnu[8].u_vnu /\beta_int_reg[0] )
+INFO: [Synth 8-3333] propagating constant 0 across sequential element (\gen_vnu[8].u_vnu /\beta_int_reg[3] )
+INFO: [Synth 8-3333] propagating constant 1 across sequential element (\gen_vnu[10].u_vnu /\beta_int_reg[2] )
+INFO: [Synth 8-3333] propagating constant 1 across sequential element (\gen_vnu[10].u_vnu /\beta_int_reg[1] )
+INFO: [Synth 8-3333] propagating constant 1 across sequential element (\gen_vnu[10].u_vnu /\beta_int_reg[0] )
+INFO: [Synth 8-3333] propagating constant 0 across sequential element (\gen_vnu[10].u_vnu /\beta_int_reg[3] )
+INFO: [Synth 8-3333] propagating constant 1 across sequential element (\gen_vnu[11].u_vnu /\beta_int_reg[2] )
+INFO: [Synth 8-3333] propagating constant 1 across sequential element (\gen_vnu[11].u_vnu /\beta_int_reg[1] )
+INFO: [Synth 8-3333] propagating constant 1 across sequential element (\gen_vnu[11].u_vnu /\beta_int_reg[0] )
+INFO: [Synth 8-3333] propagating constant 0 across sequential element (\gen_vnu[11].u_vnu /\beta_int_reg[3] )
+INFO: [Synth 8-3333] propagating constant 1 across sequential element (\gen_vnu[13].u_vnu /\beta_int_reg[2] )
+INFO: [Synth 8-3333] propagating constant 1 across sequential element (\gen_vnu[13].u_vnu /\beta_int_reg[1] )
+INFO: [Synth 8-3333] propagating constant 1 across sequential element (\gen_vnu[13].u_vnu /\beta_int_reg[0] )
+INFO: [Synth 8-3333] propagating constant 0 across sequential element (\gen_vnu[13].u_vnu /\beta_int_reg[3] )
+INFO: [Synth 8-3333] propagating constant 1 across sequential element (\gen_vnu[23].u_vnu /\beta_int_reg[2] )
+INFO: [Synth 8-3333] propagating constant 1 across sequential element (\gen_vnu[23].u_vnu /\beta_int_reg[1] )
+INFO: [Synth 8-3333] propagating constant 1 across sequential element (\gen_vnu[23].u_vnu /\beta_int_reg[0] )
+INFO: [Synth 8-3333] propagating constant 0 across sequential element (\gen_vnu[23].u_vnu /\beta_int_reg[3] )
+INFO: [Synth 8-3333] propagating constant 1 across sequential element (\gen_vnu[27].u_vnu /\beta_int_reg[2] )
+INFO: [Synth 8-3333] propagating constant 1 across sequential element (\gen_vnu[27].u_vnu /\beta_int_reg[1] )
+INFO: [Synth 8-3333] propagating constant 1 across sequential element (\gen_vnu[27].u_vnu /\beta_int_reg[0] )
+INFO: [Synth 8-3333] propagating constant 0 across sequential element (\gen_vnu[27].u_vnu /\beta_int_reg[3] )
+INFO: [Synth 8-3333] propagating constant 1 across sequential element (\gen_vnu[31].u_vnu /\beta_int_reg[2] )
+INFO: [Synth 8-3333] propagating constant 1 across sequential element (\gen_vnu[31].u_vnu /\beta_int_reg[1] )
+INFO: [Synth 8-3333] propagating constant 1 across sequential element (\gen_vnu[31].u_vnu /\beta_int_reg[0] )
+INFO: [Synth 8-3333] propagating constant 0 across sequential element (\gen_vnu[31].u_vnu /\beta_int_reg[3] )
+INFO: [Synth 8-3333] propagating constant 1 across sequential element (\gen_vnu[32].u_vnu /\beta_int_reg[2] )
+INFO: [Synth 8-3333] propagating constant 1 across sequential element (\gen_vnu[32].u_vnu /\beta_int_reg[1] )
+INFO: [Synth 8-3333] propagating constant 1 across sequential element (\gen_vnu[32].u_vnu /\beta_int_reg[0] )
+INFO: [Synth 8-3333] propagating constant 0 across sequential element (\gen_vnu[32].u_vnu /\beta_int_reg[3] )
+INFO: [Synth 8-3333] propagating constant 1 across sequential element (\gen_vnu[33].u_vnu /\beta_int_reg[2] )
+INFO: [Synth 8-3333] propagating constant 1 across sequential element (\gen_vnu[33].u_vnu /\beta_int_reg[1] )
+INFO: [Synth 8-3333] propagating constant 1 across sequential element (\gen_vnu[33].u_vnu /\beta_int_reg[0] )
+INFO: [Synth 8-3333] propagating constant 0 across sequential element (\gen_vnu[33].u_vnu /\beta_int_reg[3] )
+INFO: [Synth 8-3333] propagating constant 1 across sequential element (\gen_vnu[34].u_vnu /\beta_int_reg[2] )
+INFO: [Synth 8-3333] propagating constant 1 across sequential element (\gen_vnu[34].u_vnu /\beta_int_reg[1] )
+INFO: [Synth 8-3333] propagating constant 1 across sequential element (\gen_vnu[34].u_vnu /\beta_int_reg[0] )
+INFO: [Synth 8-3333] propagating constant 0 across sequential element (\gen_vnu[34].u_vnu /\beta_int_reg[3] )
+INFO: [Synth 8-3333] propagating constant 1 across sequential element (\gen_vnu[35].u_vnu /\beta_int_reg[2] )
+INFO: [Synth 8-3333] propagating constant 1 across sequential element (\gen_vnu[35].u_vnu /\beta_int_reg[1] )
+INFO: [Synth 8-3333] propagating constant 1 across sequential element (\gen_vnu[35].u_vnu /\beta_int_reg[0] )
+INFO: [Synth 8-3333] propagating constant 0 across sequential element (\gen_vnu[35].u_vnu /\beta_int_reg[3] )
+INFO: [Synth 8-3333] propagating constant 1 across sequential element (\gen_vnu[44].u_vnu /\beta_int_reg[2] )
+INFO: [Synth 8-3333] propagating constant 1 across sequential element (\gen_vnu[44].u_vnu /\beta_int_reg[1] )
+INFO: [Synth 8-3333] propagating constant 1 across sequential element (\gen_vnu[44].u_vnu /\beta_int_reg[0] )
+INFO: [Synth 8-3333] propagating constant 0 across sequential element (\gen_vnu[44].u_vnu /\beta_int_reg[3] )
+INFO: [Synth 8-3333] propagating constant 1 across sequential element (\gen_vnu[46].u_vnu /\beta_int_reg[2] )
+INFO: [Synth 8-3333] propagating constant 1 across sequential element (\gen_vnu[46].u_vnu /\beta_int_reg[1] )
+INFO: [Synth 8-3333] propagating constant 1 across sequential element (\gen_vnu[46].u_vnu /\beta_int_reg[0] )
+INFO: [Synth 8-3333] propagating constant 0 across sequential element (\gen_vnu[46].u_vnu /\beta_int_reg[3] )
+INFO: [Synth 8-3333] propagating constant 1 across sequential element (\gen_vnu[50].u_vnu /\beta_int_reg[2] )
+INFO: [Synth 8-3333] propagating constant 1 across sequential element (\gen_vnu[50].u_vnu /\beta_int_reg[1] )
+INFO: [Synth 8-3333] propagating constant 1 across sequential element (\gen_vnu[50].u_vnu /\beta_int_reg[0] )
+INFO: [Synth 8-3333] propagating constant 0 across sequential element (\gen_vnu[50].u_vnu /\beta_int_reg[3] )
+INFO: [Synth 8-3333] propagating constant 1 across sequential element (\gen_vnu[57].u_vnu /\beta_int_reg[2] )
+INFO: [Synth 8-3333] propagating constant 1 across sequential element (\gen_vnu[57].u_vnu /\beta_int_reg[1] )
+INFO: [Synth 8-3333] propagating constant 1 across sequential element (\gen_vnu[57].u_vnu /\beta_int_reg[0] )
+INFO: [Synth 8-3333] propagating constant 0 across sequential element (\gen_vnu[57].u_vnu /\beta_int_reg[3] )
+INFO: [Synth 8-3333] propagating constant 1 across sequential element (\gen_vnu[61].u_vnu /\beta_int_reg[2] )
+INFO: [Synth 8-3333] propagating constant 1 across sequential element (\gen_vnu[61].u_vnu /\beta_int_reg[1] )
+INFO: [Synth 8-3333] propagating constant 1 across sequential element (\gen_vnu[61].u_vnu /\beta_int_reg[0] )
+INFO: [Synth 8-3333] propagating constant 0 across sequential element (\gen_vnu[61].u_vnu /\beta_int_reg[3] )
+INFO: [Synth 8-3333] propagating constant 1 across sequential element (\gen_vnu[63].u_vnu /\beta_int_reg[2] )
+INFO: [Synth 8-3333] propagating constant 1 across sequential element (\gen_vnu[63].u_vnu /\beta_int_reg[1] )
+INFO: [Synth 8-3333] propagating constant 1 across sequential element (\gen_vnu[63].u_vnu /\beta_int_reg[0] )
+INFO: [Synth 8-3333] propagating constant 0 across sequential element (\gen_vnu[63].u_vnu /\beta_int_reg[3] )
+INFO: [Synth 8-3333] propagating constant 1 across sequential element (\gen_vnu[69].u_vnu /\beta_int_reg[2] )
+INFO: [Synth 8-3333] propagating constant 1 across sequential element (\gen_vnu[69].u_vnu /\beta_int_reg[1] )
+INFO: [Synth 8-3333] propagating constant 1 across sequential element (\gen_vnu[69].u_vnu /\beta_int_reg[0] )
+INFO: [Synth 8-3333] propagating constant 0 across sequential element (\gen_vnu[69].u_vnu /\beta_int_reg[3] )
+INFO: [Synth 8-3333] propagating constant 1 across sequential element (\gen_vnu[71].u_vnu /\beta_int_reg[2] )
+INFO: [Synth 8-3333] propagating constant 1 across sequential element (\gen_vnu[71].u_vnu /\beta_int_reg[1] )
+INFO: [Synth 8-3333] propagating constant 1 across sequential element (\gen_vnu[71].u_vnu /\beta_int_reg[0] )
+INFO: [Synth 8-3333] propagating constant 0 across sequential element (\gen_vnu[71].u_vnu /\beta_int_reg[3] )
+INFO: [Synth 8-3333] propagating constant 1 across sequential element (\gen_vnu[77].u_vnu /\beta_int_reg[2] )
+INFO: [Synth 8-3333] propagating constant 1 across sequential element (\gen_vnu[77].u_vnu /\beta_int_reg[1] )
+INFO: [Synth 8-3333] propagating constant 1 across sequential element (\gen_vnu[77].u_vnu /\beta_int_reg[0] )
+INFO: [Synth 8-3333] propagating constant 0 across sequential element (\gen_vnu[77].u_vnu /\beta_int_reg[3] )
+INFO: [Synth 8-3333] propagating constant 1 across sequential element (\gen_vnu[80].u_vnu /\beta_int_reg[2] )
+INFO: [Synth 8-3333] propagating constant 1 across sequential element (\gen_vnu[80].u_vnu /\beta_int_reg[1] )
+INFO: [Synth 8-3333] propagating constant 1 across sequential element (\gen_vnu[80].u_vnu /\beta_int_reg[0] )
+INFO: [Synth 8-3333] propagating constant 0 across sequential element (\gen_vnu[80].u_vnu /\beta_int_reg[3] )
+INFO: [Synth 8-3333] propagating constant 1 across sequential element (\gen_vnu[82].u_vnu /\beta_int_reg[2] )
+INFO: [Synth 8-3333] propagating constant 1 across sequential element (\gen_vnu[82].u_vnu /\beta_int_reg[1] )
+INFO: [Synth 8-3333] propagating constant 1 across sequential element (\gen_vnu[82].u_vnu /\beta_int_reg[0] )
+INFO: [Synth 8-3333] propagating constant 0 across sequential element (\gen_vnu[82].u_vnu /\beta_int_reg[3] )
+INFO: [Synth 8-3333] propagating constant 1 across sequential element (\gen_vnu[86].u_vnu /\beta_int_reg[2] )
+INFO: [Synth 8-3333] propagating constant 1 across sequential element (\gen_vnu[86].u_vnu /\beta_int_reg[1] )
+INFO: [Synth 8-3333] propagating constant 1 across sequential element (\gen_vnu[86].u_vnu /\beta_int_reg[0] )
+INFO: [Synth 8-3333] propagating constant 0 across sequential element (\gen_vnu[86].u_vnu /\beta_int_reg[3] )
+INFO: [Synth 8-3333] propagating constant 1 across sequential element (\gen_vnu[89].u_vnu /\beta_int_reg[2] )
+INFO: [Synth 8-3333] propagating constant 1 across sequential element (\gen_vnu[89].u_vnu /\beta_int_reg[1] )
+INFO: [Synth 8-3333] propagating constant 1 across sequential element (\gen_vnu[89].u_vnu /\beta_int_reg[0] )
+INFO: [Synth 8-3333] propagating constant 0 across sequential element (\gen_vnu[89].u_vnu /\beta_int_reg[3] )
+INFO: [Synth 8-3333] propagating constant 1 across sequential element (\gen_vnu[91].u_vnu /\beta_int_reg[2] )
+INFO: [Synth 8-3333] propagating constant 1 across sequential element (\gen_vnu[91].u_vnu /\beta_int_reg[1] )
+INFO: [Synth 8-3333] propagating constant 1 across sequential element (\gen_vnu[91].u_vnu /\beta_int_reg[0] )
+INFO: [Synth 8-3333] propagating constant 0 across sequential element (\gen_vnu[91].u_vnu /\beta_int_reg[3] )
+INFO: [Common 17-14] Message 'Synth 8-3333' appears 100 times and further instances of the messages will be disabled. Use the Tcl command set_msg_config to change the current settings.
+INFO: [Common 17-14] Message 'Synth 8-3333' appears 100 times and further instances of the messages will be disabled. Use the Tcl command set_msg_config to change the current settings.
+---------------------------------------------------------------------------------
+Finished Cross Boundary and Area Optimization : Time (s): cpu = 00:12:22 ; elapsed = 00:21:28 . Memory (MB): peak = 14556.738 ; gain = 12756.961
+---------------------------------------------------------------------------------
+---------------------------------------------------------------------------------
+Start Applying XDC Timing Constraints
+---------------------------------------------------------------------------------
+---------------------------------------------------------------------------------
+Finished Applying XDC Timing Constraints : Time (s): cpu = 00:12:38 ; elapsed = 00:21:46 . Memory (MB): peak = 14556.738 ; gain = 12756.961
+---------------------------------------------------------------------------------
+---------------------------------------------------------------------------------
+Start Timing Optimization
+---------------------------------------------------------------------------------
+---------------------------------------------------------------------------------
+Finished Timing Optimization : Time (s): cpu = 00:12:43 ; elapsed = 00:21:52 . Memory (MB): peak = 14556.738 ; gain = 12756.961
+---------------------------------------------------------------------------------
+---------------------------------------------------------------------------------
+Start Technology Mapping
+---------------------------------------------------------------------------------
+WARNING: [Synth 8-7080] Parallel synthesis criteria is not met
+---------------------------------------------------------------------------------
+Finished Technology Mapping : Time (s): cpu = 00:12:45 ; elapsed = 00:21:54 . Memory (MB): peak = 14556.738 ; gain = 12756.961
+---------------------------------------------------------------------------------
+---------------------------------------------------------------------------------
+Start IO Insertion
+---------------------------------------------------------------------------------
+---------------------------------------------------------------------------------
+Start Flattening Before IO Insertion
+---------------------------------------------------------------------------------
+---------------------------------------------------------------------------------
+Finished Flattening Before IO Insertion
+---------------------------------------------------------------------------------
+---------------------------------------------------------------------------------
+Start Final Netlist Cleanup
+---------------------------------------------------------------------------------
+---------------------------------------------------------------------------------
+Finished Final Netlist Cleanup
+---------------------------------------------------------------------------------
+---------------------------------------------------------------------------------
+Finished IO Insertion : Time (s): cpu = 00:12:48 ; elapsed = 00:21:57 . Memory (MB): peak = 14556.738 ; gain = 12756.961
+---------------------------------------------------------------------------------
+---------------------------------------------------------------------------------
+Start Renaming Generated Instances
+---------------------------------------------------------------------------------
+---------------------------------------------------------------------------------
+Finished Renaming Generated Instances : Time (s): cpu = 00:12:48 ; elapsed = 00:21:57 . Memory (MB): peak = 14556.738 ; gain = 12756.961
+---------------------------------------------------------------------------------
+---------------------------------------------------------------------------------
+Start Rebuilding User Hierarchy
+---------------------------------------------------------------------------------
+---------------------------------------------------------------------------------
+Finished Rebuilding User Hierarchy : Time (s): cpu = 00:12:48 ; elapsed = 00:21:57 . Memory (MB): peak = 14556.738 ; gain = 12756.961
+---------------------------------------------------------------------------------
+---------------------------------------------------------------------------------
+Start Renaming Generated Ports
+---------------------------------------------------------------------------------
+---------------------------------------------------------------------------------
+Finished Renaming Generated Ports : Time (s): cpu = 00:12:48 ; elapsed = 00:21:57 . Memory (MB): peak = 14556.738 ; gain = 12756.961
+---------------------------------------------------------------------------------
+---------------------------------------------------------------------------------
+Start Handling Custom Attributes
+---------------------------------------------------------------------------------
+---------------------------------------------------------------------------------
+Finished Handling Custom Attributes : Time (s): cpu = 00:12:48 ; elapsed = 00:21:57 . Memory (MB): peak = 14556.738 ; gain = 12756.961
+---------------------------------------------------------------------------------
+---------------------------------------------------------------------------------
+Start Renaming Generated Nets
+---------------------------------------------------------------------------------
+---------------------------------------------------------------------------------
+Finished Renaming Generated Nets : Time (s): cpu = 00:12:48 ; elapsed = 00:21:57 . Memory (MB): peak = 14556.738 ; gain = 12756.961
+---------------------------------------------------------------------------------
+---------------------------------------------------------------------------------
+Start Writing Synthesis Report
+---------------------------------------------------------------------------------
+
+Report BlackBoxes: 
++-+--------------+----------+
+| |BlackBox name |Instances |
++-+--------------+----------+
++-+--------------+----------+
+
+Report Cell Usage: 
++------+-------+------+
+|      |Cell   |Count |
++------+-------+------+
+|1     |BUFG   |     1|
+|2     |CARRY8 |  1155|
+|3     |LUT1   |   289|
+|4     |LUT2   |  1154|
+|5     |LUT3   |  1609|
+|6     |LUT4   |   603|
+|7     |LUT5   |   591|
+|8     |LUT6   |  1189|
+|9     |FDCE   |  1167|
+|10    |FDPE   |   167|
+|11    |IBUF   |    78|
+|12    |OBUF   |   152|
++------+-------+------+
+---------------------------------------------------------------------------------
+Finished Writing Synthesis Report : Time (s): cpu = 00:12:48 ; elapsed = 00:21:57 . Memory (MB): peak = 14556.738 ; gain = 12756.961
+---------------------------------------------------------------------------------
+Synthesis finished with 0 errors, 0 critical warnings and 73 warnings.
+Synthesis Optimization Runtime : Time (s): cpu = 00:06:26 ; elapsed = 00:19:23 . Memory (MB): peak = 14556.738 ; gain = 11297.062
+Synthesis Optimization Complete : Time (s): cpu = 00:12:48 ; elapsed = 00:21:59 . Memory (MB): peak = 14556.738 ; gain = 12756.961
+INFO: [Project 1-571] Translating synthesized netlist
+Netlist sorting complete. Time (s): cpu = 00:00:00 ; elapsed = 00:00:00.062 . Memory (MB): peak = 14556.738 ; gain = 0.000
+INFO: [Netlist 29-17] Analyzing 1234 Unisim elements for replacement
+INFO: [Netlist 29-28] Unisim Transformation completed in 0 CPU seconds
+INFO: [Project 1-570] Preparing netlist for logic optimization
+INFO: [Opt 31-138] Pushed 0 inverter(s) to 0 load pin(s).
+Netlist sorting complete. Time (s): cpu = 00:00:00 ; elapsed = 00:00:00.001 . Memory (MB): peak = 14556.738 ; gain = 0.000
+INFO: [Project 1-111] Unisim Transformation Summary:
+  A total of 79 instances were transformed.
+  BUFG => BUFGCE: 1 instance 
+  IBUF => IBUF (IBUFCTRL, INBUF): 78 instances
+
+Synth Design complete, checksum: 428812a1
+INFO: [Common 17-83] Releasing license: Synthesis
+332 Infos, 174 Warnings, 2 Critical Warnings and 0 Errors encountered.
+synth_design completed successfully
+synth_design: Time (s): cpu = 00:13:01 ; elapsed = 00:22:22 . Memory (MB): peak = 14556.738 ; gain = 14148.926
+INFO: [runtcl-6] Synthesis results are not added to the cache due to CRITICAL_WARNING
+INFO: [Common 17-1381] The checkpoint 'C:/Users/rimpl/vivado/QEC_SU26/rtl/IBM_OSS_decoder.runs/synth_1/dmembp_top.dcp' has been generated.
+INFO: [runtcl-4] Executing : report_utilization -file dmembp_top_utilization_synth.rpt -pb dmembp_top_utilization_synth.pb
+INFO: [Common 17-206] Exiting Vivado at Fri Sep 11 01:46:33 2026...

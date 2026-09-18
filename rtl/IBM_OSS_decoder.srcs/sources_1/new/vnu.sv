@@ -47,7 +47,7 @@ module vnu #(
     logic [3:0] beta_int;
     always_ff @(posedge clk or negedge rst_n) begin
         if      (!rst_n)   beta_int <= 4'd7;
-        else if (en & new_leg)  beta_int <= 4'd3 + {1'b0, lfsr[2:0]};
+        else if ( new_leg)  beta_int <= 4'd3 + {1'b0, lfsr[2:0]};
     end
 
     logic signed [4:0] gamma_int;
