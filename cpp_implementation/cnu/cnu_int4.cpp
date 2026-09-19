@@ -48,6 +48,15 @@ void cnu_hardware_int4(
     result->min2_scaled = alpha_shift(min2, t);
 }
 
+void cnu_hls_top(
+    const cnu_message_t vnu_messages[CNU_DEGREE],
+    cnu_bit_t sigma_i,
+    cnu_iteration_t t,
+    cnu_result_type *result)
+{
+    cnu_hardware_int4(vnu_messages, sigma_i, t, result);
+}
+
 int cnu_hardware_int4(
     const int vnu_messages[CNU_DEGREE],
     int degree,

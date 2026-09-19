@@ -2,7 +2,6 @@
 
 #include <fstream>
 #include <iostream>
-#include <sstream>
 #include <string>
 #include <vector>
 
@@ -31,14 +30,15 @@ static std::vector<std::string> split_csv_row(const std::string &row)
 
 int main(int argc, char **argv)
 {
-    if (argc != 2) {
-        std::cerr << "usage: test_cnu_int4 <cnu_test_vectors_int4.csv>\n";
+    if (argc > 2) {
+        std::cerr << "usage: test_cnu_int4 [cnu_test_vectors_int4.csv]\n";
         return 2;
     }
 
-    std::ifstream input(argv[1]);
+    const char *csv_path = argc == 2 ? argv[1] : "cnu_test_vectors_int4.csv";
+    std::ifstream input(csv_path);
     if (!input) {
-        std::cerr << "cannot open " << argv[1] << "\n";
+        std::cerr << "cannot open " << csv_path << "\n";
         return 2;
     }
 
@@ -60,10 +60,10 @@ int main(int argc, char **argv)
         }
 
         cnu_result_type result;
-        cnu_hardware_int4(messages,
-                          cnu_bit_t(std::stoi(f[8])),
-                          cnu_iteration_t(std::stoi(f[9])),
-                          &result);
+        cnu_hls_top(messages,
+                    cnu_bit_t(std::stoi(f[8])),
+                    cnu_iteration_t(std::stoi(f[9])),
+                    &result);
 
         bool pass = true;
         for (int edge = 0; edge < CNU_DEGREE; ++edge) {
@@ -85,7 +85,7 @@ int main(int argc, char **argv)
     }
 
     std::cout << "CNU vectors: " << cases << ", failures: " << failures << "\n";
-    return failures == 0 ? 0 : 1;
+    return cases == 348 && failures == 0 ? 0 : 1;
 }
 
 #endif
