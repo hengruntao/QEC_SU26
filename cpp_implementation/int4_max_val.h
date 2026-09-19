@@ -1,4 +1,8 @@
 #ifndef INT4_MAX_VAL_H
 #define INT4_MAX_VAL_H
-#define MAX_VAL 15
+
+#include "hls_types.h"
+
+static const int MAX_VAL = QEC_MAX_MAGNITUDE;
+
 #endif
