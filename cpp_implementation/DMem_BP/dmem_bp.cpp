@@ -64,8 +64,8 @@ int decode(const int *error, int beta_int,
     xor_for_matrix_mult(h_x, H_X_ROWS, H_X_COLS, error, syndrome);
 
     vnu_state_type vnu_state[H_X_COLS];
-    uint32_t seeds[H_X_COLS];
-    rng_seed_all(seeds, H_X_COLS, 0u);
+    qec_lfsr_t seeds[H_X_COLS];
+    rng_seed_all(seeds, 0u);
     for (i = 0; i < H_X_COLS; i++){
         vnu_state[i].beta_int = beta_int;
         vnu_state[i].M_reg = lambda_j_0_int;
@@ -148,7 +148,7 @@ int decode_leg(const int* syndrome,
         }
         
         /* 3. ---- CNU output to VNU input ---- */
-        cnu_message_type vnu_inputs[H_X_COLS][VN_DEGREE];
+        cnu_to_vnu_message_t vnu_inputs[H_X_COLS][VN_DEGREE];
         for (i = 0; i < H_X_COLS; i++){
             for (j = 0; j < VN_DEGREE; j++){
                 int idx_of_cnu = vn_neighbor[i][j]; // which cnu is connected to vnu_i

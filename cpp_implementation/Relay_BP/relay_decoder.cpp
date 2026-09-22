@@ -38,8 +38,8 @@ int decode_relay(const int error[H_X_COLS], int lambda_j_0_int, uint32_t seed,
 
     /* ---- VNU initialization (before leg 0) ---- */
     vnu_state_type vnu_state[H_X_COLS];
-    uint32_t seeds[H_X_COLS];
-    rng_seed_all(seeds, H_X_COLS, seed);
+    qec_lfsr_t seeds[H_X_COLS];
+    rng_seed_all(seeds, qec_lfsr_t(seed));
     for (i = 0; i < H_X_COLS; i++){
         vnu_state[i].beta_int = RELAY_BETA_LEG_0;
         vnu_state[i].M_reg = lambda_j_0_int;

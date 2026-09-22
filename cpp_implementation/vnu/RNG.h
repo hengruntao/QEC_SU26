@@ -1,11 +1,15 @@
 #ifndef RNG_H
 #define RNG_H
-#include <stdint.h>
 
-int rng_beta_int(uint32_t *state);
+#include "../hls_types.h"
 
-/* generating different seeds for #n VNUs
-   global_seed=1 -> use default value */
-void rng_seed_all(uint32_t *states, int n, uint32_t global_seed);
+qec_beta_t rng_beta_int(qec_lfsr_t *state);
+
+void rng_hls_top(qec_lfsr_t state_in,
+                 qec_lfsr_t *state_out,
+                 qec_beta_t *beta_out);
+
+void rng_seed_all(qec_lfsr_t states[QEC_NUM_VARIABLE_NODES],
+                  qec_lfsr_t global_seed);
 
 #endif
