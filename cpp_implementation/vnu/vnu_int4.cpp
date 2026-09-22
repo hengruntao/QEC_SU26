@@ -1,131 +1,117 @@
-#include <stdio.h>
 #include "vnu_int4.h"
 
+static const int MEMORY_SCALE_SHIFT = 3;
 
-static const int num_shift = 3;
-
-/*  
-    Rust reference code relay/crates/relay_bp/src/bp/min_sum.rs
-    line 590 - 614
-    Implement the bound_value function to clamp any potential overflow
-*/
-
-static int bound_value(int val){
-    if (val > MAX_VAL) return MAX_VAL;
-    else if (val < -MAX_VAL) return -MAX_VAL;
-    return val;
+static qec_message_t bound_value(qec_vnu_accumulator_t value)
+{
+    if (value > QEC_MAX_MAGNITUDE) {
+        return qec_message_t(QEC_MAX_MAGNITUDE);
+    }
+    if (value < -QEC_MAX_MAGNITUDE) {
+        return qec_message_t(-QEC_MAX_MAGNITUDE);
+    }
+    return qec_message_t(value);
 }
 
+qec_vnu_accumulator_t memory_strength_mult(qec_message_t value,
+                                           qec_beta_t coefficient)
+{
+    const qec_bit_t negative = value < 0;
+    const qec_magnitude_t magnitude =
+        negative ? qec_magnitude_t(-value) : qec_magnitude_t(value);
+    qec_vnu_accumulator_t sum = 0;
 
-/*
-This is used for the bias update for DMem-BP
-
-# From FPGA paper (optimization of multiplication)
-# We further reduce the logic requirements by simplifying the multiplication:
-# Instead of implementing a full multiplier for µ_int β_int,
-# we expand each bit of the bitwise representation of µ_int to β_int, shift right by m places,
-# then null all effective factional bits before summing resulting values for the total result.
-*/
-
-int memory_strength_mult (int v, int coeff) {
-    // define sign, so later can use the abs value
-    int sign = (v < 0) ? -1:1;
-    int abs_v = (v < 0) ? -v:v;
-    int sum_val = 0;
-    int value = 0;
-    int k =0;   // k is the bit position, initialize to 0 (LSB)
-    while (abs_v > 0){ 
-        if(abs_v & 1){ // if the kth bit is 1
-            value = 1 << k; // decimal value of the kth bit (2^k)
-            value = value * coeff;  // value * coeff ... (beta_int OR gamma_int)
-            sum_val += value >> num_shift;  // value / 8
+    for (int bit = 0; bit < QEC_MAGNITUDE_BITS; ++bit) {
+        if (magnitude[bit]) {
+            const ap_uint<8> partial =
+                (ap_uint<8>(1) << bit) * ap_uint<8>(coefficient);
+            sum += qec_vnu_accumulator_t(partial >> MEMORY_SCALE_SHIFT);
         }
-        abs_v = abs_v >> 1; // get rid of the LSB, and get ready for the next iteration
-        k++;
     }
 
-    return sign * sum_val;
+    return negative ? qec_vnu_accumulator_t(-sum) : sum;
 }
 
+void vnu_hardware_int4(
+    const cnu_to_vnu_message_t cnu_messages[VNU_DEGREE],
+    qec_magnitude_t lambda_0,
+    qec_bit_t init,
+    qec_bit_t new_leg,
+    vnu_state_type *state,
+    vnu_result_type *result)
+{
+    qec_vnu_accumulator_t mu[VNU_DEGREE];
 
-/*
-    cnu_messages is an array. Passed by reference
-*/
-int vnu_hardware_int4(cnu_message_type* cnu_messages, int degree, int lambda_0_int, int init, int new_leg, vnu_state_type* st, vnu_result_type* vnu_result_ptr){
-    int miu_val[VNU_MAX_DEG];
-    int marginals;
-    int i;
-
-    if (cnu_messages == NULL || vnu_result_ptr == NULL || degree < 0 || degree > VNU_MAX_DEG) return -1;
-
-    /*
-        ---- Step 1: Transfer CNU outputs to μ values ----
-        CNU deferred the exclusive min to VNU
-        selector == 1: this edge was the argmin -> use min2
-        selector == 0: this edge was NOT the argmin -> use min1
-    */
-    for (i = 0; i < degree; i++){
-        cnu_message_type* cnu_i_message = cnu_messages + i;
-        int exclusive_minimum;
-        if (cnu_i_message->selector == 1) exclusive_minimum = cnu_i_message->min2_scaled;
-        else exclusive_minimum = cnu_i_message->min1_scaled;
-        miu_val[i] = (cnu_i_message->sign == 1) ? -exclusive_minimum : exclusive_minimum;
+    for (int edge = 0; edge < VNU_DEGREE; ++edge) {
+        const qec_magnitude_t exclusive_minimum =
+            cnu_messages[edge].selector ? cnu_messages[edge].min2_scaled
+                                        : cnu_messages[edge].min1_scaled;
+        mu[edge] = cnu_messages[edge].sign
+                       ? qec_vnu_accumulator_t(-exclusive_minimum)
+                       : qec_vnu_accumulator_t(exclusive_minimum);
     }
 
-    /* 
-        ---- Step 2: Use RNG to update beta_int, and initialize marginals
-        For DMem-BP: error_prior update  Λ_j(t) = (1-γ)·Λ_j(0) + γ·M_j(t-1)
-        This is done every LEG (not every iteration!!!) --> for relay-BP
-    */
-    if (new_leg) st->beta_int = rng_beta_int(&st->lfsr);   // if it's a new leg, update beta_int
-    int beta_int = st->beta_int;
-    
-    if (init){ // if is the first iteration, error_prior (marginal) is lambda_0_int
-        marginals = lambda_0_int;
+    if (new_leg) {
+        state->beta_int = rng_beta_int(&state->lfsr);
+    }
+
+    qec_vnu_accumulator_t marginal;
+    if (init) {
+        marginal = qec_vnu_accumulator_t(lambda_0);
     } else {
-        marginals = memory_strength_mult(lambda_0_int, beta_int) + st->M_reg - memory_strength_mult(st->M_reg, beta_int);
+        marginal = memory_strength_mult(qec_message_t(lambda_0),
+                                        state->beta_int)
+                 + qec_vnu_accumulator_t(state->M_reg)
+                 - memory_strength_mult(state->M_reg, state->beta_int);
     }
 
-    marginals = bound_value(marginals); // corresponds to the sat block in fig3c
-
-
-    /*
-        ---- Step 3: Compute margin M_j (Equ 3) ----
-    */
-    for (i = 0; i < degree; i++){
-        marginals += miu_val[i];
+    marginal = qec_vnu_accumulator_t(bound_value(marginal));
+    for (int edge = 0; edge < VNU_DEGREE; ++edge) {
+        marginal += mu[edge];
     }
 
-    /*
-        ---- Step 4: Per-edge exclusive sum (Equ 2) as VNU message v ----
-        full sum - self = exclusive sum    
-    */
-    
-    for (i = 0; i < degree; i++){
-        vnu_result_ptr->vnu_messages[i] = bound_value(marginals - miu_val[i]);
+    for (int edge = 0; edge < VNU_DEGREE; ++edge) {
+        result->vnu_messages[edge] = bound_value(marginal - mu[edge]);
     }
 
-    /*
-        ---- Step 5: Hard decision ----
-        HD = 1/2 (1-sgn(marginal_j)); sign is 1 (positive); -1 (negative); 0 (0)
-        e_j = 1 if M_j < 0 (IS error), 0 otherwise
+    result->hard_decision = marginal <= 0;
+    result->marginal = bound_value(marginal);
+    state->M_reg = result->marginal;
+}
 
-        reference for the decision: marginal = 0, HD = 1:
-        relay/crates/relay_bp/src/bp/min_sum.rs
-        line 616-622
-    */
+void vnu_hls_top(
+    const cnu_to_vnu_message_t cnu_messages[VNU_DEGREE],
+    qec_magnitude_t lambda_0,
+    qec_bit_t init,
+    qec_bit_t new_leg,
+    vnu_state_type *state,
+    vnu_result_type *result)
+{
+    vnu_hardware_int4(cnu_messages, lambda_0, init, new_leg, state, result);
+}
 
-    vnu_result_ptr->hard_decision = (marginals <= 0) ? 1 : 0;
+int memory_strength_mult(int value, int coefficient)
+{
+    return static_cast<int>(
+        memory_strength_mult(qec_message_t(value), qec_beta_t(coefficient)));
+}
 
-    /*
-        ---- Step 6: clamp marginal_j ----
-    */
+int vnu_hardware_int4(
+    const cnu_to_vnu_message_t cnu_messages[VNU_DEGREE],
+    int degree,
+    int lambda_0,
+    int init,
+    int new_leg,
+    vnu_state_type *state,
+    vnu_result_type *result)
+{
+    if (cnu_messages == 0 || state == 0 || result == 0 ||
+        degree != VNU_DEGREE || lambda_0 < 0 ||
+        lambda_0 > QEC_MAX_MAGNITUDE) {
+        return -1;
+    }
 
-    vnu_result_ptr->marginal = bound_value(marginals);
-
-    /*
-        ---- Step 7: update M_j(t-1) to be M_j(t) of this cycle----
-    */
-    st->M_reg = vnu_result_ptr->marginal;
+    vnu_hardware_int4(cnu_messages, qec_magnitude_t(lambda_0),
+                      qec_bit_t(init), qec_bit_t(new_leg), state, result);
     return 0;
 }
