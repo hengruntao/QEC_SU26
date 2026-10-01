@@ -1,2 +1,10 @@
 __pycache__/
 .DS_Store
+rtl/*.cache/
+rtl/*.hw/
+rtl/*.ip_user_files/
+rtl/.Xil/
+rtl/*.jou
+rtl/*.log
+rtl/*.str
+rtl/*.backup.*
