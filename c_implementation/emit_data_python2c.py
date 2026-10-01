@@ -2,7 +2,7 @@ import os
 import numpy as np
 from matrix_generator_for_c import get_H_x, get_H_z, get_A_x, get_A_z
 
-OUT_DIR = os.path.join(os.path.dirname(__file__), "..", "c_implementation", "generated")
+OUT_DIR = os.path.join(os.path.dirname(os.path.abspath(__file__)), "generated")
 
 
 def emit_c_matrix(f, arr, name, ctype):
