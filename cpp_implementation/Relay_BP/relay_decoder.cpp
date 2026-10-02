@@ -94,7 +94,99 @@
 
 
 
+/* using interface "syndrome" instead of "error" */
 
+// #include "relay_decoder.h"
+// #include <string.h>
+// #include <limits.h>
+
+// /* solution weight: w(ˆe) = ∑_j (^e_j)*log(1-p_j)/p_j 
+//    lambda = error_prior
+// */
+// static int solution_weight(const int *e_hat, const qec_magnitude_t lambda_0[H_X_COLS], int n){
+//     int i, w = 0;
+//     for (i = 0; i < n; i++){
+//         if (e_hat[i]) w += lambda_0[i];  // ω_j * e_j = (e_j = 1) ? ω_j : 0; so use if statement to avoid multiplication
+//     }
+//     return w;
+// }
+
+// int decode_relay(syndrome_t syndrome,
+//                  const qec_magnitude_t lambda_0[H_X_COLS],
+//                  uint32_t seed,
+//                  e_hat_t *e_hat_out, int *total_iters_out,
+//                  int *num_sol_out, int *legs_used_out){
+
+//     int i, r;
+
+//     /* ---- syndrome is now a top-level input; computed by the caller ---- */
+
+//     /* ---- error-prior ----
+//     lambda_0[j] is per-VN. For code-level H with a uniform p all entries are equal;
+//     for circuit-level H each column j has its own prior.
+//     */
+
+//     /* ---- VNU initialization (before leg 0) ---- */
+//     vnu_state_type vnu_state[H_X_COLS];
+//     qec_lfsr_t seeds[H_X_COLS];
+//     rng_seed_all(seeds, qec_lfsr_t(seed));
+//     for (i = 0; i < H_X_COLS; i++){
+//         vnu_state[i].beta_int = RELAY_BETA_LEG_0;
+//         vnu_state[i].M_reg = lambda_0[i];
+//         vnu_state[i].lfsr = seeds[i];
+//     }
+
+//     /* ---- initialize parameters ---- */
+//     int e_hat_leg[H_X_COLS];
+//     int best_e_hat[H_X_COLS];
+//     int best_w = INT_MAX;   // should be 15*144=2160 when switched to int4
+//     int s = 0;
+//     int total_iters = 0;
+//     int legs_used = 0;
+//     int iters = 0;  // # of iterations before coming to a result
+//     int converged = 0;
+//     int T, w;
+
+//     for (r = 0; r <= RELAY_R; r++){
+
+//         T = (r == 0) ? RELAY_T0 : RELAY_TR;
+
+//         decode_leg(syndrome, vnu_state, lambda_0, T, (r == 0), (r >= 1), e_hat_leg, &iters, &converged);
+
+//         total_iters += iters;
+//         legs_used++;
+
+//         if (converged){
+//             w = solution_weight(e_hat_leg, lambda_0, H_X_COLS);
+//             s++;
+//             if (w < best_w){
+//                 best_w = w;
+//                 for (i=0;i<H_X_COLS;i++) best_e_hat[i] = e_hat_leg[i];
+//             }
+//             if (s >= RELAY_S) break; // found S solutions
+//         }
+
+//     }
+
+//     *num_sol_out = s;
+//     *total_iters_out = total_iters;
+//     *legs_used_out = legs_used;
+
+//     e_hat_t e_hat_packed = 0;
+//     if(s > 0){  //there are solutions found
+//         for (i=0;i<H_X_COLS;i++) e_hat_packed[i] = best_e_hat[i];
+//     } else {    // if no solution is found -> decoding failure
+//         for (i=0;i<H_X_COLS;i++) e_hat_packed[i] = e_hat_leg[i];   // if fail, output the e_hat of the last leg
+//     }
+//     *e_hat_out = e_hat_packed;
+
+//     return (s>0);
+// }
+
+
+
+
+/* using beta_table */
 #include "relay_decoder.h"
 #include <string.h>
 #include <limits.h>
@@ -112,7 +204,7 @@ static int solution_weight(const int *e_hat, const qec_magnitude_t lambda_0[H_X_
 
 int decode_relay(syndrome_t syndrome,
                  const qec_magnitude_t lambda_0[H_X_COLS],
-                 uint32_t seed,
+                 const qec_beta_t beta_table[RELAY_R + 1][H_X_COLS],
                  e_hat_t *e_hat_out, int *total_iters_out,
                  int *num_sol_out, int *legs_used_out){
 
@@ -127,12 +219,10 @@ int decode_relay(syndrome_t syndrome,
 
     /* ---- VNU initialization (before leg 0) ---- */
     vnu_state_type vnu_state[H_X_COLS];
-    qec_lfsr_t seeds[H_X_COLS];
-    rng_seed_all(seeds, qec_lfsr_t(seed));
     for (i = 0; i < H_X_COLS; i++){
-        vnu_state[i].beta_int = RELAY_BETA_LEG_0;
+        vnu_state[i].beta_int = beta_table[0][i];   // row 0 = leg 0 (normally RELAY_BETA_LEG_0 = 7)
         vnu_state[i].M_reg = lambda_0[i];
-        vnu_state[i].lfsr = seeds[i];
+        vnu_state[i].lfsr = 0;                      // test mode: LFSR unused (VNU never gets new_leg = 1)
     }
 
     /* ---- initialize parameters ---- */
@@ -150,7 +240,10 @@ int decode_relay(syndrome_t syndrome,
 
         T = (r == 0) ? RELAY_T0 : RELAY_TR;
 
-        decode_leg(syndrome, vnu_state, lambda_0, T, (r == 0), (r >= 1), e_hat_leg, &iters, &converged);
+        /* test mode: β of leg r comes from the table instead of the VNU's LFSR */
+        for (i = 0; i < H_X_COLS; i++) vnu_state[i].beta_int = beta_table[r][i];
+
+        decode_leg(syndrome, vnu_state, lambda_0, T, (r == 0), /* is_new_leg */ 0, e_hat_leg, &iters, &converged);
 
         total_iters += iters;
         legs_used++;
