@@ -7,8 +7,9 @@
 #include "../vnu/RNG.h"
 #include "../generated/code_matrices.h"
 #include "stdint.h"
-#define CN_DEGREE 6
-#define VN_DEGREE 3
+// defined in generated/code_matrices.h
+// #define CN_DEGREE 6
+// #define VN_DEGREE 3
 
 int memory_strength_mult (int v, int coeff);
 
@@ -21,8 +22,6 @@ int decode(const int *error, int beta_int, int lambda_j_0_int, int max_iter, int
 void build_neighbor_list(int cn_neighbor[H_X_ROWS][CN_DEGREE], int vn_neighbor[H_X_COLS][VN_DEGREE]);
 
 int decode_leg(const int *syndrome,
-               int cn_neighbor[H_X_ROWS][CN_DEGREE],
-               int vn_neighbor[H_X_COLS][VN_DEGREE],
                vnu_state_type *vnu_state,
                int lambda_0_int, int T,
                int is_first_leg, int is_new_leg,

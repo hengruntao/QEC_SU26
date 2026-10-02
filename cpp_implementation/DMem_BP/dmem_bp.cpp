@@ -44,24 +44,25 @@ void compute_syndrome(const int *e, int *s){
 
 /* ---- build neighbor list (wrap as a function, easier to debug) ---- */
 // one-time
-void build_neighbor_list(int cn_neighbor[H_X_ROWS][CN_DEGREE], int vn_neighbor[H_X_COLS][VN_DEGREE]){
-    int i, j, count;
 
-    /* ---- get check node's neighbor list ---- */
-    for (i = 0; i < H_X_ROWS; i++){
-        count = 0;
-        for (j = 0; j < H_X_COLS; j++){
-            if (h_x[i * H_X_COLS + j]) cn_neighbor[i][count++] = j;
-        }
-    }
-    /* ---- get variable node's neighbor list ---- */
-    for (i = 0; i < H_X_COLS; i++){
-        count = 0;
-        for (j = 0; j < H_X_ROWS; j++){
-            if (h_x[j * H_X_COLS + i]) vn_neighbor[i][count++] = j;
-        }
-    }
-}
+// void build_neighbor_list(int cn_neighbor[H_X_ROWS][CN_DEGREE], int vn_neighbor[H_X_COLS][VN_DEGREE]){
+//     int i, j, count;
+
+//     /* ---- get check node's neighbor list ---- */
+//     for (i = 0; i < H_X_ROWS; i++){
+//         count = 0;
+//         for (j = 0; j < H_X_COLS; j++){
+//             if (h_x[i * H_X_COLS + j]) cn_neighbor[i][count++] = j;
+//         }
+//     }
+//     /* ---- get variable node's neighbor list ---- */
+//     for (i = 0; i < H_X_COLS; i++){
+//         count = 0;
+//         for (j = 0; j < H_X_ROWS; j++){
+//             if (h_x[j * H_X_COLS + i]) vn_neighbor[i][count++] = j;
+//         }
+//     }
+// }
 
 /* ---- actual decoder ---- */
 int decode(const int *error, int beta_int,
@@ -71,13 +72,14 @@ int decode(const int *error, int beta_int,
     int i;
 
     /* ---- get check node & variable node's neighbor list ---- */
-    int cn_neighbor[H_X_ROWS][CN_DEGREE];
-    int vn_neighbor[H_X_COLS][VN_DEGREE];
-    build_neighbor_list(cn_neighbor, vn_neighbor);
+    // int cn_neighbor[H_X_ROWS][CN_DEGREE];
+    // int vn_neighbor[H_X_COLS][VN_DEGREE];
+    // build_neighbor_list(cn_neighbor, vn_neighbor);
     
     /* ---- get syndrome ---- */
     int syndrome[H_X_ROWS];
-    xor_for_matrix_mult(h_x, H_X_ROWS, H_X_COLS, error, syndrome);
+    // xor_for_matrix_mult(h_x, H_X_ROWS, H_X_COLS, error, syndrome);
+    compute_syndrome(error, syndrome);
 
     vnu_state_type vnu_state[H_X_COLS];
     qec_lfsr_t seeds[H_X_COLS];
@@ -88,7 +90,7 @@ int decode(const int *error, int beta_int,
         vnu_state[i].lfsr = seeds[i];
     }
 
-    return decode_leg(syndrome, cn_neighbor, vn_neighbor, vnu_state,
+    return decode_leg(syndrome, vnu_state,
                       lambda_j_0_int, max_iter,
                       /* is_first_leg */ 1, /* is_new_leg */ 0,
                       e_hat_out, iters_out, converged_out);
@@ -101,8 +103,6 @@ Individual leg of Relay-BP, which is DMem-BP
 T: max_iter of current leg. For leg 0 is 80, for other legs is 60
 */
 int decode_leg(const int* syndrome,
-               int cn_neighbor[H_X_ROWS][CN_DEGREE],
-               int vn_neighbor[H_X_COLS][VN_DEGREE],
                vnu_state_type* vnu_state,
                int lambda_j_0_int, int T,
                int is_first_leg, int is_new_leg,
@@ -175,7 +175,7 @@ int decode_leg(const int* syndrome,
         
         /* 3. ---- CNU output to VNU input ---- */
 
-        /* ---- NEEDS TO BE SIMPLIFIED TO A TABLE ---- */
+        /* ---- simplified to a Look Up Table ---- */
         cnu_to_vnu_message_t vnu_inputs[H_X_COLS][VN_DEGREE];
 
         for (i = 0; i < H_X_COLS; i++){
@@ -184,8 +184,8 @@ int decode_leg(const int* syndrome,
                 int port_of_cnu = vnu_to_cnu_port[i][j];  // which port 这条边是那个 CNU 的第几号 port        
                 vnu_inputs[i][j].min1_scaled = cnu_results[idx_of_cnu].min1_scaled;
                 vnu_inputs[i][j].min2_scaled = cnu_results[idx_of_cnu].min2_scaled;
-                vnu_inputs[i][j].selector = cnu_results[idx_of_cnu].selectors_per_edge[idx_of_vnu];
-                vnu_inputs[i][j].sign = cnu_results[idx_of_cnu].signs_per_edge[idx_of_vnu];
+                vnu_inputs[i][j].selector = cnu_results[idx_of_cnu].selectors_per_edge[port_of_cnu];
+                vnu_inputs[i][j].sign = cnu_results[idx_of_cnu].signs_per_edge[port_of_cnu];
             }
         }
 

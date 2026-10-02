@@ -20,13 +20,14 @@ int decode_relay(const int error[H_X_COLS], int lambda_j_0_int, uint32_t seed,
     int i, r;
 
     /* ---- get check node & variable node's neighbor list ---- */
-    int cn_neighbor[H_X_ROWS][CN_DEGREE];
-    int vn_neighbor[H_X_COLS][VN_DEGREE];
-    build_neighbor_list(cn_neighbor, vn_neighbor);
+    // int cn_neighbor[H_X_ROWS][CN_DEGREE];
+    // int vn_neighbor[H_X_COLS][VN_DEGREE];
+    // build_neighbor_list(cn_neighbor, vn_neighbor);
     
     /* ---- get syndrome ---- */
     int syndrome[H_X_ROWS];
-    xor_for_matrix_mult(h_x, H_X_ROWS, H_X_COLS, error, syndrome);
+    // xor_for_matrix_mult(h_x, H_X_ROWS, H_X_COLS, error, syndrome);
+    compute_syndrome(error, syndrome);
 
     /* ---- initialize error-prior ---- 
     In code-level H, we assume all qubits share the same physical error probability p.
@@ -61,7 +62,7 @@ int decode_relay(const int error[H_X_COLS], int lambda_j_0_int, uint32_t seed,
 
         T = (r == 0) ? RELAY_T0 : RELAY_TR;
 
-        decode_leg(syndrome, cn_neighbor, vn_neighbor, vnu_state, lambda_j_0_int, T, (r == 0), (r >= 1), e_hat_leg, &iters, &converged);
+        decode_leg(syndrome, vnu_state, lambda_j_0_int, T, (r == 0), (r >= 1), e_hat_leg, &iters, &converged);
 
         total_iters += iters;
         legs_used++;
