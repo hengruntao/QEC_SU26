@@ -8,3 +8,6 @@ rtl/*.jou
 rtl/*.log
 rtl/*.str
 rtl/*.backup.*
+
+# Vitis HLS / Vivado generated files
+cpp_implementation/hls_vu19p/
