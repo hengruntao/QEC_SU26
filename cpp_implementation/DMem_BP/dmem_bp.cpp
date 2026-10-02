@@ -26,6 +26,22 @@ void xor_for_matrix_mult(const uint8_t *M, int rows, int cols,
     }
 }
 
+/*
+    syndrome s = H·e mod 2
+    number of 1s in each row: CN_DEGREE; position is given by cnu_to_vnu_idx
+    so only needs to XOR #CN_DEGREE elements per row.
+*/
+void compute_syndrome(const int *e, int *s){
+    for (int i = 0; i < H_X_ROWS; i++){
+        int acc = 0;
+        for (int p = 0; p < CN_DEGREE; p++){
+            acc ^= (e[cnu_to_vnu_idx[i][p]] & 1);
+        }
+        s[i] = acc;
+    }
+}
+
+
 /* ---- build neighbor list (wrap as a function, easier to debug) ---- */
 // one-time
 void build_neighbor_list(int cn_neighbor[H_X_ROWS][CN_DEGREE], int vn_neighbor[H_X_COLS][VN_DEGREE]){
@@ -96,7 +112,7 @@ int decode_leg(const int* syndrome,
     ---- define check matrix ----
         see check_matrix_generator_for_c.py for .get_H_x() & .get_H_z()
     */
-    int i, j, k;
+    int i, j;
     
     // vnu_message stores the message from vnu_i to all of its neighbors
     // vnu_message is a 2D array
@@ -127,7 +143,16 @@ int decode_leg(const int* syndrome,
            vnu_message gives the message of a "column"
            but now needs messages of a "row" --> need to transform from the column message to row message
         */
+
+        /* ---- Simplified to a Look Up Table ---- */
         int cnu_inputs[H_X_ROWS][CN_DEGREE];
+        for (i = 0; i < H_X_ROWS; i++){
+            for (j = 0; j < CN_DEGREE; j++){
+                cnu_inputs[i][j] = vnu_message[cnu_to_vnu_idx[i][j]][cnu_to_vnu_port[i][j]];
+            }
+        }
+
+        /*
         int idx;
         for (i = 0; i < H_X_ROWS; i++){
             idx = 0;
@@ -140,6 +165,7 @@ int decode_leg(const int* syndrome,
                 }
             }
         }
+        */
 
         /* 2. ---- CNU processing ---- */
         cnu_result_type cnu_results[H_X_ROWS];
@@ -148,16 +174,14 @@ int decode_leg(const int* syndrome,
         }
         
         /* 3. ---- CNU output to VNU input ---- */
+
+        /* ---- NEEDS TO BE SIMPLIFIED TO A TABLE ---- */
         cnu_to_vnu_message_t vnu_inputs[H_X_COLS][VN_DEGREE];
+
         for (i = 0; i < H_X_COLS; i++){
             for (j = 0; j < VN_DEGREE; j++){
-                int idx_of_cnu = vn_neighbor[i][j]; // which cnu is connected to vnu_i
-                int idx_of_vnu = -1;
-                for (k = 0; k < CN_DEGREE; k++){
-                    if (cn_neighbor[idx_of_cnu][k] == i){
-                        idx_of_vnu = k;
-                    }
-                }
+                int idx_of_cnu  = vnu_to_cnu_idx[i][j];   // which cnu's port_j is connected to vnu_i
+                int port_of_cnu = vnu_to_cnu_port[i][j];  // which port 这条边是那个 CNU 的第几号 port        
                 vnu_inputs[i][j].min1_scaled = cnu_results[idx_of_cnu].min1_scaled;
                 vnu_inputs[i][j].min2_scaled = cnu_results[idx_of_cnu].min2_scaled;
                 vnu_inputs[i][j].selector = cnu_results[idx_of_cnu].selectors_per_edge[idx_of_vnu];
@@ -187,7 +211,8 @@ int decode_leg(const int* syndrome,
 
         // check if H·ê mod 2 == σ
         int syndrome_check[H_X_ROWS];
-        xor_for_matrix_mult(h_x, H_X_ROWS, H_X_COLS, e_hat, syndrome_check);
+        // xor_for_matrix_mult(h_x, H_X_ROWS, H_X_COLS, e_hat, syndrome_check);
+        compute_syndrome(e_hat, syndrome_check); 
         converged = 1;
         for (i = 0; i < H_X_ROWS; i++){
             if (syndrome[i] != syndrome_check[i]) converged = 0;

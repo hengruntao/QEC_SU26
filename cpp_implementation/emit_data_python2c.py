@@ -1,6 +1,7 @@
 import os
 import numpy as np
 from matrix_generator_for_c import get_H_x, get_H_z, get_A_x, get_A_z
+from connectivity_tables import build_connectivity_tables, TABLE_NAMES
 
 OUT_DIR = os.path.join(os.path.dirname(os.path.abspath(__file__)), "generated")
 
@@ -18,6 +19,21 @@ def emit_c_matrix(f, arr, name, ctype):
     for i in range(0, flat.size, 36):
         f.write("    " + ",".join(map(str, flat[i:i + 36])) + ",\n")
     f.write("};\n\n")
+
+
+C_TYPE_MAX = {"uint8_t": 255, "uint16_t": 65535}
+
+
+def emit_c_table_2d(f, table, name, ctype):
+    """list of list -> static const ctype name[R][C],每行一行。"""
+    R, C = len(table), len(table[0])
+    assert all(len(row) == C for row in table), f"{name} 不是矩形"
+    assert max(max(row) for row in table) <= C_TYPE_MAX[ctype], f"{name} 的值超出 {ctype}"
+    f.write(f"static const {ctype} {name}[{R}][{C}] = {{\n")
+    for r, row in enumerate(table):
+        f.write("    {" + ",".join(str(v) for v in row) + f"}},  /* {r} */\n")
+    f.write("};\n\n")
+
 
 
 def main():
@@ -39,6 +55,13 @@ def main():
         f.write("#ifndef CODE_MATRICES_H\n#define CODE_MATRICES_H\n#include <stdint.h>\n\n")
         emit_c_matrix(f, Hx.astype(np.uint8), "h_x", "uint8_t")
         emit_c_matrix(f, Ax.astype(np.uint8), "a_x", "uint8_t")
+
+        tables = build_connectivity_tables(Hx)
+        f.write(f"#define CN_DEGREE {len(tables['cnu_to_vnu_idx'][0])}\n")
+        f.write(f"#define VN_DEGREE {len(tables['vnu_to_cnu_idx'][0])}\n\n")
+        for name in TABLE_NAMES:
+            emit_c_table_2d(f, tables[name], name, "uint8_t")
+        
         f.write("#endif\n")
     print(f"wrote {path} ({os.path.getsize(path)} bytes)")
 
