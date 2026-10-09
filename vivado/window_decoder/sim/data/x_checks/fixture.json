@@ -1,0 +1,14 @@
+{
+  "detector_support": [
+    0,
+    1,
+    56
+  ],
+  "injection_offsets": [
+    0,
+    8
+  ],
+  "note": "Sparse directed smoke test, not an error-rate benchmark; decoded faults may be degenerate.",
+  "source_column": 0,
+  "windows": 3
+}

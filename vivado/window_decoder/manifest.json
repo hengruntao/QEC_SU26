@@ -1,0 +1,212 @@
+{
+  "canonical_rtl": {
+    "rtl/cnu.sv": {
+      "canonical": "rtl/IBM_OSS_decoder.srcs/sources_1/new/cnu.sv",
+      "sha256": "ccddf2d58eb9ca31180cde62c815495967b135ce681c15403c4ede2d08b8ef00"
+    },
+    "rtl/cnu_pkg.sv": {
+      "canonical": "rtl/IBM_OSS_decoder.srcs/sources_1/new/cnu_pkg.sv",
+      "sha256": "5a5427fce213edee26798ec4b0530a235b6bdb6f8a64dfd15aa028054d4318db"
+    },
+    "rtl/relay_bp_top.sv": {
+      "canonical": "rtl/IBM_OSS_decoder.srcs/sources_1/new/relay_bp_top.sv",
+      "sha256": "01b8105d7481113102de36b34792a9baa10a7dbfbb232a9d769d5a5d482d4225"
+    },
+    "rtl/relay_window_adapter.sv": {
+      "canonical": "rtl/window_decoder/relay_window_adapter.sv",
+      "sha256": "3a365c85b05abafe106cd7e4a3d1c28e641c7168c2a6e2196ba32ba46d460228"
+    },
+    "rtl/vnu.sv": {
+      "canonical": "rtl/IBM_OSS_decoder.srcs/sources_1/new/vnu.sv",
+      "sha256": "87d02bda44efe9a590669400b9b8178712b4874102fb581d5c7c5add4876eb76"
+    },
+    "rtl/window_decoder_ctrl.sv": {
+      "canonical": "rtl/window_decoder/window_decoder_ctrl.sv",
+      "sha256": "f6d4ea607d69d83ec1d4f06033d7e905a25b92fce8edfc769939817c43486070"
+    },
+    "rtl/window_decoder_top.sv": {
+      "canonical": "rtl/window_decoder/window_decoder_top.sv",
+      "sha256": "111a85b7dbb33512bf251128e1c854493ac384afd78dd03d861c1773c1d05db0"
+    },
+    "rtl/window_effects.sv": {
+      "canonical": "rtl/window_decoder/window_effects.sv",
+      "sha256": "7aa4573af0ed0a0f3bb01c81194e2ef9154463b9b2616671badc0e8b816b615a"
+    },
+    "rtl/window_relay_top.sv": {
+      "canonical": "rtl/window_decoder/window_relay_top.sv",
+      "sha256": "6c9f4d75accf9656f5ed5b98fa27e25c7681dbfa2b7b74fab094304fb0915fc4"
+    }
+  },
+  "clock_period_ns": 10.0,
+  "clock_status": "starter target; no existing board clock constraint was found",
+  "default_part": "xc7s50csga324-1",
+  "files": {
+    ".gitignore": "f2b5ede6b96e24041eb79efc42643b36d70a257775f9ed3b500131794b6c2f2d",
+    "README.md": "b524a9796108efb022b645a95dfcc8747255a9830e1b1e2f80639306f073586b",
+    "config/qec_paths.svh": "e16ae8d6db07fd80f21a96ff8bc9094030b096957bdc3d923261104fc9ab1a1a",
+    "constraints/clock.xdc": "307f661bfbebf635847966aabe02eac70ae67963c6976ed4d37ba47b987a6d23",
+    "create_project.tcl": "2755b1b8d0d46cae3b7aec19be4a3b08d6e709bd1d33042acb95345b2c8106dc",
+    "provenance/x_checks/columns.json": "0e3daa606f1c9659ca15af16b7879d22836b7f359daefe5a3b0dc49754c5cd3b",
+    "provenance/x_checks/matrix_manifest.json": "bca05113ce98e0b9d90acf023ec426b4a36fee2c274f658d29fc8de27475595f",
+    "provenance/x_checks/profiles.json": "c46f696eafbe2815411c8ba8dc111a085b182e93f8aa2b6f56d3cb0975105cf0",
+    "provenance/z_checks/columns.json": "28cc760dd6b1ac17d8b163b14664f8e09a1e9faf7677339c18bcc757e3c2584b",
+    "provenance/z_checks/matrix_manifest.json": "14279893bfbe7f166f9ab73d209557cd509365544be37b98b3225af0b99eec18",
+    "provenance/z_checks/profiles.json": "6d7746d083897e96c216704205dbf7e617311d242d556eb151287ac539d3d0fb",
+    "rom/x_checks/bulk_active_mask.mem": "bd4be8a09a0a53105feb182982542b6ca6ff4ebfd432fceb7dca7fd6e0e5b6aa",
+    "rom/x_checks/bulk_prior.mem": "e5a1cfbf887a5b907d5f1a12b826e424a543a5f751d432f29b73d17ac353f91d",
+    "rom/x_checks/carry_rows.mem": "360ce2077dbcdd86eb32a4ec1ffae7e7e75a7ddb3de7f8f1cb708d095dffa566",
+    "rom/x_checks/cnu_to_vnu_idx.mem": "8d29a9e913f9b3461101da6e5f6929f3aa70dd3ca4e79dd7d27806ba9923c8a6",
+    "rom/x_checks/cnu_to_vnu_port.mem": "fb4553ff2cfeffe80d8d90e2855600258bfb5a9990f538bc4cf379bf24a2777d",
+    "rom/x_checks/commit_mask.mem": "489f44067015abf36669055e41be3a8f80ed70ce7cb083cf2cec54e3b401fe6e",
+    "rom/x_checks/convergence_mask.mem": "dd34a4de4653538caa9dde384aa0e4903631507439ce9c64b1872ec9bc34681d",
+    "rom/x_checks/dimensions.json": "08fa765a51380109522755a8bef27179d1297822dedf6fc0194a640690325cd4",
+    "rom/x_checks/frame_rows.mem": "5b09e8421b4380f6895e005f8947855d803f5e23eee60fedaa6bc7cc34244754",
+    "rom/x_checks/startup_active_mask.mem": "bd4be8a09a0a53105feb182982542b6ca6ff4ebfd432fceb7dca7fd6e0e5b6aa",
+    "rom/x_checks/startup_prior.mem": "57c44127a552686388e02a4e1fa3b7be9e664ca52c70f1f5229944df79005ff5",
+    "rom/z_checks/bulk_active_mask.mem": "bd4be8a09a0a53105feb182982542b6ca6ff4ebfd432fceb7dca7fd6e0e5b6aa",
+    "rom/z_checks/bulk_prior.mem": "2f547ba94beb57868653cdbe68175f773b23b34158948264b0237c0f1d94079c",
+    "rom/z_checks/carry_rows.mem": "86f9a376bc4a2eb0a6b7f622fa76168027b1bd2c6dad4ee6d2e32c653e13c962",
+    "rom/z_checks/cnu_to_vnu_idx.mem": "14f4cc8729250c7178b78b7a41a65664951af3f568f845834d48f762f429b363",
+    "rom/z_checks/cnu_to_vnu_port.mem": "8a848c7027a765cbc61e0f720537f8c5611ad32af1507733dca4455797605957",
+    "rom/z_checks/commit_mask.mem": "489f44067015abf36669055e41be3a8f80ed70ce7cb083cf2cec54e3b401fe6e",
+    "rom/z_checks/convergence_mask.mem": "dd34a4de4653538caa9dde384aa0e4903631507439ce9c64b1872ec9bc34681d",
+    "rom/z_checks/dimensions.json": "08fa765a51380109522755a8bef27179d1297822dedf6fc0194a640690325cd4",
+    "rom/z_checks/frame_rows.mem": "36cb8e0fb59143bbc6be15d6146b06308f9b5c87c9422f95e541e32942302650",
+    "rom/z_checks/startup_active_mask.mem": "de3aa86e8ef15d2a10b971d3ec7472fe5ccecbe28e9486e5e1bac98af61b84ba",
+    "rom/z_checks/startup_prior.mem": "a653ec0c18f51da46ea4e3055e972c9321f4170d3ce9f9321a77442a818e98c9",
+    "rtl/cnu.sv": "ccddf2d58eb9ca31180cde62c815495967b135ce681c15403c4ede2d08b8ef00",
+    "rtl/cnu_pkg.sv": "5a5427fce213edee26798ec4b0530a235b6bdb6f8a64dfd15aa028054d4318db",
+    "rtl/relay_bp_top.sv": "01b8105d7481113102de36b34792a9baa10a7dbfbb232a9d769d5a5d482d4225",
+    "rtl/relay_window_adapter.sv": "3a365c85b05abafe106cd7e4a3d1c28e641c7168c2a6e2196ba32ba46d460228",
+    "rtl/vnu.sv": "87d02bda44efe9a590669400b9b8178712b4874102fb581d5c7c5add4876eb76",
+    "rtl/window_decoder_ctrl.sv": "f6d4ea607d69d83ec1d4f06033d7e905a25b92fce8edfc769939817c43486070",
+    "rtl/window_decoder_top.sv": "111a85b7dbb33512bf251128e1c854493ac384afd78dd03d861c1773c1d05db0",
+    "rtl/window_decoder_vivado_top.sv": "15a55829c1cd77da665b0fec867f511740e5f5619d4bcd11ee52c93f239b640d",
+    "rtl/window_effects.sv": "7aa4573af0ed0a0f3bb01c81194e2ef9154463b9b2616671badc0e8b816b615a",
+    "rtl/window_relay_top.sv": "6c9f4d75accf9656f5ed5b98fa27e25c7681dbfa2b7b74fab094304fb0915fc4",
+    "sim/beta/cnu_to_vnu_idx.mem": "82c1315e6c757f33c4a77ca58b2a184f5a88614470c05ec77f3d28918db6b8ae",
+    "sim/beta/cnu_to_vnu_port.mem": "52f96c26a39ed25108a6db43d6e11c6051eba8a498a5baab1891adfa7ac7c262",
+    "sim/beta_resampling_tb.sv": "54f0a1000e771a1780700f5203dbc768da6679b94d4b69f0657ba48c41edd331",
+    "sim/data/x_checks/a_reference.mem": "ee20d86fdbca37ca605078a0ab7378e3272aeb610f49fa216da4ac59e464dde5",
+    "sim/data/x_checks/carry_reference.mem": "781ba5d40e874b8f11c048a5333ad0ef12df98a95645f999397a0d105032fc0b",
+    "sim/data/x_checks/commit_reference.mem": "8bb4de140ee2ee101138fed53378d1ce09c814d971335de9eb383d7cd95e6ff0",
+    "sim/data/x_checks/detectors.mem": "da79029dbdc95661dfa06709dfc455b9c1bd80a3eaf9fe8446a297c973bd53d9",
+    "sim/data/x_checks/expected_success.mem": "ccce065269620747ca153e9a430d44b175cdc1f7e0958741b567250a1d6b1d95",
+    "sim/data/x_checks/expected_window_start.mem": "e54345db719153101ebe5032051f63aa156e99b05d6a07a86869c69af29d8a61",
+    "sim/data/x_checks/fixture.json": "9ef4c1cfd05bc1e8e75e220a70fd5cf2aaaf6a0de1500dcb6c95e686dc694f3f",
+    "sim/data/x_checks/h_reference.mem": "8a81d5712fcbf26914c981038a0cd1005afd2d081151404c3eefb22676ace95a",
+    "sim/data/x_checks/raw_windows.mem": "962fd153ec45c6a8cd5c5b778f7e7262b26f23acc27bcfd37c4611f16d218f72",
+    "sim/data/z_checks/a_reference.mem": "bde5bd698fe637b241afae3e4d6206339e67a04a96d527a04862a5b22256bb8e",
+    "sim/data/z_checks/carry_reference.mem": "9ac116301a7245f148e640367c36721ac3279e10ec71abbbf040005dea5b766a",
+    "sim/data/z_checks/commit_reference.mem": "8bb4de140ee2ee101138fed53378d1ce09c814d971335de9eb383d7cd95e6ff0",
+    "sim/data/z_checks/detectors.mem": "ba2797163f14239c9c72812624c7d97db90d144e4e7da55db8e14691f15f7988",
+    "sim/data/z_checks/expected_success.mem": "ccce065269620747ca153e9a430d44b175cdc1f7e0958741b567250a1d6b1d95",
+    "sim/data/z_checks/expected_window_start.mem": "e54345db719153101ebe5032051f63aa156e99b05d6a07a86869c69af29d8a61",
+    "sim/data/z_checks/fixture.json": "b8f4a185ac181e26a6f50c4fc8972217f70f9a8529fdf91e4b2ab03260ce3367",
+    "sim/data/z_checks/h_reference.mem": "3178863d62525e6f458dd767c10467e9f590cf202fa6c6f8ef9c2d195809c60e",
+    "sim/data/z_checks/raw_windows.mem": "a09b8000082ebad269f4336c2f6bafaeb0fe1f7b5396b8c36316adab50c46c2b",
+    "sim/window_relay_tb.sv": "2122d74836828276bf3642ed9865acd0acf769bc35afb6c692bd066a51a6df76",
+    "test_package.py": "3d6d494ba170250bb5e6334118cc63d4284db8ed55b81f17e2860fe69a714a52",
+    "verify_package.py": "01f4cadb097159e19ad9668b3e0a027727d894af51cb29cae5cec7a4affd217c"
+  },
+  "generator": "QEC_SU26/rtl/window_decoder/build_vivado_package.py",
+  "hardware_budgets": {
+    "MAX_LEGS": 600,
+    "NUM_SOL": 5,
+    "T0": 80,
+    "TR": 60
+  },
+  "limitations": [
+    "No final-codeword/END/FIFO handling",
+    "Inherited seed wrapping/zero seeds and solution-count stop convention are unchanged",
+    "No FPGA fit or timing claim; no Vivado execution on this host"
+  ],
+  "part_source": "rtl/IBM_OSS_decoder.xpr",
+  "prior_rule": "min(round(2*log((1-p)/p)),15); Python round; inactive -> 0",
+  "prior_rule_source": "python_implementation/integrated_cnu_vnu/iterations_bp.py:52",
+  "rtl_top": "window_decoder_vivado_top",
+  "schema_version": 1,
+  "sectors": {
+    "x_checks": {
+      "dimensions": {
+        "C": 8,
+        "CN_DEG": 35,
+        "K": 12,
+        "M": 72,
+        "N_ERRORS": 8640,
+        "VN_DEG": 6,
+        "W": 12
+      },
+      "matrix_status": "circuit_derived_reference_not_author_export",
+      "prior_statistics": {
+        "bulk": {
+          "active_faults": 8640,
+          "counts": {
+            "11": 1728,
+            "13": 1728,
+            "15": 5184
+          },
+          "max": 15,
+          "min": 11
+        },
+        "startup": {
+          "active_faults": 8640,
+          "counts": {
+            "11": 1656,
+            "12": 72,
+            "13": 1728,
+            "15": 5184
+          },
+          "max": 15,
+          "min": 11
+        }
+      },
+      "source_circuit": "circuit=bicycle_bivariate_144_12_12_memory_X,distance=12,rounds=12,error_rate=0.001,noise_model=uniform_circuit,basis=CX,A=x^3+y+y^2,B=y^3+x+x^2.stim",
+      "source_sha256": "a354a0bff24ac02d0f37bc63f28072063da2592c6115d8b900728b4789d0c06b"
+    },
+    "z_checks": {
+      "dimensions": {
+        "C": 8,
+        "CN_DEG": 35,
+        "K": 12,
+        "M": 72,
+        "N_ERRORS": 8640,
+        "VN_DEG": 6,
+        "W": 12
+      },
+      "matrix_status": "circuit_derived_reference_not_author_export",
+      "prior_statistics": {
+        "bulk": {
+          "active_faults": 8640,
+          "counts": {
+            "11": 1728,
+            "13": 1728,
+            "15": 5184
+          },
+          "max": 15,
+          "min": 11
+        },
+        "startup": {
+          "active_faults": 8568,
+          "counts": {
+            "11": 1656,
+            "12": 144,
+            "13": 1656,
+            "15": 5112
+          },
+          "max": 15,
+          "min": 11
+        }
+      },
+      "source_circuit": "circuit=bicycle_bivariate_144_12_12_memory_Z,distance=12,rounds=12,error_rate=0.001,noise_model=uniform_circuit,basis=CX,A=x^3+y+y^2,B=y^3+x+x^2.stim",
+      "source_sha256": "97ed68e3859e10ebdfd0a13c5c6abd623084ee1bd11d88287af6a67abfdd24f2"
+    }
+  },
+  "simulation_top": "window_relay_tb",
+  "smoke_budgets": {
+    "MAX_LEGS": 1,
+    "NUM_SOL": 3,
+    "T0": 8,
+    "TR": 6
+  }
+}

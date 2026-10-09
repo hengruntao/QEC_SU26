@@ -1,0 +1,69 @@
+import cnu_pkg::*;
+
+module cnu #( parameter int DEGREE=6)(
+    input logic clk,
+    input logic rst_n,
+    input logic [4:0] nu_in[DEGREE],
+    input logic syndrome_bit,
+    input logic [3:0] t,
+    output cnu_msg_t mu_out[DEGREE],
+    input logic valid_in,
+    output logic ready_out,
+    output logic valid_out
+);
+
+logic sign_bits[DEGREE];
+logic [3:0] mag_bits[DEGREE];
+logic parity_xor;
+logic [3:0] min1_val, min2_val;
+
+logic [3:0] min1_val_scaled, min2_val_scaled;
+
+genvar g;
+
+generate
+    for(g=0;g<DEGREE;g++) 
+        begin:split_sign_mag
+            assign sign_bits[g]=nu_in[g][4];
+            assign mag_bits[g]=nu_in[g][3:0];
+        end
+endgenerate
+
+
+always_comb begin
+    parity_xor=syndrome_bit;
+    for(int i=0;i<DEGREE;i++)
+        parity_xor ^= sign_bits[i];
+end
+
+always_comb begin
+    min1_val=4'b1111;
+    min2_val=4'b1111;
+    for( int i=0; i<DEGREE; i++) begin
+        if(mag_bits[i]<min1_val) begin
+            min2_val=min1_val;
+            min1_val=mag_bits[i];
+        end
+        else if( mag_bits[i]<min2_val) begin
+            min2_val=mag_bits[i];
+        end
+    end
+end
+
+assign min1_val_scaled=min1_val-(min1_val>>t);
+assign min2_val_scaled=min2_val-(min2_val>>t);
+
+
+generate
+    for(g=0;g<DEGREE;g++) begin : attach_block
+        assign mu_out[g].sign=parity_xor^sign_bits[g];
+        assign mu_out[g].c=(mag_bits[g]==min1_val);
+        assign mu_out[g].min1={min1_val_scaled};
+        assign mu_out[g].min2={min2_val_scaled};
+    end
+endgenerate
+
+assign valid_out=valid_in & rst_n;
+assign ready_out= rst_n;
+
+endmodule

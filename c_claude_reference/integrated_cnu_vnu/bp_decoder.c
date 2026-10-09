@@ -142,9 +142,11 @@ void bp_decode(const int *error, int lambda_int, int use_dmem, bp_result *result
          * This block is the entire difference from plain BP. */
         if (use_dmem) {
             for (jj = 0; jj < NUM_VARIABLE_NODE; jj++) {
-                error_prior[jj] =
-                    memory_strength_mult(lambda_int, MEM_STRENGTH_BETA_INT) +
-                    memory_strength_mult(vnu_results[jj].marginal, MEM_STRENGTH_GAMMA_INT);
+                int beta_int = (int)rng_state[jj].beta_int;
+                int gamma_int = (int)lfsr_rng_gamma_int(&rng_state[jj]);
+
+                error_prior[jj] =memory_strength_mult(lambda_int, beta_int) + memory_strength_mult(vnu_results[jj].marginal, gamma_int);
+            
             }
         }
     }
