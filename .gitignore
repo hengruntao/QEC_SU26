@@ -8,6 +8,15 @@ rtl/*.jou
 rtl/*.log
 rtl/*.str
 rtl/*.backup.*
+rtl/IBM_OSS_decoder.cache/
+rtl/IBM_OSS_decoder.sim/
+rtl/IBM_OSS_decoder.runs/
+rtl/IBM_OSS_decoder.hw/
+rtl/IBM_OSS_decoder.ip_user_files/
+rtl/IBM_OSS_decoder.srcs/utils_1/
+*.jou
+*.log
+*.str
 
 # Vitis HLS / Vivado generated files
 cpp_implementation/hls_vu19p/
