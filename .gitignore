@@ -17,3 +17,6 @@ rtl/IBM_OSS_decoder.srcs/utils_1/
 *.jou
 *.log
 *.str
+
+# Vitis HLS / Vivado generated files
+cpp_implementation/hls_vu19p/
