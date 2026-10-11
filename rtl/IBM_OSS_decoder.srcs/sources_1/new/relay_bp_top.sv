@@ -212,6 +212,7 @@ assign vnu_en   = (state == S_VNU_PHASE);
 logic [4:0] nu_wire_reg [0:143][0:2];
 logic [4:0] nu_wire     [0:143][0:2];
 logic [9:0] mu_wire     [0:143][0:2];
+logic [9:0] mu_wire_reg [0:143][0:2];   // CNU output captured at the end of S_CNU_PHASE
 
 logic e_hat_bit [0:143];
 
@@ -274,6 +275,13 @@ generate
                 cnu_mu_out[CI][CP].min1,
                 cnu_mu_out[CI][CP].min2
             };
+            // Fix 1: register the CNU result so CNU and VNU each get a full cycle.
+            always_ff @(posedge clk or negedge rst_n) begin
+                if (!rst_n)
+                    mu_wire_reg[j][k] <= 10'd0;
+                else if (state == S_CNU_PHASE)
+                    mu_wire_reg[j][k] <= mu_wire[j][k];
+            end
         end
     end
 endgenerate
@@ -293,7 +301,7 @@ generate
             .new_leg  (new_leg_pulse),
             .en       (vnu_en),
             .lambda_0 (lambda_0[j]),
-            .mu_in    (mu_wire[j]),
+            .mu_in    (mu_wire_reg[j]),
             .nu_out   (nu_wire[j]),
             .marginal (),
             .e_hat    (e_hat_bit[j])
