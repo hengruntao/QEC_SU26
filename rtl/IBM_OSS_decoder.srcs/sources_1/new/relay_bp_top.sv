@@ -43,9 +43,14 @@ logic [143:0] e_hat_internal;
 logic [143:0] cand_e_hat;   // e_hat captured at the moment of convergence
 
 //weight accumulator
-logic [11:0] weight_acc;
-logic [7:0] weight_idx;
-logic       weight_done;
+//logic [11:0] weight_acc;
+//logic [7:0] weight_idx;
+//logic       weight_done;
+
+//solution weight (Fix 2: parallel adder tree)
+logic [11:0] tree_sum;      // sum of lambda_0[j] over set bits of e_hat, every VNU cycle
+logic [11:0] weight_reg;    // tree_sum captured at convergence, alongside cand_e_hat
+logic        weight_done;
 
 
 // Relay control signals
@@ -73,8 +78,8 @@ always_ff @(posedge clk or negedge rst_n) begin
         best_e_hat<= '0;
         any_solution_found <=1'b0;
         //new_leg_pulse <=1'b0;
-        weight_acc<='0;
-        weight_idx<=0;
+        //weight_acc<='0;
+        //weight_idx<=0;
         weight_done<=1'b0;
     end else begin
         //new_leg_pulse<=1'b0;
@@ -99,7 +104,7 @@ always_ff @(posedge clk or negedge rst_n) begin
             end
             
             S_WEIGHT: begin
-                if(!weight_done) begin
+                /*if(!weight_done) begin
                     if (weight_idx<8'd144) begin
                         if(cand_e_hat[weight_idx])
                             weight_acc <= weight_acc + {8'b0, lambda_0[weight_idx]};
@@ -117,6 +122,15 @@ always_ff @(posedge clk or negedge rst_n) begin
                         weight_acc<='0;
                         weight_idx<='0;
                     end
+                end*/
+                if(!weight_done) begin
+                    weight_done <=1'b1;
+                    if(weight_reg< best_weight) begin
+                        best_weight <= weight_reg;
+                        best_e_hat<= cand_e_hat;
+                    end
+                    sol_cnt<=sol_cnt+1;
+                    any_solution_found<=1'b1;
                 end
             end
             
@@ -212,6 +226,7 @@ assign vnu_en   = (state == S_VNU_PHASE);
 logic [4:0] nu_wire_reg [0:143][0:2];
 logic [4:0] nu_wire     [0:143][0:2];
 logic [9:0] mu_wire     [0:143][0:2];
+logic [9:0] mu_wire_reg [0:143][0:2];   // CNU output captured at the end of S_CNU_PHASE
 
 logic e_hat_bit [0:143];
 
@@ -274,6 +289,13 @@ generate
                 cnu_mu_out[CI][CP].min1,
                 cnu_mu_out[CI][CP].min2
             };
+            // Fix 1: register the CNU result so CNU and VNU each get a full cycle.
+            always_ff @(posedge clk or negedge rst_n) begin
+                if (!rst_n)
+                    mu_wire_reg[j][k] <= 10'd0;
+                else if (state == S_CNU_PHASE)
+                    mu_wire_reg[j][k] <= mu_wire[j][k];
+            end
         end
     end
 endgenerate
@@ -293,7 +315,7 @@ generate
             .new_leg  (new_leg_pulse),
             .en       (vnu_en),
             .lambda_0 (lambda_0[j]),
-            .mu_in    (mu_wire[j]),
+            .mu_in    (mu_wire_reg[j]),
             .nu_out   (nu_wire[j]),
             .marginal (),
             .e_hat    (e_hat_bit[j])
@@ -322,6 +344,33 @@ end
 always_comb begin
     for (int i = 0; i < 144; i++)
         e_hat_internal[i] = e_hat_bit[i];
+end
+// Fix 2: balanced adder tree on e_hat_bit. 144 inputs padded to 256, 8 levels of pairwise adds.
+logic [11:0]  tree_lvl [0:8][0:255];
+
+generate
+    for (genvar i = 0; i < 256; i++) begin: gen_tree_leaf
+        if (i < 144) begin: g_real
+            assign tree_lvl[0][i] = e_hat_internal[i] ? {8'b0, lambda_0[i]} : 12'd0;
+        end else begin: g_pad
+            assign tree_lvl[0][i] = 12'd0;
+        end
+    end
+    for (genvar l = 1; l <= 8; l++) begin: gen_tree_level
+        for (genvar i = 0; i < (256 >> l); i++) begin: gen_tree_add
+            assign tree_lvl[l][i] = tree_lvl[l-1][2*i] + tree_lvl[l-1][2*i+1];
+        end
+    end
+endgenerate
+
+assign tree_sum = tree_lvl[8][0];
+
+// Capture the weight in the same cycle as cand_e_hat, with the same enable.
+always_ff @(posedge clk or negedge rst_n) begin
+    if (!rst_n)
+        weight_reg <= '0;
+    else if (state == S_VNU_PHASE && converged_comb)
+        weight_reg <= tree_sum;
 end
 
 endmodule
