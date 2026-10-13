@@ -33,9 +33,9 @@
 
 #include "../DMem_BP/dmem_bp.h"
 
-#define RELAY_R 8   //maximum number of relay legs (0-indexed)
+#define RELAY_R 600  //maximum number of relay legs (0-indexed)
 
-#define RELAY_S 1   //number of solutions sought
+#define RELAY_S 5   //number of solutions sought
 
 #define RELAY_T0 80 //maximum number of iterations for the first leg
 #define RELAY_TR 60 //maximum number of iterations for each leg except the first one

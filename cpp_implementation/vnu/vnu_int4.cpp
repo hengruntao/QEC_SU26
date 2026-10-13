@@ -16,12 +16,19 @@ static qec_message_t bound_value(qec_vnu_accumulator_t value)
 qec_vnu_accumulator_t memory_strength_mult(qec_message_t value,
                                            qec_beta_t coefficient)
 {
+#ifdef VNU_OPT
+#pragma HLS INLINE
+#endif
     const qec_bit_t negative = value < 0;
     const qec_magnitude_t magnitude =
         negative ? qec_magnitude_t(-value) : qec_magnitude_t(value);
     qec_vnu_accumulator_t sum = 0;
 
     for (int bit = 0; bit < QEC_MAGNITUDE_BITS; ++bit) {
+#ifdef VNU_OPT
+        // [pragma 2] UNROLL: 4 partial products computed side by side, not one per cycle
+#pragma HLS UNROLL
+#endif
         if (magnitude[bit]) {
             const ap_uint<8> partial =
                 (ap_uint<8>(1) << bit) * ap_uint<8>(coefficient);
@@ -40,9 +47,21 @@ void vnu_hardware_int4(
     vnu_state_type *state,
     vnu_result_type *result)
 {
+#ifdef VNU_OPT
+    // [pragma 5] INLINE: paste this function's body into the caller
+#pragma HLS INLINE
+#endif
     qec_vnu_accumulator_t mu[VNU_DEGREE];
+#ifdef VNU_OPT
+    // [pragma 1] ARRAY_PARTITION: the 3 incoming CN->VN values become 3 separate registers
+#pragma HLS ARRAY_PARTITION variable=mu type=complete
+#endif
 
     for (int edge = 0; edge < VNU_DEGREE; ++edge) {
+#ifdef VNU_OPT
+        // [pragma 2] UNROLL: one copy of the loop body per edge (3 edges in parallel)
+#pragma HLS UNROLL
+#endif
         const qec_magnitude_t exclusive_minimum =
             cnu_messages[edge].selector ? cnu_messages[edge].min2_scaled
                                         : cnu_messages[edge].min1_scaled;
@@ -67,10 +86,18 @@ void vnu_hardware_int4(
 
     marginal = qec_vnu_accumulator_t(bound_value(marginal));
     for (int edge = 0; edge < VNU_DEGREE; ++edge) {
+#ifdef VNU_OPT
+        // [pragma 2] UNROLL: one copy of the loop body per edge (3 edges in parallel)
+#pragma HLS UNROLL
+#endif
         marginal += mu[edge];
     }
 
     for (int edge = 0; edge < VNU_DEGREE; ++edge) {
+#ifdef VNU_OPT
+        // [pragma 2] UNROLL: one copy of the loop body per edge (3 edges in parallel)
+#pragma HLS UNROLL
+#endif
         result->vnu_messages[edge] = bound_value(marginal - mu[edge]);
     }
 
@@ -87,6 +114,12 @@ void vnu_hls_top(
     vnu_state_type *state,
     vnu_result_type *result)
 {
+#ifdef VNU_OPT
+    // [pragma 3] ARRAY_PARTITION on the top-level input: 3 separate CN->VN input ports
+#pragma HLS ARRAY_PARTITION variable=cnu_messages type=complete
+    // [pragma 4] PIPELINE II=1: the VNU may accept new inputs every clock cycle
+#pragma HLS PIPELINE II=1
+#endif
     vnu_hardware_int4(cnu_messages, lambda_0, init, new_leg, state, result);
 }
 
@@ -110,6 +143,9 @@ int vnu_hardware_int4(
         lambda_0 > QEC_MAX_MAGNITUDE) {
         return -1;
     }
+#ifdef VNU_OPT
+#pragma HLS INLINE
+#endif
 
     vnu_hardware_int4(cnu_messages, qec_magnitude_t(lambda_0),
                       qec_bit_t(init), qec_bit_t(new_leg), state, result);

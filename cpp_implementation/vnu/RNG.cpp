@@ -9,12 +9,18 @@ static qec_lfsr_t lfsr_step(qec_lfsr_t state)
 
 qec_beta_t rng_beta_int(qec_lfsr_t *state)
 {
+#ifdef VNU_OPT
+#pragma HLS INLINE
+#endif
     qec_lfsr_t next = *state;
     if (next == 0) {
         next = 1;
     }
 
     for (int step = 0; step < 3; ++step) {
+#ifdef VNU_OPT
+#pragma HLS UNROLL
+#endif
         next = lfsr_step(next);
     }
 

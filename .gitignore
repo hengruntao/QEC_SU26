@@ -11,3 +11,6 @@ rtl/*.backup.*
 
 # Vitis HLS / Vivado generated files
 cpp_implementation/hls_vu19p/
+cpp_implementation/hls_result/*/
+cpp_implementation/hls_result/*.log
+cpp_implementation/hls_result/*.jou

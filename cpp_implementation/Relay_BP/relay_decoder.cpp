@@ -209,6 +209,11 @@ int decode_relay(syndrome_t syndrome,
                  int *num_sol_out, int *legs_used_out){
 
     int i, r;
+#ifdef BP_OPT
+    // [pragma 3] lambda_0 is read by all 144 VNUs in every iteration: 144 separate input
+    //            ports instead of one RAM-style port that delivers one value per cycle
+#pragma HLS ARRAY_PARTITION variable=lambda_0 type=complete
+#endif
 
     /* ---- syndrome is now a top-level input; computed by the caller ---- */
 
@@ -219,6 +224,10 @@ int decode_relay(syndrome_t syndrome,
 
     /* ---- VNU initialization (before leg 0) ---- */
     vnu_state_type vnu_state[H_X_COLS];
+#ifdef BP_OPT
+    // [pragma 1] each VNU keeps its own M_reg / beta / LFSR in registers
+#pragma HLS ARRAY_PARTITION variable=vnu_state type=complete
+#endif
     for (i = 0; i < H_X_COLS; i++){
         vnu_state[i].beta_int = beta_table[0][i];   // row 0 = leg 0 (normally RELAY_BETA_LEG_0 = 7)
         vnu_state[i].M_reg = lambda_0[i];
