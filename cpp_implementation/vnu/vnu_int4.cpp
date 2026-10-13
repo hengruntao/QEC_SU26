@@ -1,6 +1,6 @@
 #include "vnu_int4.h"
 
-static const int MEMORY_SCALE_SHIFT = 3;
+static const int MEMORY_SCALE_SHIFT = QEC_MEMORY_SCALE_LOG2;   // divide by M = 16 (was 3, M = 8)
 
 static qec_message_t bound_value(qec_vnu_accumulator_t value)
 {
