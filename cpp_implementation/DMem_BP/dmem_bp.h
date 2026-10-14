@@ -65,7 +65,7 @@ int decode_leg(syndrome_t syndrome,
                vnu_state_type *vnu_state,
                const qec_magnitude_t lambda_0[H_X_COLS], int T,
                int is_first_leg, int is_new_leg,
-               int *e_hat_out, int *iters_out, int *converged_out);
+               e_hat_t *e_hat_out, int *iters_out, int *converged_out);
 
 
 #endif

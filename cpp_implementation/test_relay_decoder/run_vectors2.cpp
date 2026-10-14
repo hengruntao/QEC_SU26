@@ -23,7 +23,7 @@
 
 #include "relay_tv2.h"
 #include "Relay_BP/relay_decoder.h"   /* brings in code_matrices.h via dmem_bp.h */
-#include "lfsr_beta_table.h"          /* testbench-side β table recorded from the LFSRs */
+#include "Relay_BP/relay_lfsr_seeds.h" /* Step B: RELAY_LFSR_GLOBAL_SEED the decoder was built with */
 
 /* ------------------------------------------------------------------ adapter */
 /* The only place that knows your decoder's signature.  Edit here if it changes. */
@@ -42,11 +42,17 @@ static dut_out tv_dut_decode(const int error_vec[TV2_N], int lambda0_int, unsign
     int iters = 0, nsol = 0, legs = 0;
     qec_magnitude_t lambda_0[TV2_N];
     for (int j = 0; j < TV2_N; j++) lambda_0[j] = lambda0_int;
-    /* β table recorded from the per-VNU LFSRs seeded with `seed` (same β as the old LFSR build) */
-    static qec_beta_t beta_table[RELAY_R + 1][TV2_N];
-    fill_beta_table_from_lfsr(beta_table, RELAY_R + 1, qec_lfsr_t(seed), RELAY_BETA_LEG_0);
+    /* Step B: β comes from the per-VNU LFSRs inside decode_relay; their seeds are compile-time
+       constants (Relay_BP/relay_lfsr_seeds.h), so the config's seed cannot be passed in.
+       Warn once if the config asks for a different seed than the one the decoder was built with. */
+    static int warned = 0;
+    if (seed != RELAY_LFSR_GLOBAL_SEED && !warned) {
+        printf("WARNING: config seed %u != RELAY_LFSR_GLOBAL_SEED %u; regenerate relay_lfsr_seeds.h "
+               "to use the config's seed\n", seed, (unsigned)RELAY_LFSR_GLOBAL_SEED);
+        warned = 1;
+    }
     e_hat_t ehat_packed = 0;
-    o.converged = decode_relay(compute_syndrome(error_vec), lambda_0, beta_table,
+    o.converged = decode_relay(compute_syndrome(error_vec), lambda_0,
                                &ehat_packed, &iters, &nsol, &legs);
     for (int j = 0; j < TV2_N; j++) o.ehat[j] = ehat_packed[j];
     o.iterations = iters;

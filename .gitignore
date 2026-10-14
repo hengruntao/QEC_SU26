@@ -18,5 +18,11 @@ rtl/IBM_OSS_decoder.srcs/utils_1/
 *.log
 *.str
 
-# Vitis HLS / Vivado generated files
-cpp_implementation/hls_vu19p/
+# Vitis HLS runs: ignore everything under hls_result/, then re-include only
+# (a) HLS-generated RTL in sol*/syn/verilog/ and
+# (b) the Vivado .xdc copied in by hand, placed directly in each run folder
+cpp_implementation/hls_result/**
+!cpp_implementation/hls_result/**/
+!cpp_implementation/hls_result/**/syn/verilog/*.v
+!cpp_implementation/hls_result/**/syn/verilog/*.dat
+!cpp_implementation/hls_result/*/*/*.xdc

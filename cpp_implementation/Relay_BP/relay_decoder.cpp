@@ -187,28 +187,178 @@
 
 
 /* using beta_table */
+// #include "relay_decoder.h"
+// #include <string.h>
+// #include <limits.h>
+//
+// /* compile-time constant */
+// static constexpr int decimal_2_bits(int n){ return (n <= 1) ? 1 : 1 + decimal_2_bits(n / 2); }  // converting decimal value to #bits in binary
+// static const int RELAY_W_MAX  = H_X_COLS * QEC_MAX_MAGNITUDE;     // 144 * 15 = 2160; w stands for weight
+// static const int RELAY_W_BITS = decimal_2_bits(RELAY_W_MAX + 1);  // 12
+// typedef ap_uint<RELAY_W_BITS> relay_weight_t;
+//
+// /* solution weight: w(e_hat) = ∑_j (e_hat_j)*log(1-p_j)/p_j 
+//    lambda = error_prior
+// */
+//
+// static relay_weight_t solution_weight(e_hat_t e_hat, const qec_magnitude_t lambda_0[H_X_COLS]){
+//
+//     int i;
+//     #ifdef BP_OPT
+//     #pragma HLS INLINE
+//     #endif
+//     relay_weight_t w = 0;
+//     solution_weight_loop: for (i = 0; i < H_X_COLS; i++){
+//         #ifdef BP_OPT
+//         #pragma HLS UNROLL
+//         #endif
+//         w += e_hat[i] ? relay_weight_t(lambda_0[i]) : relay_weight_t(0);
+//     }
+//     return w;
+// }
+//
+//
+//
+// int decode_relay(syndrome_t syndrome,
+//                  const qec_magnitude_t lambda_0[H_X_COLS],
+//                  const qec_beta_t beta_table[RELAY_R + 1][H_X_COLS],
+//                  e_hat_t *e_hat_out, int *total_iters_out,
+//                  int *num_sol_out, int *legs_used_out){
+//
+//     int i, r;
+// #ifdef BP_OPT
+//     // [pragma 3] lambda_0 is read by all 144 VNUs in every iteration: 144 separate input
+//     //            ports instead of one RAM-style port that delivers one value per cycle
+// #pragma HLS ARRAY_PARTITION variable=lambda_0 type=complete
+// #endif
+//
+//     /* ---- syndrome is now a top-level input; computed by the caller ---- */
+//
+//     /* ---- error-prior ----
+//     lambda_0[j] is per-VN. For code-level H with a uniform p all entries are equal;
+//     for circuit-level H each column j has its own prior.
+//     */
+//
+//     /* ---- VNU initialization (before leg 0) ---- */
+//     vnu_state_type vnu_state[H_X_COLS];
+// #ifdef BP_OPT
+//     // [pragma 1] each VNU keeps its own M_reg / beta / LFSR in registers
+// #pragma HLS ARRAY_PARTITION variable=vnu_state type=complete
+// #endif
+//     VNU_init_loop: for (i = 0; i < H_X_COLS; i++){
+//         #ifdef BP_OPT
+//         #pragma HLS UNROLL
+//         #endif
+//         // vnu_state[i].beta_int = beta_table[0][i]; This is done later to avoid duplicate initialization;
+//         vnu_state[i].M_reg = lambda_0[i];
+//         vnu_state[i].lfsr = 0;                      // test mode: LFSR unused (VNU never gets new_leg = 1)
+//     }
+//
+//     /* ---- initialize parameters ---- */
+//     e_hat_t e_hat_leg = 0;
+//     e_hat_t best_e_hat = 0;
+//     relay_weight_t best_w = ~relay_weight_t(0);   // largest possible value
+//     int s = 0;
+//     int total_iters = 0;
+//     int legs_used = 0;
+//     int iters = 0;  // # of iterations before coming to a result
+//     int converged = 0;
+//     int T;
+//     relay_weight_t w;
+//
+//     leg_outer_loop: for (r = 0; r <= RELAY_R; r++){
+//
+//         T = (r == 0) ? RELAY_T0 : RELAY_TR;
+//
+//         /* test mode: β of leg r comes from the table instead of the VNU's LFSR */
+//         reading_beta_loop: for (i = 0; i < H_X_COLS; i++) vnu_state[i].beta_int = beta_table[r][i]; // when r = 0: vnu_state[i].beta_int = beta_table[0][i] --> row 0 = leg 0 (normally RELAY_BETA_LEG_0 = 7)
+//
+//         decode_leg(syndrome, vnu_state, lambda_0, T, (r == 0), /* is_new_leg */ 0, &e_hat_leg, &iters, &converged);
+//
+//         total_iters += iters;
+//         legs_used++;
+//
+//         if (converged){
+//             w = solution_weight(e_hat_leg, lambda_0);
+//             s++;
+//             if (w < best_w){
+//                 best_w = w;
+//                 best_e_hat = e_hat_leg;  //one 144-bit register copy. NO need for a loop
+//             }
+//             if (s >= RELAY_S) break; // found S solutions
+//         }
+//
+//     }
+//
+//     *num_sol_out = s;
+//     *total_iters_out = total_iters;
+//     *legs_used_out = legs_used;
+//
+//     /*
+//     s > 0: there are solutions found
+//     s = 0: no solution is found -> decoding failure
+//
+//     If fail, output the e_hat of the last leg
+//     */
+//     *e_hat_out = (s > 0) ? best_e_hat : e_hat_leg;
+//
+//     return (s>0);
+// }
+
+
+
+/* using per-VNU LFSR (Step B): beta_table input removed */
 #include "relay_decoder.h"
+#include "relay_lfsr_seeds.h"   // RELAY_LFSR_SEED[144]: per-VNU LFSR start states (generated)
 #include <string.h>
 #include <limits.h>
 
-/* solution weight: w(ˆe) = ∑_j (^e_j)*log(1-p_j)/p_j 
+/* compile-time constant */
+static constexpr int decimal_2_bits(int n){ return (n <= 1) ? 1 : 1 + decimal_2_bits(n / 2); }  // converting decimal value to #bits in binary
+static const int RELAY_W_MAX  = H_X_COLS * QEC_MAX_MAGNITUDE;     // 144 * 15 = 2160; w stands for weight
+static const int RELAY_W_BITS = decimal_2_bits(RELAY_W_MAX + 1);  // 12
+typedef ap_uint<RELAY_W_BITS> relay_weight_t;
+
+/* solution weight: w(e_hat) = ∑_j (e_hat_j)*log(1-p_j)/p_j
    lambda = error_prior
 */
-static int solution_weight(const int *e_hat, const qec_magnitude_t lambda_0[H_X_COLS], int n){
-    int i, w = 0;
-    for (i = 0; i < n; i++){
-        if (e_hat[i]) w += lambda_0[i];  // ω_j * e_j = (e_j = 1) ? ω_j : 0; so use if statement to avoid multiplication
+
+static relay_weight_t solution_weight(e_hat_t e_hat, const qec_magnitude_t lambda_0[H_X_COLS]){
+
+    int i;
+    #ifdef BP_OPT
+    #pragma HLS INLINE
+    #endif
+    relay_weight_t w = 0;
+    solution_weight_loop: for (i = 0; i < H_X_COLS; i++){
+        #ifdef BP_OPT
+        #pragma HLS UNROLL
+        #endif
+        w += e_hat[i] ? relay_weight_t(lambda_0[i]) : relay_weight_t(0);
     }
     return w;
 }
 
+
+// Using beta_table for testing purpose
+// int decode_relay(syndrome_t syndrome,
+//                  const qec_magnitude_t lambda_0[H_X_COLS],
+//                  const qec_beta_t beta_table[RELAY_R + 1][H_X_COLS],
+//                  e_hat_t *e_hat_out, int *total_iters_out,
+//                  int *num_sol_out, int *legs_used_out){
+
+// Use per-node RNG. NOT beta_table. This is the real architecture described in paper
 int decode_relay(syndrome_t syndrome,
                  const qec_magnitude_t lambda_0[H_X_COLS],
-                 const qec_beta_t beta_table[RELAY_R + 1][H_X_COLS],
                  e_hat_t *e_hat_out, int *total_iters_out,
                  int *num_sol_out, int *legs_used_out){
 
     int i, r;
+#ifdef BP_OPT
+    // lambda_0 is read by all 144 VNUs in every iteration: 144 separate input
+    //            ports instead of one RAM-style port that delivers one value per cycle
+#pragma HLS ARRAY_PARTITION variable=lambda_0 type=complete
+#endif
 
     /* ---- syndrome is now a top-level input; computed by the caller ---- */
 
@@ -219,41 +369,61 @@ int decode_relay(syndrome_t syndrome,
 
     /* ---- VNU initialization (before leg 0) ---- */
     vnu_state_type vnu_state[H_X_COLS];
-    for (i = 0; i < H_X_COLS; i++){
-        vnu_state[i].beta_int = beta_table[0][i];   // row 0 = leg 0 (normally RELAY_BETA_LEG_0 = 7)
+#ifdef BP_OPT
+    // each VNU keeps its own M_reg / beta / LFSR in registers
+#pragma HLS ARRAY_PARTITION variable=vnu_state type=complete
+#endif
+    VNU_init_loop: for (i = 0; i < H_X_COLS; i++){
+        #ifdef BP_OPT
+        #pragma HLS UNROLL
+        #endif
+        vnu_state[i].beta_int = RELAY_BETA_LEG_0;   // leg 0: fixed beta for every VN (gamma_0 = 0.125 -> beta_int = 14 at M = 16)
         vnu_state[i].M_reg = lambda_0[i];
-        vnu_state[i].lfsr = 0;                      // test mode: LFSR unused (VNU never gets new_leg = 1)
+        vnu_state[i].lfsr = qec_lfsr_t(RELAY_LFSR_SEED[i]);     // own LFSR per VNU, start state = rng_seed_all(RELAY_LFSR_GLOBAL_SEED)
     }
 
     /* ---- initialize parameters ---- */
-    int e_hat_leg[H_X_COLS];
-    int best_e_hat[H_X_COLS];
-    int best_w = INT_MAX;   // should be 15*144=2160 when switched to int4
+    e_hat_t e_hat_leg = 0;
+    e_hat_t best_e_hat = 0;
+    relay_weight_t best_w = ~relay_weight_t(0);   // largest possible value
     int s = 0;
     int total_iters = 0;
     int legs_used = 0;
     int iters = 0;  // # of iterations before coming to a result
     int converged = 0;
-    int T, w;
+    int T;
+    relay_weight_t w;
 
-    for (r = 0; r <= RELAY_R; r++){
+    leg_outer_loop: for (r = 0; r <= RELAY_R; r++){
 
         T = (r == 0) ? RELAY_T0 : RELAY_TR;
 
-        /* test mode: β of leg r comes from the table instead of the VNU's LFSR */
-        for (i = 0; i < H_X_COLS; i++) vnu_state[i].beta_int = beta_table[r][i];
+        /* legs r >= 1: every VNU draws a new beta from its OWN LFSR
+           (paper 2510.21600 Fig. 3c: a local pseudo-random number generator in each VNU).
+           The draw is done here, before the leg starts, so beta is already in a register when the
+           BP iterations run; decode_leg keeps is_new_leg = 0, so the RNG logic stays out of the
+           per-iteration VNU path. One draw per leg = one step of the VN's 8-bit LFSR,
+           beta_int = 5 + lfsr[3:0] in [5,20] (vnu/RNG.cpp). */
+        if (r >= 1){
+            beta_draw_loop: for (i = 0; i < H_X_COLS; i++){
+                #ifdef BP_OPT
+                #pragma HLS UNROLL
+                #endif
+                vnu_state[i].beta_int = rng_beta_int(&vnu_state[i].lfsr);
+            }
+        }
 
-        decode_leg(syndrome, vnu_state, lambda_0, T, (r == 0), /* is_new_leg */ 0, e_hat_leg, &iters, &converged);
+        decode_leg(syndrome, vnu_state, lambda_0, T, (r == 0), /* is_new_leg */ 0, &e_hat_leg, &iters, &converged);
 
         total_iters += iters;
         legs_used++;
 
         if (converged){
-            w = solution_weight(e_hat_leg, lambda_0, H_X_COLS);
+            w = solution_weight(e_hat_leg, lambda_0);
             s++;
             if (w < best_w){
                 best_w = w;
-                for (i=0;i<H_X_COLS;i++) best_e_hat[i] = e_hat_leg[i];
+                best_e_hat = e_hat_leg;  //one 144-bit register copy. NO need for a loop
             }
             if (s >= RELAY_S) break; // found S solutions
         }
@@ -264,13 +434,13 @@ int decode_relay(syndrome_t syndrome,
     *total_iters_out = total_iters;
     *legs_used_out = legs_used;
 
-    e_hat_t e_hat_packed = 0;
-    if(s > 0){  //there are solutions found
-        for (i=0;i<H_X_COLS;i++) e_hat_packed[i] = best_e_hat[i];
-    } else {    // if no solution is found -> decoding failure
-        for (i=0;i<H_X_COLS;i++) e_hat_packed[i] = e_hat_leg[i];   // if fail, output the e_hat of the last leg
-    }
-    *e_hat_out = e_hat_packed;
+    /*
+    s > 0: there are solutions found
+    s = 0: no solution is found -> decoding failure
+
+    If fail, output the e_hat of the last leg
+    */
+    *e_hat_out = (s > 0) ? best_e_hat : e_hat_leg;
 
     return (s>0);
 }

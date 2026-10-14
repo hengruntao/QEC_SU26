@@ -273,10 +273,20 @@ void xor_for_matrix_mult(const uint8_t *M, int rows, int cols,
     so only needs to XOR #CN_DEGREE elements per row.
 */
 syndrome_t compute_syndrome(const int *e){
+#ifdef BP_OPT
+    // INLINE + UNROLL: 72 parity checks, each a 6-input XOR, all evaluated at once
+#pragma HLS INLINE
+#endif
     syndrome_t s = 0;
-    for (int i = 0; i < H_X_ROWS; i++){
+    syndrome_row_loop: for (int i = 0; i < H_X_ROWS; i++){
+#ifdef BP_OPT
+#pragma HLS UNROLL
+#endif
         int acc = 0;
-        for (int p = 0; p < CN_DEGREE; p++){
+        syndrome_xor_loop: for (int p = 0; p < CN_DEGREE; p++){
+#ifdef BP_OPT
+#pragma HLS UNROLL
+#endif
             acc ^= (e[cnu_to_vnu_idx[i][p]] & 1);
         }
         s[i] = acc;
@@ -337,10 +347,14 @@ int decode(const int *error, int beta_int,
         vnu_state[i].lfsr = seeds[i];
     }
 
-    return decode_leg(syndrome, vnu_state,
-                      lambda_0, max_iter,
-                      /* is_first_leg */ 1, /* is_new_leg */ 0,
-                      e_hat_out, iters_out, converged_out);
+    e_hat_t e_hat_packed = 0;
+    int return_value =  decode_leg(syndrome, vnu_state,
+                                   lambda_0, max_iter,
+                                   /* is_first_leg */ 1, /* is_new_leg */ 0,
+                                   &e_hat_packed, iters_out, converged_out);
+    for (i = 0; i < H_X_COLS; i++) e_hat_out[i] = e_hat_packed[i];
+    
+    return return_value;
 }
 
 
@@ -353,22 +367,37 @@ int decode_leg(syndrome_t syndrome,
                vnu_state_type* vnu_state,
                const qec_magnitude_t lambda_0[H_X_COLS], int T,
                int is_first_leg, int is_new_leg,
-               int *e_hat_out, int *iters_out, int *converged_out){
+               e_hat_t *e_hat_out, int *iters_out, int *converged_out){
 
     /*
     ---- define check matrix ----
         see check_matrix_generator_for_c.py for .get_H_x() & .get_H_z()
     */
     int i, j;
+#ifdef BP_OPT
+    // [pragma 5] INLINE decode_leg into decode_relay: is_new_leg is always 0 there, so the
+    //            RNG path of every VNU can be removed as constant-false logic
+#pragma HLS INLINE
+#endif
     
     // vnu_message stores the message from vnu_i to all of its neighbors
     // vnu_message is a 2D array
 
     // per-leg
     int vnu_message[H_X_COLS][VN_DEGREE];
+#ifdef BP_OPT
+    // [pragma 1] every VN->CN message becomes its own register (432 of them), not a RAM entry
+#pragma HLS ARRAY_PARTITION variable=vnu_message type=complete dim=0
+#endif
 
-    for (i = 0; i < H_X_COLS; i++){
-        for (j = 0; j < VN_DEGREE; j++){
+    message_init_outer_loop: for (i = 0; i < H_X_COLS; i++){
+#ifdef BP_OPT
+#pragma HLS UNROLL
+#endif
+        message_init_inner_loop: for (j = 0; j < VN_DEGREE; j++){
+#ifdef BP_OPT
+#pragma HLS UNROLL
+#endif
             vnu_message[i][j] = lambda_0[i];
         }
     }
@@ -378,7 +407,16 @@ int decode_leg(syndrome_t syndrome,
     int t;
     int converged = 0;
     int e_hat[H_X_COLS];
-    for (t = 1; t <= T; t++){   // T is max_iter for the current leg
+#ifdef BP_OPT
+#pragma HLS ARRAY_PARTITION variable=e_hat type=complete
+#endif
+    bp_iteration_loop: for (t = 1; t <= T; t++){   // T is max_iter for the current leg
+#ifdef BP_OPT
+        // [pragma 6] PIPELINE off: iteration t+1 needs every message produced by iteration t,
+        //            so two iterations can never overlap. Tell HLS not to try pipelining
+        //            this loop (it does so automatically once all inner loops are unrolled).
+#pragma HLS PIPELINE off
+#endif
 
         /*  
         ---- CNU phase ----
@@ -393,8 +431,18 @@ int decode_leg(syndrome_t syndrome,
 
         /* ---- Simplified to a Look Up Table ---- */
         int cnu_inputs[H_X_ROWS][CN_DEGREE];
-        for (i = 0; i < H_X_ROWS; i++){
-            for (j = 0; j < CN_DEGREE; j++){
+#ifdef BP_OPT
+#pragma HLS ARRAY_PARTITION variable=cnu_inputs type=complete dim=0
+#endif
+        cnu_input_gather_outer_loop: for (i = 0; i < H_X_ROWS; i++){
+#ifdef BP_OPT
+            // [pragma 2] UNROLL with constant connection tables: each copy becomes a fixed wire
+#pragma HLS UNROLL
+#endif
+            cnu_input_gather_inner_loop: for (j = 0; j < CN_DEGREE; j++){
+#ifdef BP_OPT
+#pragma HLS UNROLL
+#endif
                 cnu_inputs[i][j] = vnu_message[cnu_to_vnu_idx[i][j]][cnu_to_vnu_port[i][j]];
             }
         }
@@ -416,7 +464,14 @@ int decode_leg(syndrome_t syndrome,
 
         /* 2. ---- CNU processing ---- */
         cnu_result_type cnu_results[H_X_ROWS];
-        for (i = 0; i < H_X_ROWS; i++){
+#ifdef BP_OPT
+#pragma HLS ARRAY_PARTITION variable=cnu_results type=complete dim=0
+#endif
+        cnu_processing_loop: for (i = 0; i < H_X_ROWS; i++){
+#ifdef BP_OPT
+            // [pragma 2] UNROLL: 72 CNU circuits side by side
+#pragma HLS UNROLL
+#endif
             cnu_hardware_int4(cnu_inputs[i], CN_DEGREE, int(syndrome[i]), t, &cnu_results[i]);
         }
         
@@ -424,9 +479,18 @@ int decode_leg(syndrome_t syndrome,
 
         /* ---- simplified to a Look Up Table ---- */
         cnu_to_vnu_message_t vnu_inputs[H_X_COLS][VN_DEGREE];
+#ifdef BP_OPT
+#pragma HLS ARRAY_PARTITION variable=vnu_inputs type=complete dim=0
+#endif
 
-        for (i = 0; i < H_X_COLS; i++){
-            for (j = 0; j < VN_DEGREE; j++){
+        vnu_input_gather_outer_loop: for (i = 0; i < H_X_COLS; i++){
+#ifdef BP_OPT
+#pragma HLS UNROLL
+#endif
+            vnu_input_gather_inner_loop: for (j = 0; j < VN_DEGREE; j++){
+#ifdef BP_OPT
+#pragma HLS UNROLL
+#endif
                 int idx_of_cnu  = vnu_to_cnu_idx[i][j];   // which cnu's port_j is connected to vnu_i
                 int port_of_cnu = vnu_to_cnu_port[i][j];  // which port 这条边是那个 CNU 的第几号 port        
                 vnu_inputs[i][j].min1_scaled = cnu_results[idx_of_cnu].min1_scaled;
@@ -438,13 +502,26 @@ int decode_leg(syndrome_t syndrome,
 
         /* ---- VNU phase ---- */
         vnu_result_type vnu_results[H_X_COLS];
-        for (i = 0; i < H_X_COLS; i++){
+#ifdef BP_OPT
+#pragma HLS ARRAY_PARTITION variable=vnu_results type=complete dim=0
+#endif
+        vnu_processing_loop: for (i = 0; i < H_X_COLS; i++){
+#ifdef BP_OPT
+            // [pragma 2] UNROLL: 144 VNU circuits side by side
+#pragma HLS UNROLL
+#endif
             vnu_hardware_int4(vnu_inputs[i], VN_DEGREE, int(lambda_0[i]), (is_first_leg && (t==1)), (is_new_leg && (t==1)), &vnu_state[i], &vnu_results[i]);   // for DMem_BP, there is only 1 leg. So new_leg = 0
         }
 
         /* ---- update vnu_message ---- */
-        for (i = 0; i < H_X_COLS; i++){
-            for (j = 0; j < VN_DEGREE; j++){
+        vnu_message_update_outer_loop: for (i = 0; i < H_X_COLS; i++){
+#ifdef BP_OPT
+#pragma HLS UNROLL
+#endif
+            vnu_message_update_inner_loop: for (j = 0; j < VN_DEGREE; j++){
+#ifdef BP_OPT
+#pragma HLS UNROLL
+#endif
                 vnu_message[i][j] = vnu_results[i].vnu_messages[j];
             }
         }
@@ -452,7 +529,10 @@ int decode_leg(syndrome_t syndrome,
         /* ---- Convergence check ---- */
         
         // extract hard decisions from VNU, and computes estimated error vector e_hat (array of HDs)
-        for (i = 0; i < H_X_COLS; i++){
+        hard_decision_loop: for (i = 0; i < H_X_COLS; i++){
+#ifdef BP_OPT
+#pragma HLS UNROLL
+#endif
             e_hat[i] = vnu_results[i].hard_decision;
         }
 
@@ -469,9 +549,14 @@ int decode_leg(syndrome_t syndrome,
     // per-leg
     *converged_out = converged;
     *iters_out = (converged) ? t : T;
-    for (i = 0; i < H_X_COLS; i++){
-        e_hat_out[i] = e_hat[i];
+    e_hat_t e_hat_packed = 0;
+    e_hat_packing_loop: for (i = 0; i < H_X_COLS; i++){
+        #ifdef BP_OPT
+        #pragma HLS UNROLL
+        #endif
+        e_hat_packed[i] = e_hat[i];
     }
+    *e_hat_out = e_hat_packed;
 
     return 0;
 }
