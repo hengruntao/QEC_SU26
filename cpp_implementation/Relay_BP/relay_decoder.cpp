@@ -340,16 +340,14 @@ static relay_weight_t solution_weight(e_hat_t e_hat, const qec_magnitude_t lambd
 }
 
 
-/* 
-Using beta_table for testing purpose
-int decode_relay(syndrome_t syndrome,
-                 const qec_magnitude_t lambda_0[H_X_COLS],
-                 const qec_beta_t beta_table[RELAY_R + 1][H_X_COLS],
-                 e_hat_t *e_hat_out, int *total_iters_out,
-                 int *num_sol_out, int *legs_used_out){
-*/
+// Using beta_table for testing purpose
+// int decode_relay(syndrome_t syndrome,
+//                  const qec_magnitude_t lambda_0[H_X_COLS],
+//                  const qec_beta_t beta_table[RELAY_R + 1][H_X_COLS],
+//                  e_hat_t *e_hat_out, int *total_iters_out,
+//                  int *num_sol_out, int *legs_used_out){
 
-/* Use per-node RNG. NOT beta_table. This is the real architecture described in paper */
+// Use per-node RNG. NOT beta_table. This is the real architecture described in paper
 int decode_relay(syndrome_t syndrome,
                  const qec_magnitude_t lambda_0[H_X_COLS],
                  e_hat_t *e_hat_out, int *total_iters_out,
@@ -357,7 +355,7 @@ int decode_relay(syndrome_t syndrome,
 
     int i, r;
 #ifdef BP_OPT
-    // [pragma 3] lambda_0 is read by all 144 VNUs in every iteration: 144 separate input
+    // lambda_0 is read by all 144 VNUs in every iteration: 144 separate input
     //            ports instead of one RAM-style port that delivers one value per cycle
 #pragma HLS ARRAY_PARTITION variable=lambda_0 type=complete
 #endif
@@ -381,7 +379,7 @@ int decode_relay(syndrome_t syndrome,
         #endif
         vnu_state[i].beta_int = RELAY_BETA_LEG_0;   // leg 0: fixed beta for every VN (gamma_0 = 0.125 -> beta_int = 14 at M = 16)
         vnu_state[i].M_reg = lambda_0[i];
-        vnu_state[i].lfsr = RELAY_LFSR_SEED[i];     // own LFSR per VNU, start state = rng_seed_all(RELAY_LFSR_GLOBAL_SEED)
+        vnu_state[i].lfsr = qec_lfsr_t(RELAY_LFSR_SEED[i]);     // own LFSR per VNU, start state = rng_seed_all(RELAY_LFSR_GLOBAL_SEED)
     }
 
     /* ---- initialize parameters ---- */

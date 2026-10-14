@@ -6,11 +6,12 @@
    seeding: VN j starts floor(j*255/144) steps after the global start state).
    Loaded into vnu_state[j].lfsr before leg 0 of every decode. */
 
-#include "../hls_types.h"
+#include <stdint.h>
 
 #define RELAY_LFSR_GLOBAL_SEED 0u
 
-static const qec_lfsr_t RELAY_LFSR_SEED[144] = {
+/* plain uint8_t (like the tables in generated/code_matrices.h), converted to qec_lfsr_t where loaded */
+static const uint8_t RELAY_LFSR_SEED[144] = {
     0xA5u, 0x4Au, 0x2Au, 0xA9u, 0xA7u, 0x4Eu, 0x3Bu, 0xEEu, 0xBBu, 0x76u, 0xD9u, 0x67u,
     0x9Eu, 0x7Bu, 0xF7u, 0xDFu, 0x7Eu, 0xFAu, 0xF4u, 0xD3u, 0x4Cu, 0x33u, 0x66u, 0x9Au,
     0x6Au, 0xA8u, 0xA3u, 0x46u, 0x18u, 0x60u, 0x83u, 0x07u, 0x1Du, 0x75u, 0xD5u, 0xAAu,

@@ -66,6 +66,7 @@
 #define RELAY_BP_H
 
 #include "../DMem_BP/dmem_bp.h"
+#include "relay_lfsr_seeds.h"   // per-VNU LFSR start states; included here so the testbench sees the same table
 
 #define RELAY_R 600  //maximum number of relay legs (0-indexed)
 

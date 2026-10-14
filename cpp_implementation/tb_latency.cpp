@@ -24,6 +24,7 @@
 #include <cstdlib>
 #include <cstring>
 #include "Relay_BP/relay_decoder.h"
+#include "vnu/RNG.h"   // explicit, as in the Step A testbench (cosim experiment 2)
 
 #if RELAY_R != 600 || RELAY_S != 5
 #error "tb_latency.cpp expects RELAY_R 600 and RELAY_S 5 -- the expected numbers above are for that build"

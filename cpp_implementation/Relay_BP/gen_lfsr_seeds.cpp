@@ -42,9 +42,10 @@ int main(int argc, char **argv)
     printf("   Per-VNU 8-bit LFSR start states = rng_seed_all(states, %u) (vnu/RNG.cpp, leap-ahead\n", global_seed);
     printf("   seeding: VN j starts floor(j*255/144) steps after the global start state).\n");
     printf("   Loaded into vnu_state[j].lfsr before leg 0 of every decode. */\n\n");
-    printf("#include \"../hls_types.h\"\n\n");
+    printf("#include <stdint.h>\n\n");
     printf("#define RELAY_LFSR_GLOBAL_SEED %uu\n\n", global_seed);
-    printf("static const qec_lfsr_t RELAY_LFSR_SEED[%d] = {\n", QEC_NUM_VARIABLE_NODES);
+    printf("/* plain uint8_t (like the tables in generated/code_matrices.h), converted to qec_lfsr_t where loaded */\n");
+    printf("static const uint8_t RELAY_LFSR_SEED[%d] = {\n", QEC_NUM_VARIABLE_NODES);
     for (int j = 0; j < QEC_NUM_VARIABLE_NODES; j++) {
         if (j % 12 == 0) printf("    ");
         int last_in_line = (j % 12 == 11) || (j == QEC_NUM_VARIABLE_NODES - 1);
