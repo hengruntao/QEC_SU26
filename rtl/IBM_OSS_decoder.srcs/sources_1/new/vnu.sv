@@ -41,17 +41,22 @@ module vnu #(
     logic [7:0] lfsr;
     always_ff @(posedge clk or negedge rst_n) begin
         if (!rst_n) lfsr <= LFSR_SEED;
-        else if (en)lfsr <= {lfsr[6:0], lfsr[7] ^ lfsr[5] ^ lfsr[4] ^ lfsr[3]};
+        else if (new_leg)lfsr <= {lfsr[6:0], lfsr[7] ^ lfsr[5] ^ lfsr[4] ^ lfsr[3]};
     end
 
-    logic [3:0] beta_int;
+    localparam int M         = 1 << M_LOG2;            // 8 or 16
+    localparam int BETA_W    = M_LOG2 + 1;             // 4 bits at M=8, 5 at M=16
+    localparam int BETA_BASE = (M_LOG2 == 3) ? 3 : 5;  // lowest beta, sets top of gamma range
+    localparam int BETA_RST  = M - (M >> 3);           // gamma0 = 0.125: 7 at M=8, 14 at M=16
+    
+    logic [BETA_W-1:0] beta_int;
     always_ff @(posedge clk or negedge rst_n) begin
-        if      (!rst_n)   beta_int <= 4'd7;
-        else if (en & new_leg)  beta_int <= 4'd3 + {1'b0, lfsr[2:0]};
+        if      (!rst_n)  beta_int <= BETA_RST[BETA_W-1:0];
+        else if (new_leg) beta_int <= BETA_BASE[BETA_W-1:0] + BETA_W'(lfsr[M_LOG2-1:0]);
     end
-
-    logic signed [4:0] gamma_int;
-    assign gamma_int = $signed({1'b0, 4'd8}) - $signed({1'b0, beta_int});
+    
+    logic signed [BETA_W:0] gamma_int;
+    assign gamma_int = $signed({1'b0, BETA_W'(M)}) - $signed({1'b0, beta_int});
 
     logic signed [MJ_W-1:0] M_j;
     logic signed [MJ_W-1:0] M_j_next;
