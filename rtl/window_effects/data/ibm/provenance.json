@@ -1,0 +1,14 @@
+{
+  "repository": "https://github.com/trmue/relay",
+  "commit": "d185194ba0cb4101ced4340d82b2ee6d42f225f0",
+  "directory": "crates/relay_bp/data",
+  "loader": "crates/relay_bp/src/dem.rs",
+  "files": {
+    "144_12_12_Hdec.npz": "d50d0f50f5089f6f0ceb62b927f0096e5e228942fd6b6153c7fb95348f04a201",
+    "144_12_12_Adec.npz": "e2a899b9ab5acc46bef5998fe98d44bc18af13cab9ddf14a4ba50eae196f8f87"
+  },
+  "shapes": {"H": [1008, 8785], "A": [12, 8785]},
+  "modifications": "None. Exact archive copies; no column reordering.",
+  "commit_mask": "Not supplied by this data export; requires reviewed external input",
+  "paper": "Real-time decoding of the gross code memory with FPGAs, arXiv:2510.21600v1, Appendix D Algorithm 2"
+}

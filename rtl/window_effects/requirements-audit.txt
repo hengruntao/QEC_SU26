@@ -1,0 +1,2 @@
+-r requirements.txt
+stim==1.16.0

@@ -1,0 +1,8 @@
+__pycache__/
+.venv/
+build/
+generated/
+vectors/
+.Xil/
+*.jou
+*.log
